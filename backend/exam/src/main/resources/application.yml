@@ -1,5 +1,5 @@
 ip:
-  base: 119.3.80.210
+  base: 192.168.100.112
 
 user:
   default:
@@ -19,10 +19,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: aA111111
+    password: 123456
     url: jdbc:mysql://${ip.base}:3306/exam?characterEncoding=utf-8&useSSL=false
   jpa:
-    show-sql: true
+    # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
+    show-sql: false
     hibernate:
       ddl-auto: none
   servlet:
@@ -34,3 +35,8 @@ spring:
 interceptors:
   # 不需要进行鉴权的接口地址，用逗号隔开
   auth-ignore-uris: /api/user/register,/api/user/login
+
+# SQL语句打印(能打印参数，设置为trace是打印完整语句，默认我们就关掉吧)
+logging:
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: off

@@ -12,3 +12,38 @@
 
   ![拦截器注入配置文件属性2](images/拦截器注入配置文件属性2.png)
 
+## 代码调试的时候如何打印完整的SQL语句和参数
+
+> 主要是指application.yml的配置
+
+参考博客[JPA打印SQL参数](https://mp.weixin.qq.com/s/zyTOdTwFhi2CwxCI9P1kQw)
+
+
++ 打印SQL语句
+  ```yaml
+  spring:
+    jpa:
+      # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
+      show-sql: true
+  ```
++ 不打印SQL语句
+  ```yaml
+  spring:
+    jpa:
+      # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
+      show-sql: false
+  ```
++ 打印SQL参数
+  ```yaml
+  # SQL语句打印(能打印参数，设置为trace是打印完整语句，默认我们就关掉吧)
+  logging:
+    level:
+      org.hibernate.type.descriptor.sql.BasicBinder: trace
+  ``` 
++ 不打印SQL参数
+  ```yaml
+  # SQL语句打印(能打印参数，设置为trace是打印完整语句，默认我们就关掉吧)
+  logging:
+    level:
+      org.hibernate.type.descriptor.sql.BasicBinder: off
+  ``` 
