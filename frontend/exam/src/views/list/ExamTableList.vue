@@ -174,7 +174,7 @@ export default {
           scopedSlots: { customRender: 'action' }
         }
       ],
-      // 计算属性，监听parameter变量，当变化时，自动重新请求后端数据。加载数据方法 必须为 Promise 对象
+      // 取parameter变量，当变化时，自动重新请求后端数据。加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         // 从表格组件中获取分页参数
         console.log('loadData.parameter', parameter)

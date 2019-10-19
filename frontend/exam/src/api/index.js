@@ -22,6 +22,8 @@ const api = {
   // 获取问题列表，按照单选、多选和判断进行分类
   ExamQuestionTypeList: '/exam/question/type/list',
   ExamCreate: '/exam/create',
-  ExamCardList: '/exam/card/list'
+  ExamCardList: '/exam/card/list',
+  // 获取考试详情
+  ExamDetail: '/exam/detail/'
 }
 export default api
