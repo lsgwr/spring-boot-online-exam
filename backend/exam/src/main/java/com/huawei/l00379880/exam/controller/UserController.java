@@ -11,31 +11,20 @@ import com.huawei.l00379880.exam.entity.User;
 import com.huawei.l00379880.exam.enums.ResultEnum;
 import com.huawei.l00379880.exam.qo.LoginQo;
 import com.huawei.l00379880.exam.service.UserService;
-import com.huawei.l00379880.exam.utils.FastDFSClient;
-import com.huawei.l00379880.exam.utils.FileUtils;
 import com.huawei.l00379880.exam.vo.ResultVO;
 import com.huawei.l00379880.exam.vo.UserInfoVo;
 import com.huawei.l00379880.exam.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @RestController
 @Api(tags = "User APIs")
 @RequestMapping("/user")
 public class UserController {
-
-    @Autowired
-    private FastDFSClient fastDFSClient;
-
-    @Value("${fdfs.webBase}")
-    private String webBase;
 
     @Autowired
     private UserService userService;
@@ -97,17 +86,5 @@ public class UserController {
         System.out.println("用户id：" + userId);
         System.out.println("用户名：" + username);
         return "用户id：" + userId + "\n用户名：" + username;
-    }
-
-    @GetMapping("/upload/test")
-    @ApiOperation("上传文件到FastDFS的测试, 返回访问路径")
-    String uploadTest() throws IOException {
-        String filePath = "/Users/liangshanguang/Program/Java/spring-boot-online-exam/backend/exam/src/main/resources/static/img/avatar.png";
-        // 转换为MultiPart方便传输
-        MultipartFile multipartFile = FileUtils.fileToMultipart(filePath);
-        assert multipartFile != null;
-        String relativePath = fastDFSClient.uploadFile(multipartFile);
-        assert webBase != null;
-        return webBase + relativePath;
     }
 }
