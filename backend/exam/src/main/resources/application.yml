@@ -1,0 +1,60 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: service-product
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: aA111111
+    url: jdbc:mysql://${ip.base}:3306/exam?characterEncoding=utf-8&useSSL=false
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  servlet:
+    multipart:
+      max-file-size: 100MB # 最大支持文件大小
+      max-request-size: 100MB # 最大支持请求大小
+
+user:
+  default:
+    # 用户名的默认前缀
+    username: user
+    # 用户的默认头像
+    avatar: ${fdfs.webBase}M00/00/00/wKgAkF0I_uyAUjlbAAAO1qHbugM426.png
+
+
+# 拦截器相关的配置
+interceptors:
+  # 不需要进行鉴权的接口地址，用逗号隔开
+  auth-ignore-uris: /api/user/register,/api/user/login
+
+ip:
+  base: 122.112.151.149 # 基础ip,其实只要是storage中的任何一个都是可以地，不过最好设置个网关,数据库也在这个上面
+
+# ===================================================================
+# 分布式文件系统FDFS配置
+# ===================================================================
+fdfs:
+  # socket连接超时时长
+  soTimeout: 1500
+  # 连接tracker服务器超时时长
+  connectTimeout: 600
+  pool:
+    # 从池中借出的对象的最大数目
+    max-total: 153
+    # 获取连接时的最大等待毫秒数100
+    max-wait-millis: 102
+  # 缩略图生成参数，可选
+  thumbImage:
+    width: 150
+    height: 150
+  # 跟踪服务器tracker_server请求地址,支持多个，这里只有一个，如果有多个在下方加- x.x.x.x:port
+  trackerList:
+    - ${ip.base}:22122
+  # 存储服务器storage_server访问地址,自己定义的
+  webBase: http://${ip.base}:8888/group1/
