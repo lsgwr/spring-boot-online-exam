@@ -239,14 +239,21 @@ export default {
     },
 
     handleEdit (record) {
-      // 弹出一个可修改的输入框
+      // Todo:修改题目，弹出一个可修改的输入框，实际上复用创建题目的模态框即可
       console.log(record)
       this.$refs.modalEdit.edit(record)
     },
     handleSub (record) {
-      // 查看题目
-      console.log(record)
-      this.$refs.modalView.edit(record)
+      // 查看题目，不在模态框里查啦，太麻烦
+      // console.log(record)
+      // this.$refs.modalView.edit(record)
+
+      // Todo:直接跳到参加考试的页面，查看所有题目的详细情况
+      const routeUrl = this.$router.resolve({
+        path: `/exam/${record.id}`
+      })
+      // 和点击考试卡片效果一样，跳转到考试页面，里面有所有题目的情况，相当于就是详情了
+      window.open(routeUrl.href, '_blank')
     },
     handleOk () {
       this.$refs.table.refresh()
