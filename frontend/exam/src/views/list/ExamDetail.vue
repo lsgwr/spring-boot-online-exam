@@ -1,10 +1,11 @@
 <template>
   <a-layout>
     <a-layout-header class="header" style="color: #fff">
-      <span style="font-size:25px;">{{ examDetail.exam.examName }}</span>
-      <span style="font-size:15px; font-family: Consolas">{{ examDetail.exam.examDescription }} </span>
+      <!--   v-if="examDetail.exam" 是为了防止 异步请求时页面渲染的时候还没有拿到这个值而报错， 下面多处这个判断都是这个道理 -->
+      <span style="font-size:25px;" v-if="examDetail.exam">{{ examDetail.exam.examName }}</span>
+      <span style="font-size:15px; font-family: Consolas" v-if="examDetail.exam">{{ examDetail.exam.examDescription }} </span>
       <span style="float: right;">
-        <span style="margin-right: 60px; font-size: 20px">考试限时：{{ examDetail.exam.examTimeLimit }}分钟 这里是倒计时</span>
+        <span style="margin-right: 60px; font-size: 20px" v-if="examDetail.exam">考试限时：{{ examDetail.exam.examTimeLimit }}分钟 这里是倒计时</span>
         <a-button type="danger" ghost style="margin-right: 60px;">交卷</a-button>
         <a-avatar class="avatar" size="small" :src="avatar()"/>
         <span style="margin-left: 12px">{{ nickname() }}</span>
@@ -19,15 +20,15 @@
           :style="{ height: '100%', borderRight: 0 }"
         >
           <a-sub-menu key="question_radio">
-            <span slot="title"><a-icon type="check-circle" theme="twoTone"/>单选题(每题{{ examDetail.exam.examScoreRadio }}分)</span>
+            <span slot="title" v-if="examDetail.exam"><a-icon type="check-circle" theme="twoTone"/>单选题(每题{{ examDetail.exam.examScoreRadio }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.radioIds" :key="item" @click="getQuestionDetail(item)">题目{{ index + 1 }}</a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="question_check">
-            <span slot="title"><a-icon type="check-square" theme="twoTone"/>多选题(每题{{ examDetail.exam.examScoreCheck }}分)</span>
+            <span slot="title" v-if="examDetail.exam"><a-icon type="check-square" theme="twoTone"/>多选题(每题{{ examDetail.exam.examScoreCheck }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.checkIds" :key="item" @click="getQuestionDetail(item)">题目{{ index + 1 }}</a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="question_judge">
-            <span slot="title"><a-icon type="like" theme="twoTone"/>判断题(每题{{ examDetail.exam.examScoreJudge }}分)</span>
+            <span slot="title" v-if="examDetail.exam"><a-icon type="like" theme="twoTone"/>判断题(每题{{ examDetail.exam.examScoreJudge }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.judgeIds" :key="item" @click="getQuestionDetail(item)">题目{{ index + 1 }}</a-menu-item>
           </a-sub-menu>
         </a-menu>
@@ -35,8 +36,9 @@
       <a-layout :style="{ marginLeft: '200px' }">
         <a-layout-content :style="{ margin: '24px 16px 0',height: '84vh', overflow: 'initial' }">
           <div :style="{ padding: '24px', background: '#fff',height: '84vh'}">
-            <span v-show="currentQuestion === ''">环境参加考试，请点击左侧题目编号开始答题</span>
+            <span v-show="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎参加考试，请点击左侧题目编号开始答题</span>
             <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
+            <br><br>
             <p type="checkbox" v-for="option in currentQuestion.options" :key="option.id"><input type="radio"/>{{ option.questionOptionContent }}</p>
           </div>
         </a-layout-content>
