@@ -39,7 +39,11 @@
             <span v-show="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎参加考试，请点击左侧题目编号开始答题</span>
             <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
             <br><br>
-            <p type="checkbox" v-for="option in currentQuestion.options" :key="option.id"><input type="radio"/>{{ option.questionOptionContent }}</p>
+            <a-radio-group @change="onRadioChange" v-model="radioValue">
+              <a-radio v-for="(option, index) in currentQuestion.options" :key="option.id" :style="radioStyle" :value="index">
+                {{ option.questionOptionContent }}
+              </a-radio>
+            </a-radio-group>
           </div>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">
@@ -64,10 +68,21 @@ export default {
     return {
       // 考试详情对象
       examDetail: {},
-      // 用户做过的问题都放到这个数组中，键为问题id,值为答案数组，用于存放用户勾选的答案
+      // Todo:用户做过的问题都放到这个数组中，键为问题id, 值为currentQuestion(其属性answers属性用于存放答案选项地id或ids),，用于存放用户勾选的答案
       questions: {},
       // 当前用户的问题
-      currentQuestion: ''
+      currentQuestion: '',
+      // 当前问题用户选择的答案们
+      checked: [],
+      // 单选或判断题的绑定值
+      radioValue: '',
+      // 多选题的绑定值
+      checkValues: [],
+      radioStyle: {
+        display: 'block',
+        height: '30px',
+        lineHeight: '30px'
+      }
     }
   },
   mounted () {
@@ -92,8 +107,10 @@ export default {
     // 从全局变量中获取用户昵称和头像,
     ...mapGetters(['nickname', 'avatar']),
     getQuestionDetail (questionId) {
-      // Todo:问题切换时从后端拿到问题详情，渲染到前端content中
+      // 问题切换时从后端拿到问题详情，渲染到前端content中
       console.log(questionId)
+      this.radioValue = ''
+      this.checkValues = []
       const that = this
       getQuestionDetail(questionId)
         .then(res => {
@@ -109,6 +126,9 @@ export default {
             })
           }
         })
+    },
+    onRadioChange (e) {
+      console.log('radio checked', e.target.value)
     }
   }
 }
