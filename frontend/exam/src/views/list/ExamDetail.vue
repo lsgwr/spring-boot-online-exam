@@ -40,14 +40,14 @@
             <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
             <br><br>
             <!-- 单选题和判断题 -->
-            <a-radio-group @change="onRadioChange" v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
+            <a-radio-group @change="onRadioChange" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
               <a-radio v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-radio>
             </a-radio-group>
 
             <!-- 多选题 -->
-            <a-checkbox-group v-model="checkValues" @change="onCheckChange" v-if="currentQuestion.type === '多选题'">
+            <a-checkbox-group @change="onCheckChange" v-if="currentQuestion.type === '多选题'">
               <a-checkbox v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-checkbox>
@@ -80,10 +80,6 @@ export default {
       answersMap: {},
       // 当前用户的问题
       currentQuestion: '',
-      // 单选或判断题的绑定值
-      radioValue: '',
-      // 多选题的绑定值
-      checkValues: [],
       optionStyle: {
         display: 'block',
         height: '30px',
@@ -99,9 +95,8 @@ export default {
     getExamDetail(this.$route.params.id)
       .then(res => {
         if (res.code === 0) {
+          // 赋值考试对象
           that.examDetail = res.data
-          // 打印考试对象
-          console.log(that.examDetail)
           return res.data
         } else {
           this.$notification.error({
@@ -116,18 +111,12 @@ export default {
     ...mapGetters(['nickname', 'avatar']),
     getQuestionDetail (questionId) {
       // 问题切换时从后端拿到问题详情，渲染到前端content中
-      console.log(questionId)
-      // 单选题的答案，是选项的id
-      this.radioValue = ''
-      // 多选题的答案，是选项id的数组
-      this.checkValues = []
       const that = this
       getQuestionDetail(questionId)
         .then(res => {
           if (res.code === 0) {
+            // 赋值当前考试对象
             that.currentQuestion = res.data
-            // 打印考试对象
-            console.log(that.currentQuestion)
             return res.data
           } else {
             this.$notification.error({
@@ -142,27 +131,18 @@ export default {
      * @param e
      */
     onRadioChange (e) {
-      // 下面两者值是一样的，因为已经v-model绑定起来了
-      // console.log('radio checked', e.target.value)
-      // console.log('radioValue', this.radioValue)
-      // userOptions是个局部变量，对每个问题都是新的，所以不需要对象拷贝了
       const userOptions = []
       userOptions.push(e.target.value)
       // 更新做题者选择的答案
       this.answersMap.set(this.currentQuestion.id, userOptions)
-      console.log(this.answersMap)
     },
     /**
      * 多选题触发的变化事件
      * @param checkedValues
      */
     onCheckChange (checkedValues) {
-      // 下面两者值是一样的，因为已经v-model绑定起来了
-      // console.log('checked = ', checkedValues)
-      // console.log('checkValues = ', this.checkValues)
-      // checkedValues是个局部变量，所以不需要对象拷贝了
+      // 更新做题者选择的答案
       this.answersMap.set(this.currentQuestion.id, checkedValues)
-      console.log(this.answersMap)
     }
   }
 }
