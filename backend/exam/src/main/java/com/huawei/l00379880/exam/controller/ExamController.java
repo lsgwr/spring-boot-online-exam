@@ -83,6 +83,22 @@ public class ExamController {
         }
     }
 
+    @GetMapping("/question/detail/{id}")
+    @ApiOperation("根据问题的id获取问题的详细信息")
+    ResultVO<QuestionDetailVo> getQuestionDetail(@PathVariable String id){
+        // Todo: 根据问题id获取问题的详细信息
+        System.out.println(id);
+        ResultVO<QuestionDetailVo> resultVO;
+        try {
+            QuestionDetailVo questionDetailVo = examService.getQuestionDetail(id);
+            resultVO = new ResultVO<>(0, "获取问题详情成功", questionDetailVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultVO = new ResultVO<>(-1, "获取问题详情失败", null);
+        }
+        return resultVO;
+    }
+
     @GetMapping("/list")
     @ApiOperation("获取考试列表")
     ResultVO<ExamPageVo> getExamList(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize) {
@@ -146,10 +162,17 @@ public class ExamController {
 
     @GetMapping("/detail/{id}")
     @ApiOperation("根据考试的id，获取考试详情")
-    ResultVO<ExamDetailVo> getExamDetail(@PathVariable Integer id){
+    ResultVO<ExamDetailVo> getExamDetail(@PathVariable String id) {
         // Todo:根据id获取考试详情
-
-        return null;
+        ResultVO<ExamDetailVo> resultVO;
+        try {
+            ExamDetailVo examDetail = examService.getExamDetail(id);
+            resultVO = new ResultVO<>(0, "获取考试详情成功", examDetail);
+            System.out.println(id);
+        } catch (Exception e) {
+            resultVO = new ResultVO<>(-1, "获取考试详情失败", null);
+        }
+        return resultVO;
     }
 
 }

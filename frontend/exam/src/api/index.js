@@ -24,6 +24,8 @@ const api = {
   ExamCreate: '/exam/create',
   ExamCardList: '/exam/card/list',
   // 获取考试详情
-  ExamDetail: '/exam/detail/'
+  ExamDetail: '/exam/detail/',
+  // 获取考试详情
+  QuestionDetail: '/exam/question/detail/'
 }
 export default api

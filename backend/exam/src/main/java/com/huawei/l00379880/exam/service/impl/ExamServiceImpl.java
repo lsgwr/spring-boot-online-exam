@@ -239,6 +239,43 @@ public class ExamServiceImpl implements ExamService {
         return questionSelectionVo;
     }
 
+    /**
+     * 去除字符串最后的，防止split的时候出错
+     *
+     * @param str 原始字符串
+     * @return
+     */
+    public static String trimMiddleLine(String str) {
+        if (str.charAt(str.length() - 1) == '-') {
+            str = str.substring(0, str.length() - 1);
+        }
+        return str;
+    }
+
+    @Override
+    public QuestionDetailVo getQuestionDetail(String id) {
+        Question question = questionRepository.findById(id).orElse(null);
+        QuestionDetailVo questionDetailVo = new QuestionDetailVo();
+        questionDetailVo.setId(id);
+        questionDetailVo.setName(question.getQuestionName());
+        questionDetailVo.setDescription(question.getQuestionDescription());
+        // 问题类型，单选题/多选题/判断题
+        questionDetailVo.setType(
+                Objects.requireNonNull(
+                        questionTypeRepository.findById(
+                                question.getQuestionTypeId()
+                        ).orElse(null)
+                ).getQuestionTypeDescription()
+        );
+        // 获取当前问题的选项
+        String optionIdsStr = trimMiddleLine(question.getQuestionOptionIds());
+        String[] optionIds = optionIdsStr.split("-");
+        // 获取选项列表
+        List<QuestionOption> optionList = questionOptionRepository.findAllById(Arrays.asList(optionIds));
+        questionDetailVo.setOptions(optionList);
+        return questionDetailVo;
+    }
+
     @Override
     public ExamPageVo getExamList(Integer pageNo, Integer pageSize) {
         // 获取考试列表
@@ -406,10 +443,21 @@ public class ExamServiceImpl implements ExamService {
         List<ExamCardVo> examCardVoList = new ArrayList<>();
         for (Exam exam : examList) {
             ExamCardVo examCardVo = new ExamCardVo();
-            BeanUtils.copyProperties(exam,examCardVo);
+            BeanUtils.copyProperties(exam, examCardVo);
             examCardVoList.add(examCardVo);
         }
         return examCardVoList;
+    }
+
+    @Override
+    public ExamDetailVo getExamDetail(String id) {
+        Exam exam = examRepository.findById(id).orElse(null);
+        ExamDetailVo examDetailVo = new ExamDetailVo();
+        examDetailVo.setExam(exam);
+        examDetailVo.setRadioIds(exam.getExamQuestionIdsRadio().split("-"));
+        examDetailVo.setCheckIds(exam.getExamQuestionIdsCheck().split("-"));
+        examDetailVo.setJudgeIds(exam.getExamQuestionIdsJudge().split("-"));
+        return examDetailVo;
     }
 
     /**
@@ -426,6 +474,7 @@ public class ExamServiceImpl implements ExamService {
         return str;
     }
 }
+
 
 
 

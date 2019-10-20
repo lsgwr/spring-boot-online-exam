@@ -43,6 +43,14 @@ public interface ExamService {
     QuestionSelectionVo getSelections();
 
     /**
+     * 获取问题详情
+     *
+     * @param id 问题的id
+     * @return 问题详情的封装VO
+     */
+    QuestionDetailVo getQuestionDetail(String id);
+
+    /**
      * 获取问题的列表
      *
      * @param pageNo   页码编号
@@ -62,8 +70,8 @@ public interface ExamService {
      * 根据前端组装的参数进行考试创建
      *
      * @param examCreateVo 前端组装的考试对象
-     * @param userId
-     * @return
+     * @param userId       用户id
+     * @return 创建好的考试
      */
     Exam create(ExamCreateVo examCreateVo, String userId);
 
@@ -73,4 +81,12 @@ public interface ExamService {
      * @return 考试卡片列表
      */
     List<ExamCardVo> getExamCardList();
+
+    /**
+     * 根据考试的id获取考试的详情
+     *
+     * @param id exam表的主键
+     * @return 考试详情的封装的VO对象
+     */
+    ExamDetailVo getExamDetail(String id);
 }

@@ -1,49 +1,43 @@
 <template>
   <a-layout>
     <a-layout-header class="header" style="color: #fff">
-      <span style="font-size:25px; font-family: 'Microsoft Sans'">{{ examDetail.exam.examName }}</span>
+      <span style="font-size:25px;">{{ examDetail.exam.examName }}</span>
       <span style="font-size:15px; font-family: Consolas">{{ examDetail.exam.examDescription }} </span>
       <span style="float: right;">
-          <span style="margin-right: 60px; font-size: 20px">考试限时：{{ examDetail.exam.examTimeLimit }}分钟 这里是倒计时</span>
-          <a-button type="danger" ghost style="margin-right: 60px;">交卷</a-button>
-          <a-avatar class="avatar" size="small" :src="avatar()"/>
-          <span style="margin-left: 12px">{{ nickname() }}</span>
-        </span>
+        <span style="margin-right: 60px; font-size: 20px">考试限时：{{ examDetail.exam.examTimeLimit }}分钟 这里是倒计时</span>
+        <a-button type="danger" ghost style="margin-right: 60px;">交卷</a-button>
+        <a-avatar class="avatar" size="small" :src="avatar()"/>
+        <span style="margin-left: 12px">{{ nickname() }}</span>
+      </span>
     </a-layout-header>
     <a-layout>
       <a-layout-sider width="190" :style="{background: '#444',overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
         <a-menu
           mode="inline"
           :defaultSelectedKeys="['1']"
-          :defaultOpenKeys="['question_radio', 'question_check', 'question_check']"
+          :defaultOpenKeys="['question_radio', 'question_check', 'question_judge']"
           :style="{ height: '100%', borderRight: 0 }"
         >
           <a-sub-menu key="question_radio">
             <span slot="title"><a-icon type="check-circle" theme="twoTone"/>单选题(每题{{ examDetail.exam.examScoreRadio }}分)</span>
-            <a-menu-item v-for="(item, index) in examDetail.radioIds" :key="item">题目{{ index + 1 }}</a-menu-item>
+            <a-menu-item v-for="(item, index) in examDetail.radioIds" :key="item" @click="getQuestionDetail(item)">题目{{ index + 1 }}</a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="question_check">
             <span slot="title"><a-icon type="check-square" theme="twoTone"/>多选题(每题{{ examDetail.exam.examScoreCheck }}分)</span>
-            <a-menu-item v-for="(item, index) in examDetail.checkIds" :key="item">题目{{ index + 1 }}</a-menu-item>
+            <a-menu-item v-for="(item, index) in examDetail.checkIds" :key="item" @click="getQuestionDetail(item)">题目{{ index + 1 }}</a-menu-item>
           </a-sub-menu>
-          <a-sub-menu key="question_check">
+          <a-sub-menu key="question_judge">
             <span slot="title"><a-icon type="like" theme="twoTone"/>判断题(每题{{ examDetail.exam.examScoreJudge }}分)</span>
-            <a-menu-item v-for="(item, index) in examDetail.judgeIds" :key="item">题目{{ index + 1 }}</a-menu-item>
+            <a-menu-item v-for="(item, index) in examDetail.judgeIds" :key="item" @click="getQuestionDetail(item)">题目{{ index + 1 }}</a-menu-item>
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
       <a-layout :style="{ marginLeft: '200px' }">
         <a-layout-content :style="{ margin: '24px 16px 0',height: '84vh', overflow: 'initial' }">
           <div :style="{ padding: '24px', background: '#fff',height: '84vh'}">
-            ...
-            <br/>
-            Really
-            <br/>...<br/>...<br/>...<br/>
-            long
-            <br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-            <br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-            <br/>...<br/>...<br/>...<br/>...<br/>...<br/>
-            content
+            <span v-show="currentQuestion === ''">环境参加考试，请点击左侧题目编号开始答题</span>
+            <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
+            <p type="checkbox" v-for="option in currentQuestion.options" :key="option.id"><input type="radio"/>{{ option.questionOptionContent }}</p>
           </div>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">
@@ -55,7 +49,7 @@
 </template>
 
 <script>
-import { getExamDetail } from '../../api/exam'
+import { getExamDetail, getQuestionDetail } from '../../api/exam'
 import UserMenu from '../../components/tools/UserMenu'
 import { mapGetters } from 'vuex'
 
@@ -67,12 +61,16 @@ export default {
   data () {
     return {
       // 考试详情对象
-      examDetail: {}
+      examDetail: {},
+      // 用户做过的问题都放到这个数组中，键为问题id,值为答案数组，用于存放用户勾选的答案
+      questions: {},
+      // 当前用户的问题
+      currentQuestion: ''
     }
   },
   mounted () {
     const that = this
-    // Todo:从后端获取考试的详细信息，渲染到考试详情里
+    // 从后端获取考试的详细信息，渲染到考试详情里
     getExamDetail(this.$route.params.id)
       .then(res => {
         if (res.code === 0) {
@@ -82,14 +80,34 @@ export default {
           return res.data
         } else {
           this.$notification.error({
-            message: '获取问题详情失败',
+            message: '获取考试详情失败',
             description: res.data.msg
           })
         }
       })
   },
   methods: {
-    ...mapGetters(['nickname', 'avatar']) // 从全局变量中获取用户昵称和头像
+    // 从全局变量中获取用户昵称和头像,
+    ...mapGetters(['nickname', 'avatar']),
+    getQuestionDetail (questionId) {
+      // Todo:问题切换时从后端拿到问题详情，渲染到前端content中
+      console.log(questionId)
+      const that = this
+      getQuestionDetail(questionId)
+        .then(res => {
+          if (res.code === 0) {
+            that.currentQuestion = res.data
+            // 打印考试对象
+            console.log(that.currentQuestion)
+            return res.data
+          } else {
+            this.$notification.error({
+              message: '获取问题详情失败',
+              description: res.data.msg
+            })
+          }
+        })
+    }
   }
 }
 </script>

@@ -6,43 +6,31 @@
  ***********************************************************/
 package com.huawei.l00379880.exam.vo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.huawei.l00379880.exam.entity.Exam;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ExamDetailVo {
-    @JsonProperty("id")
-    private String examId;
-    @JsonProperty("name")
-    private String examName;
-    @JsonProperty("avatar")
-    private String examAvatar;
-    @JsonProperty("desc")
-    private String examDescription;
-
-    // Todo:这里需要把考试的单选、多选和判断题提取出来
-
-    @JsonProperty("score")
-    private Integer examScore;
-
-    @JsonProperty("radioScore")
-    private Integer examScoreRadio;
-
-    @JsonProperty("checkScore")
-    private Integer examScoreCheck;
-
-    @JsonProperty("judgeScore")
-    private Integer examScoreJudge;
+    /**
+     * 考试的基本信息对象
+     */
+    private Exam exam;
 
     /**
-     * 考试的创建人，根据id从用户表中查取姓名
+     * 单选题的id数组
      */
-    @JsonProperty("creator")
-    private String examCreator;
+    private String[] radioIds;
 
     /**
-     * 考试限制的时间，单位为分钟
+     * 多选题的id数组
      */
-    @JsonProperty("elapse")
-    private Integer examTimeLimit;
+    private String[] checkIds;
+
+    /**
+     * 判断题的id数组
+     */
+    private String[] judgeIds;
+
 }
