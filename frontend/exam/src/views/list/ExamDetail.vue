@@ -22,19 +22,22 @@
           <a-sub-menu key="question_radio">
             <span slot="title" v-if="examDetail.exam"><a-icon type="check-circle" theme="twoTone"/>单选题(每题{{ examDetail.exam.examScoreRadio }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.radioIds" :key="item" @click="getQuestionDetail(item)">
-              <a-icon type="check" v-if="answersMap.get(item)" />题目{{ index + 1 }}
+              <a-icon type="check" v-if="answersMap.get(item)"/>
+              题目{{ index + 1 }}
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="question_check">
             <span slot="title" v-if="examDetail.exam"><a-icon type="check-square" theme="twoTone"/>多选题(每题{{ examDetail.exam.examScoreCheck }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.checkIds" :key="item" @click="getQuestionDetail(item)">
-              <a-icon type="check" v-if="answersMap.get(item)" />题目{{ index + 1 }}
+              <a-icon type="check" v-if="answersMap.get(item)"/>
+              题目{{ index + 1 }}
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="question_judge">
             <span slot="title" v-if="examDetail.exam"><a-icon type="like" theme="twoTone"/>判断题(每题{{ examDetail.exam.examScoreJudge }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.judgeIds" :key="item" @click="getQuestionDetail(item)">
-              <a-icon type="check" v-if="answersMap.get(item)" />题目{{ index + 1 }}
+              <a-icon type="check" v-if="answersMap.get(item)"/>
+              题目{{ index + 1 }}
             </a-menu-item>
           </a-sub-menu>
         </a-menu>
@@ -46,14 +49,14 @@
             <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
             <br><br>
             <!-- 单选题和判断题 -->
-            <a-radio-group @change="onRadioChange" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
+            <a-radio-group @change="onRadioChange" v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
               <a-radio v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-radio>
             </a-radio-group>
 
             <!-- 多选题 -->
-            <a-checkbox-group @change="onCheckChange" v-if="currentQuestion.type === '多选题'">
+            <a-checkbox-group @change="onCheckChange" v-model="checkValues" v-if="currentQuestion.type === '多选题'">
               <a-checkbox v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-checkbox>
@@ -86,6 +89,10 @@ export default {
       answersMap: {},
       // 当前用户的问题
       currentQuestion: '',
+      // 单选或判断题的绑定值，用于从answersMap中初始化做题状态
+      radioValue: '',
+      // 多选题的绑定值，用于从answersMap中初始化做题状态
+      checkValues: [],
       optionStyle: {
         display: 'block',
         height: '30px',
@@ -123,6 +130,16 @@ export default {
           if (res.code === 0) {
             // 赋值当前考试对象
             that.currentQuestion = res.data
+            // 查看用户是不是已经做过这道题又切换回来的，answersMap中查找，能找到这个题目id对应的值数组不为空说明用户做过这道题
+            if (that.answersMap.get(that.currentQuestion.id)) {
+              // 说明之前做过这道题了
+              if (that.currentQuestion.type === '单选题' || that.currentQuestion.type === '多选题') {
+                that.radioValue = that.answersMap.get(that.currentQuestion.id)[0]
+              } else if (that.currentQuestion.type === '多选题') {
+                // 数组是引用类型，因此需要进行拷贝，千万不要直接赋值
+                Object.assign(that.checkValues, that.answersMap.get(that.currentQuestion.id))
+              }
+            }
             return res.data
           } else {
             this.$notification.error({
