@@ -48,16 +48,16 @@
             <span v-show="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎参加考试，请点击左侧题目编号开始答题</span>
             <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
             <br><br>
-            <!-- 单选题和判断题 -->
+            <!-- 单选题和判断题 --> <!-- key不重复只需要在一个for循环中保证即可 -->
             <a-radio-group @change="onRadioChange" v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
-              <a-radio v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
+              <a-radio v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-radio>
             </a-radio-group>
 
             <!-- 多选题 -->
             <a-checkbox-group @change="onCheckChange" v-model="checkValues" v-if="currentQuestion.type === '多选题'">
-              <a-checkbox v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
+              <a-checkbox v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-checkbox>
             </a-checkbox-group>
@@ -125,6 +125,9 @@ export default {
     getQuestionDetail (questionId) {
       // 问题切换时从后端拿到问题详情，渲染到前端content中
       const that = this
+      // 清空问题绑定的值
+      this.radioValue = ''
+      this.checkValues = []
       getQuestionDetail(questionId)
         .then(res => {
           if (res.code === 0) {
@@ -133,7 +136,7 @@ export default {
             // 查看用户是不是已经做过这道题又切换回来的，answersMap中查找，能找到这个题目id对应的值数组不为空说明用户做过这道题
             if (that.answersMap.get(that.currentQuestion.id)) {
               // 说明之前做过这道题了
-              if (that.currentQuestion.type === '单选题' || that.currentQuestion.type === '多选题') {
+              if (that.currentQuestion.type === '单选题' || that.currentQuestion.type === '判断题') {
                 that.radioValue = that.answersMap.get(that.currentQuestion.id)[0]
               } else if (that.currentQuestion.type === '多选题') {
                 // 数组是引用类型，因此需要进行拷贝，千万不要直接赋值
