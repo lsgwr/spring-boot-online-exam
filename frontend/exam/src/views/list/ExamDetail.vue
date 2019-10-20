@@ -39,11 +39,19 @@
             <span v-show="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎参加考试，请点击左侧题目编号开始答题</span>
             <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
             <br><br>
-            <a-radio-group @change="onRadioChange" v-model="radioValue">
-              <a-radio v-for="(option, index) in currentQuestion.options" :key="option.id" :style="radioStyle" :value="index">
+            <!-- 单选题和判断题 -->
+            <a-radio-group @change="onRadioChange" v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
+              <a-radio v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-radio>
             </a-radio-group>
+
+            <!-- 多选题 -->
+            <a-checkbox-group v-model="checkValues" @change="onCheckChange" v-if="currentQuestion.type === '多选题'">
+              <a-checkbox v-for="option in currentQuestion.options" :key="option.id" :style="optionStyle" :value="option.questionOptionId">
+                {{ option.questionOptionContent }}
+              </a-checkbox>
+            </a-checkbox-group>
           </div>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">
@@ -69,23 +77,23 @@ export default {
       // 考试详情对象
       examDetail: {},
       // Todo:用户做过的问题都放到这个数组中，键为问题id, 值为currentQuestion(其属性answers属性用于存放答案选项地id或ids),，用于存放用户勾选的答案
-      questions: {},
+      answersMap: {},
       // 当前用户的问题
       currentQuestion: '',
-      // 当前问题用户选择的答案们
-      checked: [],
       // 单选或判断题的绑定值
       radioValue: '',
       // 多选题的绑定值
       checkValues: [],
-      radioStyle: {
+      optionStyle: {
         display: 'block',
         height: '30px',
-        lineHeight: '30px'
+        lineHeight: '30px',
+        marginLeft: '0px'
       }
     }
   },
   mounted () {
+    this.answersMap = new Map()
     const that = this
     // 从后端获取考试的详细信息，渲染到考试详情里
     getExamDetail(this.$route.params.id)
@@ -109,7 +117,9 @@ export default {
     getQuestionDetail (questionId) {
       // 问题切换时从后端拿到问题详情，渲染到前端content中
       console.log(questionId)
+      // 单选题的答案，是选项的id
       this.radioValue = ''
+      // 多选题的答案，是选项id的数组
       this.checkValues = []
       const that = this
       getQuestionDetail(questionId)
@@ -127,8 +137,32 @@ export default {
           }
         })
     },
+    /**
+     * 单选题勾选是触发的变化事件
+     * @param e
+     */
     onRadioChange (e) {
-      console.log('radio checked', e.target.value)
+      // 下面两者值是一样的，因为已经v-model绑定起来了
+      // console.log('radio checked', e.target.value)
+      // console.log('radioValue', this.radioValue)
+      // userOptions是个局部变量，对每个问题都是新的，所以不需要对象拷贝了
+      const userOptions = []
+      userOptions.push(e.target.value)
+      // 更新做题者选择的答案
+      this.answersMap.set(this.currentQuestion.id, userOptions)
+      console.log(this.answersMap)
+    },
+    /**
+     * 多选题触发的变化事件
+     * @param checkedValues
+     */
+    onCheckChange (checkedValues) {
+      // 下面两者值是一样的，因为已经v-model绑定起来了
+      // console.log('checked = ', checkedValues)
+      // console.log('checkValues = ', this.checkValues)
+      // checkedValues是个局部变量，所以不需要对象拷贝了
+      this.answersMap.set(this.currentQuestion.id, checkedValues)
+      console.log(this.answersMap)
     }
   }
 }
