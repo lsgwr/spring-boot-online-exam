@@ -6,7 +6,7 @@
       <span style="font-size:15px; font-family: Consolas" v-if="examDetail.exam">{{ examDetail.exam.examDescription }} </span>
       <span style="float: right;">
         <span style="margin-right: 60px; font-size: 20px" v-if="examDetail.exam">考试限时：{{ examDetail.exam.examTimeLimit }}分钟 这里是倒计时</span>
-        <a-button type="danger" ghost style="margin-right: 60px;">交卷</a-button>
+        <a-button type="danger" ghost style="margin-right: 60px;" @click="finishExam()">交卷</a-button>
         <a-avatar class="avatar" size="small" :src="avatar()"/>
         <span style="margin-left: 12px">{{ nickname() }}</span>
       </span>
@@ -85,7 +85,7 @@ export default {
     return {
       // 考试详情对象
       examDetail: {},
-      // Todo:用户做过的问题都放到这个数组中，键为问题id, 值为currentQuestion(其属性answers属性用于存放答案选项地id或ids),，用于存放用户勾选的答案
+      // 用户做过的问题都放到这个数组中，键为问题id, 值为currentQuestion(其属性answers属性用于存放答案选项地id或ids),，用于存放用户勾选的答案
       answersMap: {},
       // 当前用户的问题
       currentQuestion: '',
@@ -169,6 +169,13 @@ export default {
     onCheckChange (checkedValues) {
       // 更新做题者选择的答案
       this.answersMap.set(this.currentQuestion.id, checkedValues)
+    },
+
+    /**
+     * 结束考试并交卷
+     */
+    finishExam () {
+      // Todo:向后端提交作答信息数组answersMap
     }
   }
 }

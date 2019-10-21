@@ -239,7 +239,7 @@ export default {
     },
 
     handleEdit (record) {
-      // Todo:修改题目，弹出一个可修改的输入框，实际上复用创建题目的模态框即可
+      // Todo:修改考试信息和下面的题目，弹出一个可修改的输入框，实际上复用创建题目的模态框即可，还没做完
       console.log(record)
       this.$refs.modalEdit.edit(record)
     },
@@ -248,7 +248,7 @@ export default {
       // console.log(record)
       // this.$refs.modalView.edit(record)
 
-      // Todo:直接跳到参加考试的页面，查看所有题目的详细情况
+      // 直接跳到参加考试的页面，查看所有题目的详细情况
       const routeUrl = this.$router.resolve({
         path: `/exam/${record.id}`
       })
