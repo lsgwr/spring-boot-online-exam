@@ -9,8 +9,6 @@ package com.huawei.l00379880.exam.vo;
 import com.huawei.l00379880.exam.entity.Exam;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class ExamDetailVo {
     /**

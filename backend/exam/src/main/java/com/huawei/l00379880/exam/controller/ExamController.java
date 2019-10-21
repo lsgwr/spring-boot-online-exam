@@ -7,6 +7,7 @@
 package com.huawei.l00379880.exam.controller;
 
 import com.huawei.l00379880.exam.entity.Exam;
+import com.huawei.l00379880.exam.entity.ExamRecord;
 import com.huawei.l00379880.exam.service.ExamService;
 import com.huawei.l00379880.exam.vo.*;
 import io.swagger.annotations.Api;
@@ -178,11 +179,11 @@ public class ExamController {
 
     @PostMapping("/finish/{examId}")
     @ApiOperation("根据用户提交的答案对指定id的考试判分")
-    ResultVO<String> finishExam(@PathVariable String examId, @RequestBody HashMap<String, List<String>> answersMap, HttpServletRequest request) {
+    ResultVO<ExamRecord> finishExam(@PathVariable String examId, @RequestBody HashMap<String, List<String>> answersMap, HttpServletRequest request) {
         // 拦截器里设置上的用户id
         String userId = (String) request.getAttribute("user_id");
         // Todo:下面根据用户提交的信息进行判分,返回用户的得分情况
-        examService.judge(userId, examId, answersMap);
+        ExamRecord examRecord = examService.judge(userId, examId, answersMap);
         return null;
     }
 }

@@ -7,8 +7,10 @@
 package com.huawei.l00379880.exam.service;
 
 import com.huawei.l00379880.exam.entity.Exam;
+import com.huawei.l00379880.exam.entity.ExamRecord;
 import com.huawei.l00379880.exam.vo.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface ExamService {
@@ -89,4 +91,14 @@ public interface ExamService {
      * @return 考试详情的封装的VO对象
      */
     ExamDetailVo getExamDetail(String id);
+
+    /**
+     * 根据用户提交的作答信息进行判分
+     *
+     * @param userId     考试人
+     * @param examId     参与的考试
+     * @param answersMap 作答情况
+     * @return 本次考试记录
+     */
+    ExamRecord judge(String userId, String examId, HashMap<String, List<String>> answersMap);
 }

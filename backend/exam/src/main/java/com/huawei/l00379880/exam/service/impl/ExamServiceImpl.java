@@ -9,6 +9,7 @@ package com.huawei.l00379880.exam.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.huawei.l00379880.exam.entity.Exam;
+import com.huawei.l00379880.exam.entity.ExamRecord;
 import com.huawei.l00379880.exam.entity.Question;
 import com.huawei.l00379880.exam.entity.QuestionOption;
 import com.huawei.l00379880.exam.enums.QuestionEnum;
@@ -22,10 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional
@@ -458,6 +456,12 @@ public class ExamServiceImpl implements ExamService {
         examDetailVo.setCheckIds(exam.getExamQuestionIdsCheck().split("-"));
         examDetailVo.setJudgeIds(exam.getExamQuestionIdsJudge().split("-"));
         return examDetailVo;
+    }
+
+    @Override
+    public ExamRecord judge(String userId, String examId, HashMap<String, List<String>> answersMap) {
+        // Todo:开始考试判分啦~~~
+
     }
 
     /**
