@@ -59,6 +59,7 @@
             <artifactId>hutool-all</artifactId>
             <version>4.5.10</version>
         </dependency>
+
         <!-- FastDFS文件服务器的客户端 -->
         <dependency>
             <groupId>com.github.tobato</groupId>

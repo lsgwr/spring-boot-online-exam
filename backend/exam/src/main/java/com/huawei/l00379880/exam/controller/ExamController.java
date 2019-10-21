@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -85,7 +86,7 @@ public class ExamController {
 
     @GetMapping("/question/detail/{id}")
     @ApiOperation("根据问题的id获取问题的详细信息")
-    ResultVO<QuestionDetailVo> getQuestionDetail(@PathVariable String id){
+    ResultVO<QuestionDetailVo> getQuestionDetail(@PathVariable String id) {
         // Todo: 根据问题id获取问题的详细信息
         System.out.println(id);
         ResultVO<QuestionDetailVo> resultVO;
@@ -175,4 +176,13 @@ public class ExamController {
         return resultVO;
     }
 
+    @PostMapping("/finish/{examId}")
+    @ApiOperation("根据用户提交的答案对指定id的考试判分")
+    ResultVO<String> finishExam(@PathVariable String examId, @RequestBody HashMap<String, List<String>> answersMap, HttpServletRequest request) {
+        // 拦截器里设置上的用户id
+        String userId = (String) request.getAttribute("user_id");
+        // Todo:下面根据用户提交的信息进行判分,返回用户的得分情况
+        examService.judge(userId, examId, answersMap);
+        return null;
+    }
 }

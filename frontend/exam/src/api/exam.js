@@ -96,3 +96,15 @@ export function getQuestionDetail (questionId) {
     }
   })
 }
+
+export function finishExam (examId, answersMap) {
+  console.log(answersMap)
+  return axios({
+    url: api.FinishExam + examId,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
+    data: answersMap
+  })
+}

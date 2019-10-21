@@ -26,6 +26,8 @@ const api = {
   // 获取考试详情
   ExamDetail: '/exam/detail/',
   // 获取考试详情
-  QuestionDetail: '/exam/question/detail/'
+  QuestionDetail: '/exam/question/detail/',
+  // 交卷
+  FinishExam: '/exam/finish/'
 }
 export default api

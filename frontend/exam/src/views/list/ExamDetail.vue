@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { getExamDetail, getQuestionDetail } from '../../api/exam'
+import { getExamDetail, getQuestionDetail, finishExam } from '../../api/exam'
 import UserMenu from '../../components/tools/UserMenu'
 import { mapGetters } from 'vuex'
 
@@ -170,12 +170,36 @@ export default {
       // 更新做题者选择的答案
       this.answersMap.set(this.currentQuestion.id, checkedValues)
     },
-
+    _strMapToObj (strMap) {
+      const obj = Object.create(null)
+      for (const [k, v] of strMap) {
+        obj[k] = v
+      }
+      return obj
+    },
+    /**
+     *map转换为json
+     */
+    _mapToJson (map) {
+      return JSON.stringify(this._strMapToObj(map))
+    },
     /**
      * 结束考试并交卷
      */
     finishExam () {
       // Todo:向后端提交作答信息数组answersMap
+      finishExam(this.$route.params.id, this._mapToJson(this.answersMap))
+        .then(res => {
+          if (res.code === 0) {
+            // Todo:考试交卷，后端判分完成，然后跳转到我的考试界面
+            return res.data
+          } else {
+            this.$notification.error({
+              message: '交卷失败！',
+              description: res.data.msg
+            })
+          }
+        })
     }
   }
 }
