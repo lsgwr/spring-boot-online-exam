@@ -461,7 +461,46 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public ExamRecord judge(String userId, String examId, HashMap<String, List<String>> answersMap) {
         // Todo:开始考试判分啦~~~
+        // 1.首先获取考试对象和选项数组
+        ExamDetailVo examDetailVo = getExamDetail(examId);
+        // 2.然后获取该考试下所有的题目信息
+        List<String> questionIds = new ArrayList<>();
+        questionIds.addAll(Arrays.asList(examDetailVo.getRadioIds()));
+        questionIds.addAll(Arrays.asList(examDetailVo.getCheckIds()));
+        questionIds.addAll(Arrays.asList(examDetailVo.getJudgeIds()));
+        List<Question> questionList = questionRepository.findAllById(questionIds);
+        Map<String, Question> questionMap = new HashMap<>();
+        for (Question question : questionList) {
+            questionMap.put(question.getQuestionId(), question);
+        }
+        // 3.根据正确答案和用户作答信息进行判分
+        Set<String> questionIdsAnswer = answersMap.keySet();
+        Map<String, Boolean> judgeMap = new HashMap<>();
+        for (String questionId : questionIdsAnswer) {
+            // 获取用户作答地这个题的答案信息
+            Question question = questionMap.get(questionId);
+            // 获取答案选项
+            String questionAnswerOptionIds = replaceLastSeparator(question.getQuestionAnswerOptionIds());
+            List<String> questionAnswerOptionIdList = Arrays.asList(questionAnswerOptionIds.split("-"));
+            Collections.sort(questionAnswerOptionIdList);
+            String answerStr = listConcat(questionAnswerOptionIdList);
+            // 获取用户作答
+            List<String> questionUserOptionIdList = answersMap.get(questionId);
+            Collections.sort(questionUserOptionIdList);
+            String userStr = listConcat(questionUserOptionIdList);
+            // 判断questionAnswerOptionIds和answersMap里面的答案是否相等
+            if (answerStr.equals(userStr)){
+                // 说明题目作答正确
+                judgeMap.put(questionId, true);
+            }else {
+                // 说明题目作答错误
+                judgeMap.put(questionId, false);
+            }
+            // Todo:计算得分
 
+        }
+        // 4.记录本次考试结果，存到ExamRecord中
+        ExamRecord examRecord = new ExamRecord();
     }
 
     /**
@@ -470,12 +509,27 @@ public class ExamServiceImpl implements ExamService {
      * @param str 原始字符串
      * @return 替换掉最后一个-的字符串
      */
-    private String replaceLastSeperator(String str) {
+    private String replaceLastSeparator(String str) {
         String lastChar = str.substring(str.length() - 1);
         if ("-".equals(lastChar)) {
             str = StrUtil.sub(str, 0, str.length() - 1);
         }
         return str;
+    }
+
+    /**
+     * 把字符串用-连接起来
+     *
+     * @param strList 字符串列表
+     * @return 拼接好的字符串，记住要去掉最后面的-
+     */
+    private String listConcat(List<String> strList) {
+        StringBuilder sb = new StringBuilder();
+        for (String str : strList) {
+            sb.append(str);
+            sb.append("-");
+        }
+        return replaceLastSeparator(sb.toString());
     }
 }
 
