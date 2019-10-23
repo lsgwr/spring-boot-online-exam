@@ -460,18 +460,24 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public ExamRecord judge(String userId, String examId, HashMap<String, List<String>> answersMap) {
-        // Todo:开始考试判分啦~~~
+        // 开始考试判分啦~~~
         // 1.首先获取考试对象和选项数组
         ExamDetailVo examDetailVo = getExamDetail(examId);
         Exam exam = examDetailVo.getExam();
         // 2.然后获取该考试下所有的题目信息
         List<String> questionIds = new ArrayList<>();
+        // 2.1 题目id的数组
         List<String> radioIdList = Arrays.asList(examDetailVo.getRadioIds());
         List<String> checkIdList = Arrays.asList(examDetailVo.getCheckIds());
         List<String> judgeIdList = Arrays.asList(examDetailVo.getJudgeIds());
         questionIds.addAll(radioIdList);
         questionIds.addAll(checkIdList);
         questionIds.addAll(judgeIdList);
+        // 2.2 每种题目的分数
+        int radioScore = exam.getExamScoreRadio();
+        int checkScore = exam.getExamScoreCheck();
+        int judgeScore = exam.getExamScoreJudge();
+        // 2.3 根据问题id的数组拿到所有的问题对象，供下面步骤用
         List<Question> questionList = questionRepository.findAllById(questionIds);
         Map<String, Question> questionMap = new HashMap<>();
         for (Question question : questionList) {
@@ -479,7 +485,11 @@ public class ExamServiceImpl implements ExamService {
         }
         // 3.根据正确答案和用户作答信息进行判分
         Set<String> questionIdsAnswer = answersMap.keySet();
-        Map<String, Boolean> judgeMap = new HashMap<>();
+        // 存储当前考试每个题目的得分情况
+        Map<String, Integer> judgeMap = new HashMap<>();
+        // 考生作答地每个题目的选项(题目和题目之间用$分隔，题目有多个选项地话用-分隔,题目和选项之间用_分隔),用于查看考试详情
+        // 例子：题目1的id_作答选项1-作答选项2&题目2的id_作答选项1&题目3_作答选项1-作答选项2-作答选项3
+        StringBuilder answerOptionIdsSb = new StringBuilder();
         for (String questionId : questionIdsAnswer) {
             // 获取用户作答地这个题的答案信息
             Question question = questionMap.get(questionId);
@@ -492,19 +502,35 @@ public class ExamServiceImpl implements ExamService {
             List<String> questionUserOptionIdList = answersMap.get(questionId);
             Collections.sort(questionUserOptionIdList);
             String userStr = listConcat(questionUserOptionIdList);
+            answerOptionIdsSb.append(questionId + "_" + userStr + "$");
             // 判断questionAnswerOptionIds和answersMap里面的答案是否相等
             if (answerStr.equals(userStr)) {
-                // 说明题目作答正确
-                judgeMap.put(questionId, true);
+                // 说明题目作答正确,下面根据题型给分
+                int score = 0;
+                if (radioIdList.contains(questionId)) {
+                    score = radioScore;
+                }
+                if (checkIdList.contains(questionId)) {
+                    score = checkScore;
+                }
+                if (judgeIdList.contains(questionId)) {
+                    score = judgeScore;
+                }
+                judgeMap.put(questionId, score);
             } else {
-                // 说明题目作答错误
-                judgeMap.put(questionId, false);
+                // 说明题目作答错误,直接判零分
+                judgeMap.put(questionId, 0);
             }
-            // Todo:计算得分
-
         }
-        // 4.记录本次考试结果，存到ExamRecord中
+        // Todo:4.计算得分，记录本次考试结果，存到ExamRecord中
         ExamRecord examRecord = new ExamRecord();
+        examRecord.setExamRecordId(IdUtil.simpleUUID());
+        examRecord.setExamId(examId);
+        // 注意去掉最后可能有的&_-
+        examRecord.setAnswerOptionIds(replaceLastSeparator(answerOptionIdsSb.toString()));
+        examRecord.setExamJoinerId(userId);
+        examRecord.setExamJoinDate(new Date());
+        return null;
     }
 
     /**
@@ -515,7 +541,8 @@ public class ExamServiceImpl implements ExamService {
      */
     private String replaceLastSeparator(String str) {
         String lastChar = str.substring(str.length() - 1);
-        if ("-".equals(lastChar) || "_".equals(lastChar)) {
+        // 题目和题目之间用$分隔，题目有多个选项地话用-分隔,题目和选项之间用_分隔
+        if ("-".equals(lastChar) || "_".equals(lastChar) || "$".equals(lastChar)) {
             str = StrUtil.sub(str, 0, str.length() - 1);
         }
         return str;

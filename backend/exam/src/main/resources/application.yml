@@ -1,5 +1,5 @@
 ip:
-  base: 192.168.100.112
+  base: 119.3.80.210
 
 user:
   default:
@@ -25,7 +25,7 @@ spring:
     # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
     show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   servlet:
     multipart:
       max-file-size: 100MB # 最大支持文件大小
