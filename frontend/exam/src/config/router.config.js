@@ -98,6 +98,12 @@ export const asyncRouterMap = [
             meta: { title: '标准列表', keepAlive: true, permission: ['table'] }
           },
           {
+            path: '/list/exam-record-list',
+            name: 'ExamRecordList',
+            component: () => import('../views/list/ExamRecordList'),
+            meta: { title: '考试记录', keepAlive: true, permission: ['table'] }
+          },
+          {
             path: '/list/exam-table-list/:pageNo([1-9]\\d*)?',
             name: 'ExamTableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
