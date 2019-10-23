@@ -215,8 +215,8 @@ public class ExamServiceImpl implements ExamService {
             }
         }
         // 把字符串最后面的"-"给去掉
-        questionAnswerOptionIds = replaceLastSeperator(questionAnswerOptionIds);
-        questionOptionIds = replaceLastSeperator(questionOptionIds);
+        questionAnswerOptionIds = replaceLastSeparator(questionAnswerOptionIds);
+        questionOptionIds = replaceLastSeparator(questionOptionIds);
         // 设置选项id组成的字符串
         question.setQuestionOptionIds(questionOptionIds);
         // 设置答案选项id组成的字符串
@@ -407,21 +407,21 @@ public class ExamServiceImpl implements ExamService {
                 radioCnt++;
             }
         }
-        radioIdsStr = replaceLastSeperator(radioIdsStr);
+        radioIdsStr = replaceLastSeparator(radioIdsStr);
         for (ExamQuestionSelectVo check : checks) {
             if (check.getChecked()) {
                 checkIdsStr += check.getQuestionId() + "-";
                 checkCnt++;
             }
         }
-        checkIdsStr = replaceLastSeperator(checkIdsStr);
+        checkIdsStr = replaceLastSeparator(checkIdsStr);
         for (ExamQuestionSelectVo judge : judges) {
             if (judge.getChecked()) {
                 judgeIdsStr += judge.getQuestionId() + "-";
                 judgeCnt++;
             }
         }
-        judgeIdsStr = replaceLastSeperator(judgeIdsStr);
+        judgeIdsStr = replaceLastSeparator(judgeIdsStr);
         exam.setExamQuestionIds(radioIdsStr + "-" + checkIdsStr + "-" + judgeIdsStr);
         // 设置各个题目的id
         exam.setExamQuestionIdsRadio(radioIdsStr);
@@ -463,11 +463,15 @@ public class ExamServiceImpl implements ExamService {
         // Todo:开始考试判分啦~~~
         // 1.首先获取考试对象和选项数组
         ExamDetailVo examDetailVo = getExamDetail(examId);
+        Exam exam = examDetailVo.getExam();
         // 2.然后获取该考试下所有的题目信息
         List<String> questionIds = new ArrayList<>();
-        questionIds.addAll(Arrays.asList(examDetailVo.getRadioIds()));
-        questionIds.addAll(Arrays.asList(examDetailVo.getCheckIds()));
-        questionIds.addAll(Arrays.asList(examDetailVo.getJudgeIds()));
+        List<String> radioIdList = Arrays.asList(examDetailVo.getRadioIds());
+        List<String> checkIdList = Arrays.asList(examDetailVo.getCheckIds());
+        List<String> judgeIdList = Arrays.asList(examDetailVo.getJudgeIds());
+        questionIds.addAll(radioIdList);
+        questionIds.addAll(checkIdList);
+        questionIds.addAll(judgeIdList);
         List<Question> questionList = questionRepository.findAllById(questionIds);
         Map<String, Question> questionMap = new HashMap<>();
         for (Question question : questionList) {
@@ -489,10 +493,10 @@ public class ExamServiceImpl implements ExamService {
             Collections.sort(questionUserOptionIdList);
             String userStr = listConcat(questionUserOptionIdList);
             // 判断questionAnswerOptionIds和answersMap里面的答案是否相等
-            if (answerStr.equals(userStr)){
+            if (answerStr.equals(userStr)) {
                 // 说明题目作答正确
                 judgeMap.put(questionId, true);
-            }else {
+            } else {
                 // 说明题目作答错误
                 judgeMap.put(questionId, false);
             }
@@ -511,7 +515,7 @@ public class ExamServiceImpl implements ExamService {
      */
     private String replaceLastSeparator(String str) {
         String lastChar = str.substring(str.length() - 1);
-        if ("-".equals(lastChar)) {
+        if ("-".equals(lastChar) || "_".equals(lastChar)) {
             str = StrUtil.sub(str, 0, str.length() - 1);
         }
         return str;
