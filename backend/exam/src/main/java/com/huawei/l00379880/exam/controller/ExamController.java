@@ -188,6 +188,7 @@ public class ExamController {
             ExamRecord examRecord = examService.judge(userId, examId, answersMap);
             resultVO = new ResultVO<>(0, "考卷提交成功", examRecord);
         } catch (Exception e) {
+            e.printStackTrace();
             resultVO = new ResultVO<>(-1, "考卷提交失败", null);
         }
         return resultVO;
