@@ -17,6 +17,7 @@ import com.huawei.l00379880.exam.repository.*;
 import com.huawei.l00379880.exam.service.ExamService;
 import com.huawei.l00379880.exam.vo.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,8 @@ public class ExamServiceImpl implements ExamService {
 
     private final ExamRepository examRepository;
 
+    private final ExamRecordRepository examRecordRepository;
+
     private final QuestionRepository questionRepository;
 
     private final UserRepository userRepository;
@@ -43,7 +46,7 @@ public class ExamServiceImpl implements ExamService {
 
     private final QuestionOptionRepository questionOptionRepository;
 
-    public ExamServiceImpl(QuestionRepository questionRepository, UserRepository userRepository, QuestionLevelRepository questionLevelRepository, QuestionTypeRepository questionTypeRepository, QuestionCategoryRepository questionCategoryRepository, QuestionOptionRepository questionOptionRepository, ExamRepository examRepository) {
+    public ExamServiceImpl(QuestionRepository questionRepository, UserRepository userRepository, QuestionLevelRepository questionLevelRepository, QuestionTypeRepository questionTypeRepository, QuestionCategoryRepository questionCategoryRepository, QuestionOptionRepository questionOptionRepository, ExamRepository examRepository, ExamRecordRepository examRecordRepository) {
         this.questionRepository = questionRepository;
         this.userRepository = userRepository;
         this.questionLevelRepository = questionLevelRepository;
@@ -51,6 +54,7 @@ public class ExamServiceImpl implements ExamService {
         this.questionCategoryRepository = questionCategoryRepository;
         this.questionOptionRepository = questionOptionRepository;
         this.examRepository = examRepository;
+        this.examRecordRepository = examRecordRepository;
     }
 
     @Override
@@ -490,6 +494,8 @@ public class ExamServiceImpl implements ExamService {
         // 考生作答地每个题目的选项(题目和题目之间用$分隔，题目有多个选项地话用-分隔,题目和选项之间用_分隔),用于查看考试详情
         // 例子：题目1的id_作答选项1-作答选项2&题目2的id_作答选项1&题目3_作答选项1-作答选项2-作答选项3
         StringBuilder answerOptionIdsSb = new StringBuilder();
+        // 用户此次考试的总分
+        int totalScore = 0;
         for (String questionId : questionIdsAnswer) {
             // 获取用户作答地这个题的答案信息
             Question question = questionMap.get(questionId);
@@ -502,7 +508,6 @@ public class ExamServiceImpl implements ExamService {
             List<String> questionUserOptionIdList = answersMap.get(questionId);
             Collections.sort(questionUserOptionIdList);
             String userStr = listConcat(questionUserOptionIdList);
-            answerOptionIdsSb.append(questionId + "_" + userStr + "$");
             // 判断questionAnswerOptionIds和answersMap里面的答案是否相等
             if (answerStr.equals(userStr)) {
                 // 说明题目作答正确,下面根据题型给分
@@ -516,9 +521,14 @@ public class ExamServiceImpl implements ExamService {
                 if (judgeIdList.contains(questionId)) {
                     score = judgeScore;
                 }
+                // 累计本次考试得分
+                totalScore += score;
+                // True代表题目答对
+                answerOptionIdsSb.append(questionId + "@True_" + userStr + "$");
                 judgeMap.put(questionId, score);
             } else {
-                // 说明题目作答错误,直接判零分
+                // 说明题目作答错误,直接判零分,False代表题目答错
+                answerOptionIdsSb.append(questionId + "@False_" + userStr + "$");
                 judgeMap.put(questionId, 0);
             }
         }
@@ -530,7 +540,9 @@ public class ExamServiceImpl implements ExamService {
         examRecord.setAnswerOptionIds(replaceLastSeparator(answerOptionIdsSb.toString()));
         examRecord.setExamJoinerId(userId);
         examRecord.setExamJoinDate(new Date());
-        return null;
+        examRecord.setExamJoinScore(totalScore);
+        examRecordRepository.save(examRecord);
+        return examRecord;
     }
 
     /**

@@ -180,10 +180,16 @@ public class ExamController {
     @PostMapping("/finish/{examId}")
     @ApiOperation("根据用户提交的答案对指定id的考试判分")
     ResultVO<ExamRecord> finishExam(@PathVariable String examId, @RequestBody HashMap<String, List<String>> answersMap, HttpServletRequest request) {
-        // 拦截器里设置上的用户id
-        String userId = (String) request.getAttribute("user_id");
-        // Todo:下面根据用户提交的信息进行判分,返回用户的得分情况
-        ExamRecord examRecord = examService.judge(userId, examId, answersMap);
-        return null;
+        ResultVO<ExamRecord> resultVO;
+        try {
+            // 拦截器里设置上的用户id
+            String userId = (String) request.getAttribute("user_id");
+            // Todo:下面根据用户提交的信息进行判分,返回用户的得分情况
+            ExamRecord examRecord = examService.judge(userId, examId, answersMap);
+            resultVO = new ResultVO<>(0, "考卷提交成功", examRecord);
+        } catch (Exception e) {
+            resultVO = new ResultVO<>(-1, "考卷提交失败", null);
+        }
+        return resultVO;
     }
 }
