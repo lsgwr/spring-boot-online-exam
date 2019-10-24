@@ -2,14 +2,17 @@
   <div>
     <a-card :bordered="false">
       <a-row>
-        <a-col :sm="8" :xs="24">
-          <head-info title="我的待办" content="8个任务" :bordered="true"/>
+        <a-col :sm="6" :xs="24">
+          <head-info title="已参加考试" content="8" :bordered="true"/>
         </a-col>
-        <a-col :sm="8" :xs="24">
-          <head-info title="本周任务平均处理时间" content="32分钟" :bordered="true"/>
+        <a-col :sm="6" :xs="24">
+          <head-info title="平均分" content="32" :bordered="true"/>
         </a-col>
-        <a-col :sm="8" :xs="24">
-          <head-info title="本周完成任务数" content="24个"/>
+        <a-col :sm="6" :xs="24">
+          <head-info title="最高分" content="76"/>
+        </a-col>
+        <a-col :sm="6" :xs="24">
+          <head-info title="最低分" content="23"/>
         </a-col>
       </a-row>
     </a-card>
@@ -20,11 +23,6 @@
       title="标准列表">
 
       <div slot="extra">
-        <a-radio-group>
-          <a-radio-button>全部</a-radio-button>
-          <a-radio-button>进行中</a-radio-button>
-          <a-radio-button>等待中</a-radio-button>
-        </a-radio-group>
         <a-input-search style="margin-left: 16px; width: 272px;"/>
       </div>
 
