@@ -191,7 +191,8 @@ export default {
       finishExam(this.$route.params.id, this._mapToJson(this.answersMap))
         .then(res => {
           if (res.code === 0) {
-            // Todo:考试交卷，后端判分完成，然后跳转到我的考试界面
+            // 考试交卷，后端判分完成，然后跳转到我的考试界面
+            this.$router.push('/list/exam-record-list')
             return res.data
           } else {
             this.$notification.error({

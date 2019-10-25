@@ -25,37 +25,27 @@
       <div slot="extra">
         <a-input-search style="margin-left: 16px; width: 272px;"/>
       </div>
-      <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
+      <a-list size="large">
         <a-list-item :key="index" v-for="(item, index) in data">
-          <a-list-item-meta :description="item.description">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
-            <a slot="title">{{ item.title }}</a>
+          <a-list-item-meta :description="item.exam.examDescription">
+            <a-avatar slot="avatar" size="large" shape="square" :src="item.exam.examAvatar"/>
+            <a slot="title">{{ item.exam.examName }}</a>
           </a-list-item-meta>
           <div slot="actions">
-            <a>编辑</a>
-          </div>
-          <div slot="actions">
-            <a-dropdown>
-              <a-menu slot="overlay">
-                <a-menu-item><a>编辑</a></a-menu-item>
-                <a-menu-item><a>删除</a></a-menu-item>
-              </a-menu>
-              <a>更多
-                <a-icon type="down"/>
-              </a>
-            </a-dropdown>
+            <a>查看考试详情</a>
           </div>
           <div class="list-content">
             <div class="list-content-item">
               <span>Owner</span>
-              <p>{{ item.owner }}</p>
+              <p>{{ item.user.userUsername }}</p>
             </div>
             <div class="list-content-item">
               <span>开始时间</span>
-              <p>{{ item.startAt }}</p>
+              <p>{{ item.examRecord.examJoinDate }}</p>
             </div>
             <div class="list-content-item">
-              <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status" style="width: 180px"/>
+              <span>分数</span>
+              <p>{{ item.examRecord.examJoinScore }}</p>
             </div>
           </div>
         </a-list-item>
@@ -67,7 +57,6 @@
 
 <script>
 import HeadInfo from '../../components/tools/HeadInfo'
-// Todo:待后端实现此功能
 import { getExamRecordList } from '../../api/exam'
 
 export default {
