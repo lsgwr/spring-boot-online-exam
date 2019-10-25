@@ -7,6 +7,7 @@
 package com.huawei.l00379880.exam.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -38,6 +39,7 @@ public class ExamRecord {
     /**
      * 参加考试的日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date examJoinDate;
     /**
      * 考试耗时(秒)

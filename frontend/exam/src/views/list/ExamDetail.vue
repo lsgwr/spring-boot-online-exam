@@ -192,6 +192,10 @@ export default {
         .then(res => {
           if (res.code === 0) {
             // 考试交卷，后端判分完成，然后跳转到我的考试界面
+            this.$notification.success({
+              message: '考卷提交成功！',
+              description: '即将跳转到考试记录界面....'
+            })
             this.$router.push('/list/exam-record-list')
             return res.data
           } else {

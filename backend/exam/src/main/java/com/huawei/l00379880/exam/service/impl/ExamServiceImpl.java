@@ -8,10 +8,7 @@ package com.huawei.l00379880.exam.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.huawei.l00379880.exam.entity.Exam;
-import com.huawei.l00379880.exam.entity.ExamRecord;
-import com.huawei.l00379880.exam.entity.Question;
-import com.huawei.l00379880.exam.entity.QuestionOption;
+import com.huawei.l00379880.exam.entity.*;
 import com.huawei.l00379880.exam.enums.QuestionEnum;
 import com.huawei.l00379880.exam.repository.*;
 import com.huawei.l00379880.exam.service.ExamService;
@@ -553,6 +550,8 @@ public class ExamServiceImpl implements ExamService {
             ExamRecordVo examRecordVo = new ExamRecordVo();
             Exam exam = examRepository.findById(examRecord.getExamId()).orElse(null);
             examRecordVo.setExam(exam);
+            User user = userRepository.findById(userId).orElse(null);
+            examRecordVo.setUser(user);
             examRecordVo.setExamRecord(examRecord);
             examRecordVoList.add(examRecordVo);
         }
