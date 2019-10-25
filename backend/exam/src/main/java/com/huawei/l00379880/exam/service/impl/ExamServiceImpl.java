@@ -17,7 +17,6 @@ import com.huawei.l00379880.exam.repository.*;
 import com.huawei.l00379880.exam.service.ExamService;
 import com.huawei.l00379880.exam.vo.*;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -532,7 +531,7 @@ public class ExamServiceImpl implements ExamService {
                 judgeMap.put(questionId, 0);
             }
         }
-        // Todo:4.计算得分，记录本次考试结果，存到ExamRecord中
+        // 4.计算得分，记录本次考试结果，存到ExamRecord中
         ExamRecord examRecord = new ExamRecord();
         examRecord.setExamRecordId(IdUtil.simpleUUID());
         examRecord.setExamId(examId);
@@ -543,6 +542,21 @@ public class ExamServiceImpl implements ExamService {
         examRecord.setExamJoinScore(totalScore);
         examRecordRepository.save(examRecord);
         return examRecord;
+    }
+
+    @Override
+    public List<ExamRecordVo> getExamRecordList(String userId) {
+        // Todo:获取指定用户下的考试记录列表
+        List<ExamRecord> examRecordList = examRecordRepository.findByExamJoinerId(userId);
+        List<ExamRecordVo> examRecordVoList = new ArrayList<>();
+        for (ExamRecord examRecord : examRecordList) {
+            ExamRecordVo examRecordVo = new ExamRecordVo();
+            Exam exam = examRepository.findById(examRecord.getExamId()).orElse(null);
+            examRecordVo.setExam(exam);
+            examRecordVo.setExamRecord(examRecord);
+            examRecordVoList.add(examRecordVo);
+        }
+        return examRecordVoList;
     }
 
     /**

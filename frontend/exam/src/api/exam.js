@@ -108,3 +108,13 @@ export function finishExam (examId, answersMap) {
     data: answersMap
   })
 }
+
+export function getExamRecordList () {
+  return axios({
+    url: api.ExamRecordList,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}

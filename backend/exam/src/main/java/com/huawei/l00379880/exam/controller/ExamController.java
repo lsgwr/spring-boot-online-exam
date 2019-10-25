@@ -88,7 +88,7 @@ public class ExamController {
     @GetMapping("/question/detail/{id}")
     @ApiOperation("根据问题的id获取问题的详细信息")
     ResultVO<QuestionDetailVo> getQuestionDetail(@PathVariable String id) {
-        // Todo: 根据问题id获取问题的详细信息
+        //  根据问题id获取问题的详细信息
         System.out.println(id);
         ResultVO<QuestionDetailVo> resultVO;
         try {
@@ -165,7 +165,7 @@ public class ExamController {
     @GetMapping("/detail/{id}")
     @ApiOperation("根据考试的id，获取考试详情")
     ResultVO<ExamDetailVo> getExamDetail(@PathVariable String id) {
-        // Todo:根据id获取考试详情
+        // 根据id获取考试详情
         ResultVO<ExamDetailVo> resultVO;
         try {
             ExamDetailVo examDetail = examService.getExamDetail(id);
@@ -184,12 +184,29 @@ public class ExamController {
         try {
             // 拦截器里设置上的用户id
             String userId = (String) request.getAttribute("user_id");
-            // Todo:下面根据用户提交的信息进行判分,返回用户的得分情况
+            // 下面根据用户提交的信息进行判分,返回用户的得分情况
             ExamRecord examRecord = examService.judge(userId, examId, answersMap);
             resultVO = new ResultVO<>(0, "考卷提交成功", examRecord);
         } catch (Exception e) {
             e.printStackTrace();
             resultVO = new ResultVO<>(-1, "考卷提交失败", null);
+        }
+        return resultVO;
+    }
+
+    @GetMapping("/record/list")
+    @ApiOperation("获取当前用户的考试记录")
+    ResultVO<List<ExamRecordVo>> getExamRecordList(HttpServletRequest request){
+        ResultVO<List<ExamRecordVo>> resultVO;
+        try {
+            // 拦截器里设置上的用户id
+            String userId = (String) request.getAttribute("user_id");
+            // 下面根据用户账号拿到他(她所有的考试信息)，注意要用VO封装下
+            List<ExamRecordVo> examRecordVoList = examService.getExamRecordList(userId);
+            resultVO = new ResultVO<>(0, "获取考试记录成功", examRecordVoList);
+        }catch (Exception e){
+            e.printStackTrace();
+            resultVO = new ResultVO<>(-1, "获取考试记录失败", null);
         }
         return resultVO;
     }

@@ -12,7 +12,6 @@ import com.huawei.l00379880.exam.vo.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 
 public interface ExamService {
     /**
@@ -102,4 +101,12 @@ public interface ExamService {
      * @return 本次考试记录
      */
     ExamRecord judge(String userId, String examId, HashMap<String, List<String>> answersMap);
+
+    /**
+     * 根据用户id获取此用户的所有考试信息
+     *
+     * @param userId 用户id
+     * @return 该用户的所有考试记录
+     */
+    List<ExamRecordVo> getExamRecordList(String userId);
 }
