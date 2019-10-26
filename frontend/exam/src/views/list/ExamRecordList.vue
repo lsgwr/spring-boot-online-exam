@@ -73,7 +73,6 @@ export default {
   mounted () {
     // 从后端数据获取考试列表，适配前端卡片
     getExamRecordList().then(res => {
-      console.log(res)
       if (res.code === 0) {
         this.data = res.data
       } else {
