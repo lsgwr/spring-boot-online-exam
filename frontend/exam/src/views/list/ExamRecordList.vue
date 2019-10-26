@@ -1,22 +1,5 @@
 <template>
   <div>
-    <a-card :bordered="false">
-      <a-row>
-        <a-col :sm="6" :xs="24">
-          <head-info title="已参加考试" content="8" :bordered="true"/>
-        </a-col>
-        <a-col :sm="6" :xs="24">
-          <head-info title="平均分" content="32" :bordered="true"/>
-        </a-col>
-        <a-col :sm="6" :xs="24">
-          <head-info title="最高分" content="76"/>
-        </a-col>
-        <a-col :sm="6" :xs="24">
-          <head-info title="最低分" content="23"/>
-        </a-col>
-      </a-row>
-    </a-card>
-
     <a-card
       style="margin-top: 24px"
       :bordered="false"
