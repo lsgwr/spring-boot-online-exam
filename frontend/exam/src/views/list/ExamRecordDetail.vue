@@ -80,7 +80,7 @@ import UserMenu from '../../components/tools/UserMenu'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'ExamDetail',
+  name: 'ExamRecordDetail',
   components: {
     UserMenu
   },

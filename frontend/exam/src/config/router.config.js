@@ -400,6 +400,9 @@ export const constantRouterMap = [
   {
     path: '/exam/:id',
     component: () => import(/* webpackChunkName: "fail" */ '../views/list/ExamDetail')
+  },
+  {
+    path: '/exam/record/:id',
+    component: () => import(/* webpackChunkName: "fail" */ '../views/list/ExamRecordDetail')
   }
-
 ]

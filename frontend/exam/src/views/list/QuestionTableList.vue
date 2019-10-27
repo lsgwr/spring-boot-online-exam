@@ -194,7 +194,7 @@ export default {
             } else {
               this.$notification.error({
                 message: '获取问题列表失败',
-                description: res.data.msg
+                description: res.msg
               })
             }
           })
