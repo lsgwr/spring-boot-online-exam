@@ -29,6 +29,7 @@ const api = {
   QuestionDetail: '/exam/question/detail/',
   // 交卷
   FinishExam: '/exam/finish/',
-  ExamRecordList: '/exam/record/list'
+  ExamRecordList: '/exam/record/list',
+  recordDetail: '/exam/record/detail/'
 }
 export default api

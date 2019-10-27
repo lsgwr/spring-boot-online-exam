@@ -109,4 +109,12 @@ public interface ExamService {
      * @return 该用户的所有考试记录
      */
     List<ExamRecordVo> getExamRecordList(String userId);
+
+    /**
+     * 获取指定某次考试记录的详情
+     *
+     * @param recordId 考试记录的id
+     * @return 考试详情
+     */
+    RecordDetailVo getRecordDetail(String recordId);
 }

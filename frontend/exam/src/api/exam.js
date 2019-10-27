@@ -78,9 +78,18 @@ export function examCreate (parameter) {
 }
 
 export function getExamDetail (examId) {
-  console.log(examId)
   return axios({
     url: api.ExamDetail + examId,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+export function getExamRecordDetail (recordId) {
+  return axios({
+    url: api.recordDetail + recordId,
     method: 'get',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'

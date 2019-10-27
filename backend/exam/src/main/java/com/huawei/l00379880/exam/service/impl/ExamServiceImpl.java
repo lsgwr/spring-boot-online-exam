@@ -452,6 +452,7 @@ public class ExamServiceImpl implements ExamService {
         Exam exam = examRepository.findById(id).orElse(null);
         ExamDetailVo examDetailVo = new ExamDetailVo();
         examDetailVo.setExam(exam);
+        assert exam != null;
         examDetailVo.setRadioIds(exam.getExamQuestionIdsRadio().split("-"));
         examDetailVo.setCheckIds(exam.getExamQuestionIdsCheck().split("-"));
         examDetailVo.setJudgeIds(exam.getExamQuestionIdsJudge().split("-"));
@@ -543,7 +544,7 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public List<ExamRecordVo> getExamRecordList(String userId) {
-        // Todo:获取指定用户下的考试记录列表
+        // 获取指定用户下的考试记录列表
         List<ExamRecord> examRecordList = examRecordRepository.findByExamJoinerId(userId);
         List<ExamRecordVo> examRecordVoList = new ArrayList<>();
         for (ExamRecord examRecord : examRecordList) {
@@ -556,6 +557,51 @@ public class ExamServiceImpl implements ExamService {
             examRecordVoList.add(examRecordVo);
         }
         return examRecordVoList;
+    }
+
+    @Override
+    public RecordDetailVo getRecordDetail(String recordId) {
+        // Todo:获取考试详情的封装对象
+        ExamRecord record = examRecordRepository.findById(recordId).orElse(null);
+        RecordDetailVo recordDetailVo = new RecordDetailVo();
+        recordDetailVo.setExamRecord(record);
+        // 用户的答案，需要解析
+        HashMap<String, List<String>> answersMap = new HashMap<>();
+        HashMap<String, String> resultsMap = new HashMap<>();
+        assert record != null;
+        String answersStr = record.getAnswerOptionIds();
+        // $分隔题目,因为$在正则中有特殊用途(行尾)，所以需要括起来
+        String[] questionArr = answersStr.split("[$]");
+        for (String questionStr : questionArr) {
+            System.out.println(questionStr);
+            // 区分开题目标题和选项
+            String[] questionTitleResultAndOption = questionStr.split("_");
+            String[] questionTitleAndResult = questionTitleResultAndOption[0].split("@");
+            String[] questionOptions = questionTitleResultAndOption[1].split("-");
+            // 题目：答案选项
+            answersMap.put(questionTitleAndResult[0], Arrays.asList(questionOptions));
+            // 题目：True / False
+            resultsMap.put(questionTitleAndResult[0], questionTitleAndResult[1]);
+        }
+        recordDetailVo.setAnswersMap(answersMap);
+        recordDetailVo.setResultsMap(resultsMap);
+        // 下面再计算正确答案的map
+        ExamDetailVo examDetailVo = getExamDetail(record.getExamId());
+        List<String> questionIdList = new ArrayList<>();
+        questionIdList.addAll(Arrays.asList(examDetailVo.getRadioIds()));
+        questionIdList.addAll(Arrays.asList(examDetailVo.getCheckIds()));
+        questionIdList.addAll(Arrays.asList(examDetailVo.getJudgeIds()));
+        // 获取所有的问题对象
+        List<Question> questionList = questionRepository.findAllById(questionIdList);
+        HashMap<String, List<String>> answersRightMap = new HashMap<>();
+        for (Question question : questionList) {
+            // 记得去掉最后可能出现的特殊字符
+            String questionAnswerOptionIdsStr = replaceLastSeparator(question.getQuestionAnswerOptionIds());
+            String[] questionAnswerOptionIds = questionAnswerOptionIdsStr.split("-");
+            answersRightMap.put(question.getQuestionId(), Arrays.asList(questionAnswerOptionIds));
+        }
+        recordDetailVo.setAnswersRightMap(answersRightMap);
+        return recordDetailVo;
     }
 
     /**

@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { getExamDetail, getQuestionDetail, finishExam } from '../../api/exam'
+import { getExamDetail, getQuestionDetail, getExamRecordDetail, finishExam } from '../../api/exam'
 import UserMenu from '../../components/tools/UserMenu'
 import { mapGetters } from 'vuex'
 
@@ -88,6 +88,8 @@ export default {
     return {
       // 考试详情对象
       examDetail: {},
+      // 考试记录详情对象
+      recordDetail: {},
       // 用户做过的问题都放到这个数组中，键为问题id, 值为currentQuestion(其属性answers属性用于存放答案选项地id或ids),，用于存放用户勾选的答案
       answersMap: {},
       // 当前用户的问题
@@ -117,6 +119,20 @@ export default {
         } else {
           this.$notification.error({
             message: '获取考试详情失败',
+            description: res.msg
+          })
+        }
+      })
+    // Todo: 查看考试记录详情，渲染到前端界面
+    getExamRecordDetail(this.$route.params.record_id)
+      .then(res => {
+        if (res.code === 0) {
+          // 赋值考试对象
+          that.recordDetail = res.data
+          return res.data
+        } else {
+          this.$notification.error({
+            message: '获取考试记录详情失败',
             description: res.msg
           })
         }

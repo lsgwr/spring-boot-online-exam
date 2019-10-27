@@ -170,7 +170,6 @@ public class ExamController {
         try {
             ExamDetailVo examDetail = examService.getExamDetail(id);
             resultVO = new ResultVO<>(0, "获取考试详情成功", examDetail);
-            System.out.println(id);
         } catch (Exception e) {
             resultVO = new ResultVO<>(-1, "获取考试详情失败", null);
         }
@@ -196,7 +195,7 @@ public class ExamController {
 
     @GetMapping("/record/list")
     @ApiOperation("获取当前用户的考试记录")
-    ResultVO<List<ExamRecordVo>> getExamRecordList(HttpServletRequest request){
+    ResultVO<List<ExamRecordVo>> getExamRecordList(HttpServletRequest request) {
         ResultVO<List<ExamRecordVo>> resultVO;
         try {
             // 拦截器里设置上的用户id
@@ -204,9 +203,23 @@ public class ExamController {
             // 下面根据用户账号拿到他(她所有的考试信息)，注意要用VO封装下
             List<ExamRecordVo> examRecordVoList = examService.getExamRecordList(userId);
             resultVO = new ResultVO<>(0, "获取考试记录成功", examRecordVoList);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             resultVO = new ResultVO<>(-1, "获取考试记录失败", null);
+        }
+        return resultVO;
+    }
+
+    @GetMapping("/record/detail/{recordId}")
+    @ApiOperation("根据考试记录id获取考试记录详情")
+    ResultVO<RecordDetailVo> getExamRecordDetail(@PathVariable String recordId) {
+        ResultVO<RecordDetailVo> resultVO;
+        try {
+            RecordDetailVo recordDetailVo = examService.getRecordDetail(recordId);
+            resultVO = new ResultVO<>(0, "获取考试记录详情成功", recordDetailVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultVO = new ResultVO<>(-1, "获取考试记录详情失败", null);
         }
         return resultVO;
     }
