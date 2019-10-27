@@ -67,12 +67,32 @@
               </a-radio>
             </a-radio-group>
 
+            <!-- 题目出错的时候才显示这块 -->
+            <div v-if="!questionRight && currentQuestion!=='' && (currentQuestion.type === '单选题' || currentQuestion.type === '判断题')">
+              <span style="color: red;"><br/>正确答案是：<br/></span>
+              <a-radio-group v-model="radioRightValue">
+                <a-radio v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
+                  {{ option.questionOptionContent }}
+                </a-radio>
+              </a-radio-group>
+            </div>
+
             <!-- 多选题 -->
             <a-checkbox-group v-model="checkValues" v-if="currentQuestion.type === '多选题'">
               <a-checkbox v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-checkbox>
             </a-checkbox-group>
+
+            <!-- 题目出错的时候才显示这块 -->
+            <div v-if="!questionRight && currentQuestion!=='' && currentQuestion.type === '多选题'">
+              <span style="color: red;"><br/>正确答案是：<br/></span>
+              <a-checkbox-group v-model="checkRightValues">
+                <a-checkbox v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
+                  {{ option.questionOptionContent }}
+                </a-checkbox>
+              </a-checkbox-group>
+            </div>
           </div>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">
@@ -192,7 +212,9 @@ export default {
       const that = this
       // 清空问题绑定的值
       this.radioValue = ''
+      this.radioRightValue = ''
       this.checkValues = []
+      this.checkRightValues = []
       getQuestionDetail(questionId)
         .then(res => {
           if (res.code === 0) {
@@ -203,9 +225,11 @@ export default {
               // 说明之前做过这道题了
               if (that.currentQuestion.type === '单选题' || that.currentQuestion.type === '判断题') {
                 that.radioValue = that.answersMap.get(that.currentQuestion.id)[0]
+                that.radioRightValue = that.answersRightMap.get(that.currentQuestion.id)[0]
               } else if (that.currentQuestion.type === '多选题') {
                 // 数组是引用类型，因此需要进行拷贝，千万不要直接赋值
                 Object.assign(that.checkValues, that.answersMap.get(that.currentQuestion.id))
+                Object.assign(that.checkRightValues, that.answersRightMap.get(that.currentQuestion.id))
               }
             }
             return res.data
