@@ -8,8 +8,10 @@
         <span style="font-size:15px;">{{ examDetail.exam.examDescription }} </span>
       </span>
       <span style="float: right;">
-        <span style="margin-right: 60px; font-size: 20px" v-if="examDetail.exam">考试限时：{{ examDetail.exam.examTimeLimit }}分钟 这里是倒计时</span>
-        <a-button type="danger" ghost style="margin-right: 60px;" @click="finishExam()">交卷</a-button>
+        <span style="margin-right: 40px; font-size: 20px" v-if="recordDetail.examRecord">
+          考试得分：<span style="color: red">{{ recordDetail.examRecord.examJoinScore }}</span>&nbsp;分&nbsp;
+          <span style="font-size:15px;">参加考试时间：{{ recordDetail.examRecord.examJoinDate }}</span>
+        </span>
         <a-avatar class="avatar" size="small" :src="avatar()"/>
         <span style="margin-left: 12px">{{ nickname() }}</span>
       </span>
@@ -75,7 +77,7 @@
 </template>
 
 <script>
-import { getExamDetail, getQuestionDetail, getExamRecordDetail, finishExam } from '../../api/exam'
+import { getExamDetail, getQuestionDetail, getExamRecordDetail } from '../../api/exam'
 import UserMenu from '../../components/tools/UserMenu'
 import { mapGetters } from 'vuex'
 
@@ -127,6 +129,7 @@ export default {
     getExamRecordDetail(this.$route.params.record_id)
       .then(res => {
         if (res.code === 0) {
+          console.log(res.data)
           // 赋值考试对象
           that.recordDetail = res.data
           return res.data
@@ -201,28 +204,6 @@ export default {
      */
     _mapToJson (map) {
       return JSON.stringify(this._strMapToObj(map))
-    },
-    /**
-     * 结束考试并交卷
-     */
-    finishExam () {
-      // Todo:向后端提交作答信息数组answersMap
-      finishExam(this.$route.params.id, this._mapToJson(this.answersMap))
-        .then(res => {
-          if (res.code === 0) {
-            // 考试交卷，后端判分完成，然后跳转到我的考试界面
-            this.$notification.success({
-              message: '考卷提交成功！'
-            })
-            this.$router.push('/list/exam-record-list')
-            return res.data
-          } else {
-            this.$notification.error({
-              message: '交卷失败！',
-              description: res.msg
-            })
-          }
-        })
     }
   }
 }
