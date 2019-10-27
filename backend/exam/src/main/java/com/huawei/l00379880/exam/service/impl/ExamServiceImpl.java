@@ -561,7 +561,7 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public RecordDetailVo getRecordDetail(String recordId) {
-        // Todo:获取考试详情的封装对象
+        // 获取考试详情的封装对象
         ExamRecord record = examRecordRepository.findById(recordId).orElse(null);
         RecordDetailVo recordDetailVo = new RecordDetailVo();
         recordDetailVo.setExamRecord(record);

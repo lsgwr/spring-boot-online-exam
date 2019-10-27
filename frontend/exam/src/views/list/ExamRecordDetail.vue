@@ -53,8 +53,12 @@
       <a-layout :style="{ marginLeft: '200px' }">
         <a-layout-content :style="{ margin: '24px 16px 0',height: '84vh', overflow: 'initial' }">
           <div :style="{ padding: '24px', background: '#fff',height: '84vh'}">
-            <span v-show="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎参加考试，请点击左侧题目编号开始答题</span>
-            <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
+            <span v-if="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎查看本次考试情况，点击左侧题目编号可以查看答题详情</span>
+            <span v-if="currentQuestion !== ''">
+              <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }} &nbsp;
+              <strong style="color: green;" v-if="questionRight">本题您答对啦！</strong>
+              <strong style="color: red;" v-if="!questionRight">本题您答错啦！</strong>
+            </span>
             <br><br>
             <!-- 单选题和判断题 --> <!-- key不重复只需要在一个for循环中保证即可 -->
             <a-radio-group @change="onRadioChange" v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
@@ -113,6 +117,14 @@ export default {
         lineHeight: '30px',
         marginLeft: '0px'
       }
+    }
+  },
+  computed: {
+    /**
+     * 当前题目用户是否作答正确
+     * */
+    questionRight () {
+      return this.resultsMap !== '' && this.resultsMap.get(this.currentQuestion.id) === 'True'
     }
   },
   mounted () {
