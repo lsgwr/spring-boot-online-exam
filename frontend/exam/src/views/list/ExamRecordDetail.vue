@@ -107,8 +107,8 @@ export default {
   mounted () {
     this.answersMap = new Map()
     const that = this
-    // 从后端获取考试的详细信息，渲染到考试详情里
-    getExamDetail(this.$route.params.id)
+    // 从后端获取考试的详细信息，渲染到考试详情里,需要加个延时，要不拿不到参数
+    getExamDetail(that.getQueryVariable('examId'))
       .then(res => {
         if (res.code === 0) {
           // 赋值考试对象
@@ -125,6 +125,18 @@ export default {
   methods: {
     // 从全局变量中获取用户昵称和头像,
     ...mapGetters(['nickname', 'avatar']),
+    getQueryVariable (variable) {
+      console.log(variable)
+      const query = window.location.search.substring(1)
+      const vars = query.split('&')
+      for (let i = 0; i < vars.length; i++) {
+        const pair = vars[i].split('=')
+        if (pair[0] === variable) {
+          return pair[1]
+        }
+      }
+      return false
+    },
     getQuestionDetail (questionId) {
       // 问题切换时从后端拿到问题详情，渲染到前端content中
       const that = this

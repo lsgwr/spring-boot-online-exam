@@ -78,6 +78,7 @@ export function examCreate (parameter) {
 }
 
 export function getExamDetail (examId) {
+  console.log(examId)
   return axios({
     url: api.ExamDetail + examId,
     method: 'get',
