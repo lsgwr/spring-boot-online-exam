@@ -402,7 +402,7 @@ export const constantRouterMap = [
     component: () => import(/* webpackChunkName: "fail" */ '../views/list/ExamDetail')
   },
   {
-    path: '/exam/record',
+    path: '/exam/record/:exam_id/:record_id',
     component: () => import(/* webpackChunkName: "fail" */ '../views/list/ExamRecordDetail')
   }
 ]
