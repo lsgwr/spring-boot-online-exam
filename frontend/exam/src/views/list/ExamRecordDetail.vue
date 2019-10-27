@@ -27,21 +27,24 @@
           <a-sub-menu key="question_radio">
             <span slot="title" v-if="examDetail.exam"><a-icon type="check-circle" theme="twoTone"/>单选题(每题{{ examDetail.exam.examScoreRadio }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.radioIds" :key="item" @click="getQuestionDetail(item)">
-              <a-icon type="check" v-if="answersMap.get(item)"/>
+              <a-icon type="check" v-if="resultsMap.get(item)==='True'"/>
+              <a-icon type="close" v-if="resultsMap.get(item)==='False'"/>
               题目{{ index + 1 }}
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="question_check">
             <span slot="title" v-if="examDetail.exam"><a-icon type="check-square" theme="twoTone"/>多选题(每题{{ examDetail.exam.examScoreCheck }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.checkIds" :key="item" @click="getQuestionDetail(item)">
-              <a-icon type="check" v-if="answersMap.get(item)"/>
+              <a-icon type="check" v-if="resultsMap.get(item)==='True'"/>
+              <a-icon type="close" v-if="resultsMap.get(item)==='False'"/>
               题目{{ index + 1 }}
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="question_judge">
             <span slot="title" v-if="examDetail.exam"><a-icon type="like" theme="twoTone"/>判断题(每题{{ examDetail.exam.examScoreJudge }}分)</span>
             <a-menu-item v-for="(item, index) in examDetail.judgeIds" :key="item" @click="getQuestionDetail(item)">
-              <a-icon type="check" v-if="answersMap.get(item)"/>
+              <a-icon type="check" v-if="resultsMap.get(item)==='True'"/>
+              <a-icon type="close" v-if="resultsMap.get(item)==='False'"/>
               题目{{ index + 1 }}
             </a-menu-item>
           </a-sub-menu>
@@ -94,6 +97,10 @@ export default {
       recordDetail: {},
       // 用户做过的问题都放到这个数组中，键为问题id, 值为currentQuestion(其属性answers属性用于存放答案选项地id或ids),，用于存放用户勾选的答案
       answersMap: {},
+      // 题目的正确答案
+      answersRightMap: {},
+      // 题目的作答结果(正确或错误)
+      resultsMap: {},
       // 当前用户的问题
       currentQuestion: '',
       // 单选或判断题的绑定值，用于从answersMap中初始化做题状态
@@ -110,6 +117,8 @@ export default {
   },
   mounted () {
     this.answersMap = new Map()
+    this.answersRightMap = new Map()
+    this.resultsMap = new Map()
     const that = this
     // 从后端获取考试的详细信息，渲染到考试详情里,需要加个延时，要不拿不到参数
     getExamDetail(this.$route.params.exam_id)
@@ -132,6 +141,8 @@ export default {
           console.log(res.data)
           // 赋值考试对象
           that.recordDetail = res.data
+          // Todo:赋值用户的作答答案
+          that.objToMap()
           return res.data
         } else {
           this.$notification.error({
@@ -144,6 +155,22 @@ export default {
   methods: {
     // 从全局变量中获取用户昵称和头像,
     ...mapGetters(['nickname', 'avatar']),
+    /**
+     * 把后端传过来的对象Object转换成Map
+     **/
+    objToMap () {
+      for (const item in this.recordDetail.answersMap) {
+        this.answersMap.set(item, this.recordDetail.answersMap[item])
+      }
+
+      for (const item in this.recordDetail.answersRightMap) {
+        this.answersRightMap.set(item, this.recordDetail.answersRightMap[item])
+      }
+
+      for (const item in this.recordDetail.resultsMap) {
+        this.resultsMap.set(item, this.recordDetail.resultsMap[item])
+      }
+    },
     getQuestionDetail (questionId) {
       // 问题切换时从后端拿到问题详情，渲染到前端content中
       const that = this
