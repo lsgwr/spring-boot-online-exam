@@ -61,14 +61,14 @@
             </span>
             <br><br>
             <!-- 单选题和判断题 --> <!-- key不重复只需要在一个for循环中保证即可 -->
-            <a-radio-group @change="onRadioChange" v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
+            <a-radio-group v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
               <a-radio v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-radio>
             </a-radio-group>
 
             <!-- 多选题 -->
-            <a-checkbox-group @change="onCheckChange" v-model="checkValues" v-if="currentQuestion.type === '多选题'">
+            <a-checkbox-group v-model="checkValues" v-if="currentQuestion.type === '多选题'">
               <a-checkbox v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
                 {{ option.questionOptionContent }}
               </a-checkbox>
@@ -109,8 +109,12 @@ export default {
       currentQuestion: '',
       // 单选或判断题的绑定值，用于从answersMap中初始化做题状态
       radioValue: '',
+      // 单选题的正确答案，用于从answersRightMap中初始化做题状态
+      radioRightValue: '',
       // 多选题的绑定值，用于从answersMap中初始化做题状态
       checkValues: [],
+      // 多选题的绑定值，用于从answersRightMap中初始化做题状态
+      checkRightValues: [],
       optionStyle: {
         display: 'block',
         height: '30px',
@@ -146,14 +150,14 @@ export default {
           })
         }
       })
-    // Todo: 查看考试记录详情，渲染到前端界面
+    // 查看考试记录详情，渲染到前端界面
     getExamRecordDetail(this.$route.params.record_id)
       .then(res => {
         if (res.code === 0) {
           console.log(res.data)
           // 赋值考试对象
           that.recordDetail = res.data
-          // Todo:赋值用户的作答答案
+          // 赋值用户的作答答案
           that.objToMap()
           return res.data
         } else {
@@ -212,37 +216,6 @@ export default {
             })
           }
         })
-    },
-    /**
-     * 单选题勾选是触发的变化事件
-     * @param e
-     */
-    onRadioChange (e) {
-      const userOptions = []
-      userOptions.push(e.target.value)
-      // 更新做题者选择的答案
-      this.answersMap.set(this.currentQuestion.id, userOptions)
-    },
-    /**
-     * 多选题触发的变化事件
-     * @param checkedValues
-     */
-    onCheckChange (checkedValues) {
-      // 更新做题者选择的答案
-      this.answersMap.set(this.currentQuestion.id, checkedValues)
-    },
-    _strMapToObj (strMap) {
-      const obj = Object.create(null)
-      for (const [k, v] of strMap) {
-        obj[k] = v
-      }
-      return obj
-    },
-    /**
-     *map转换为json
-     */
-    _mapToJson (map) {
-      return JSON.stringify(this._strMapToObj(map))
     }
   }
 }
