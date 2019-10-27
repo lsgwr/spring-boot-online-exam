@@ -85,7 +85,6 @@ export const asyncRouterMap = [
         redirect: '/account/center',
         name: 'account',
         // 隐藏当前菜单，但是因为是需要的，所以不能删掉
-        hidden: true,
         meta: { title: '个人页', icon: 'user', keepAlive: true, permission: ['user'] },
         children: [
           {
