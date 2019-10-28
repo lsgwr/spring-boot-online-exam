@@ -6,7 +6,7 @@ user:
     # 用户名的默认前缀
     username: user
     # 用户的默认头像
-    avatar: https://i.loli.net/2019/10/19/ndiyj3fzrwxv2co.jpg
+    avatar: http://d.lanrentuku.com/down/png/1904/business_avatar/8_avatar_2754583.png
 
 server:
   port: 8080
