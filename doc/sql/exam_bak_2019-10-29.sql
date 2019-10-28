@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 28/10/2019 22:32:38
+ Date: 28/10/2019 23:35:39
 */
 
 SET NAMES utf8mb4;
@@ -171,9 +171,11 @@ CREATE TABLE `page`  (
 -- Records of page
 -- ----------------------------
 INSERT INTO `page` VALUES (1, 'dashboard', '仪表盘', '1-2-3-4-5');
-INSERT INTO `page` VALUES (5, 'table', '列表页', '1-6-3-4');
-INSERT INTO `page` VALUES (8, 'permission', '权限管理页', '1-3-4-5');
-INSERT INTO `page` VALUES (10, 'user', '个人页', '1-6-3-4-5-7');
+INSERT INTO `page` VALUES (2, 'exam-card', '考试列表', '1-6-3-4');
+INSERT INTO `page` VALUES (3, 'exam-record-list', '考试记录', '1-6-3-4');
+INSERT INTO `page` VALUES (4, 'question-admin', '问题管理', '1-6-3-4');
+INSERT INTO `page` VALUES (5, 'exam-table-list', '考试管理', '1-6-3-4');
+INSERT INTO `page` VALUES (6, 'user', '个人页', '1-6-3-4-5-7');
 
 -- ----------------------------
 -- Table structure for question
@@ -374,9 +376,9 @@ CREATE TABLE `role`  (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES (1, 'admin', '管理员', '拥有教师和学生的所有权限', '1-5-8-10');
-INSERT INTO `role` VALUES (2, 'teacher', '教师', '出题、组试卷、管理学生和试卷', '1-5-8-10');
-INSERT INTO `role` VALUES (3, 'student', '学生', '参与考试，查看分数', '1-5-8-10');
+INSERT INTO `role` VALUES (1, 'admin', '管理员', '拥有教师和学生的所有权限', '1-2-3-4-5-6');
+INSERT INTO `role` VALUES (2, 'teacher', '教师', '出题、组试卷、管理学生和试卷', '1-2-3-4-5-6');
+INSERT INTO `role` VALUES (3, 'student', '学生', '参与考试，查看分数', '1-2-3-6');
 
 -- ----------------------------
 -- Table structure for user
