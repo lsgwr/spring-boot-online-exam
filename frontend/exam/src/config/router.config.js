@@ -41,39 +41,72 @@ export const asyncRouterMap = [
         ]
       },
 
-      // list
       {
-        path: '/list',
-        name: 'list',
+        path: '/question-admin',
+        name: 'question-admin',
+        redirect: '/list/question-table-list',
         component: PageView,
-        redirect: '/list/table-list',
-        meta: { title: '列表页', icon: 'table', permission: ['table'] },
+        hideChildrenInMenu: true,
+        meta: { title: '问题管理', keepAlive: true, icon: bxAnaalyse, permission: ['question-admin'] },
         children: [
           {
-            path: '/list/question-table-list/:pageNo([1-9]\\d*)?',
+            path: '/list/question-table-list',
             name: 'QuestionTableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('../views/list/QuestionTableList'),
-            meta: { title: '问题管理', keepAlive: true, permission: ['table'] }
-          },
-          {
-            path: '/list/exam-record-list',
-            name: 'ExamRecordList',
-            component: () => import('../views/list/ExamRecordList'),
-            meta: { title: '考试记录', keepAlive: true, permission: ['table'] }
-          },
-          {
-            path: '/list/exam-table-list/:pageNo([1-9]\\d*)?',
-            name: 'ExamTableListWrapper',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('../views/list/ExamTableList'),
-            meta: { title: '考试管理', keepAlive: true, permission: ['table'] }
-          },
+            meta: { title: '问题管理', keepAlive: true, permission: ['question-admin'] }
+          }
+        ]
+      },
+
+      {
+        path: '/exam-card',
+        name: 'exam-card',
+        redirect: '/list/exam-card',
+        component: PageView,
+        hideChildrenInMenu: true,
+        meta: { title: '考试列表', keepAlive: true, icon: bxAnaalyse, permission: ['exam-card'] },
+        children: [
           {
             path: '/list/exam-card',
             name: 'ExamCardList',
             component: () => import('../views/list/ExamCardList'),
-            meta: { title: '考试卡片列表', keepAlive: true, permission: ['table'] }
+            meta: { title: '考试列表', keepAlive: true, permission: ['exam-card'] }
+          }
+        ]
+      },
+
+      {
+        path: '/exam-record-list',
+        name: 'exam-record-list',
+        redirect: '/list/exam-record-list',
+        component: PageView,
+        hideChildrenInMenu: true,
+        meta: { title: '考试记录', keepAlive: true, icon: bxAnaalyse, permission: ['exam-record-list'] },
+        children: [
+          {
+            path: '/list/exam-record-list',
+            name: 'ExamRecordList',
+            component: () => import('../views/list/ExamRecordList'),
+            meta: { title: '考试记录', keepAlive: true, permission: ['exam-record-list'] }
+          }
+        ]
+      },
+
+      // list
+      {
+        path: '/list/exam-table-list',
+        name: 'exam-table-list',
+        component: PageView,
+        redirect: '/list/exam-table-list',
+        meta: { title: '考试管理', icon: 'table', permission: ['exam-table-list'] },
+        children: [
+          {
+            path: '/list/exam-table-list',
+            name: 'ExamTableListWrapper',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('../views/list/ExamTableList'),
+            meta: { title: '考试管理', keepAlive: true, permission: ['exam-table-list'] }
           }
         ]
       },
