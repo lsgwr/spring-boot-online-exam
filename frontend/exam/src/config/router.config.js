@@ -42,24 +42,6 @@ export const asyncRouterMap = [
       },
 
       {
-        path: '/question-admin',
-        name: 'question-admin',
-        redirect: '/list/question-table-list',
-        component: PageView,
-        hideChildrenInMenu: true,
-        meta: { title: '问题管理', keepAlive: true, icon: bxAnaalyse, permission: ['question-admin'] },
-        children: [
-          {
-            path: '/list/question-table-list',
-            name: 'QuestionTableListWrapper',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('../views/list/QuestionTableList'),
-            meta: { title: '问题管理', keepAlive: true, permission: ['question-admin'] }
-          }
-        ]
-      },
-
-      {
         path: '/exam-card',
         name: 'exam-card',
         redirect: '/list/exam-card',
@@ -82,23 +64,40 @@ export const asyncRouterMap = [
         redirect: '/list/exam-record-list',
         component: PageView,
         hideChildrenInMenu: true,
-        meta: { title: '考试记录', keepAlive: true, icon: bxAnaalyse, permission: ['exam-record-list'] },
+        meta: { title: '我的考试', keepAlive: true, icon: bxAnaalyse, permission: ['exam-record-list'] },
         children: [
           {
             path: '/list/exam-record-list',
             name: 'ExamRecordList',
             component: () => import('../views/list/ExamRecordList'),
-            meta: { title: '考试记录', keepAlive: true, permission: ['exam-record-list'] }
+            meta: { title: '我的考试', keepAlive: true, permission: ['exam-record-list'] }
           }
         ]
       },
-
+      {
+        path: '/question-admin',
+        name: 'question-admin',
+        redirect: '/list/question-table-list',
+        component: PageView,
+        hideChildrenInMenu: true,
+        meta: { title: '问题管理', keepAlive: true, icon: bxAnaalyse, permission: ['question-admin'] },
+        children: [
+          {
+            path: '/list/question-table-list',
+            name: 'QuestionTableListWrapper',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('../views/list/QuestionTableList'),
+            meta: { title: '问题管理', keepAlive: true, permission: ['question-admin'] }
+          }
+        ]
+      },
       // list
       {
         path: '/list/exam-table-list',
         name: 'exam-table-list',
         component: PageView,
         redirect: '/list/exam-table-list',
+        hideChildrenInMenu: true,
         meta: { title: '考试管理', icon: 'table', permission: ['exam-table-list'] },
         children: [
           {
