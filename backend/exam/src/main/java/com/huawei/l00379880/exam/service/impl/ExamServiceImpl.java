@@ -394,6 +394,11 @@ public class ExamServiceImpl implements ExamService {
         BeanUtils.copyProperties(examCreateVo, exam);
         exam.setExamId(IdUtil.simpleUUID());
         exam.setExamCreatorId(userId);
+        exam.setCreateTime(new Date());
+        exam.setUpdateTime(new Date());
+        // Todo:这两个日志后面是要在前端传入的，这里暂时定为当前日期
+        exam.setExamStartDate(new Date());
+        exam.setExamEndDate(new Date());
         String radioIdsStr = "";
         String checkIdsStr = "";
         String judgeIdsStr = "";
