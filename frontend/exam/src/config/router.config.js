@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '../layouts'
-import { bxAnaalyse } from '../core/icons'
+import { bxAnaalyse, examList, examAdmin, questionAdmin, mine } from '../core/icons'
 
 export const asyncRouterMap = [
 
@@ -47,7 +47,7 @@ export const asyncRouterMap = [
         redirect: '/list/exam-card',
         component: PageView,
         hideChildrenInMenu: true,
-        meta: { title: '考试列表', keepAlive: true, icon: bxAnaalyse, permission: ['exam-card'] },
+        meta: { title: '考试列表', keepAlive: true, icon: examList, permission: ['exam-card'] },
         children: [
           {
             path: '/list/exam-card',
@@ -64,7 +64,7 @@ export const asyncRouterMap = [
         redirect: '/list/exam-record-list',
         component: PageView,
         hideChildrenInMenu: true,
-        meta: { title: '我的考试', keepAlive: true, icon: bxAnaalyse, permission: ['exam-record-list'] },
+        meta: { title: '我的考试', keepAlive: true, icon: mine, permission: ['exam-record-list'] },
         children: [
           {
             path: '/list/exam-record-list',
@@ -80,7 +80,7 @@ export const asyncRouterMap = [
         redirect: '/list/question-table-list',
         component: PageView,
         hideChildrenInMenu: true,
-        meta: { title: '问题管理', keepAlive: true, icon: bxAnaalyse, permission: ['question-admin'] },
+        meta: { title: '问题管理', keepAlive: true, icon: questionAdmin, permission: ['question-admin'] },
         children: [
           {
             path: '/list/question-table-list',
@@ -98,7 +98,7 @@ export const asyncRouterMap = [
         component: PageView,
         redirect: '/list/exam-table-list',
         hideChildrenInMenu: true,
-        meta: { title: '考试管理', icon: 'table', permission: ['exam-table-list'] },
+        meta: { title: '考试管理', icon: examAdmin, permission: ['exam-table-list'] },
         children: [
           {
             path: '/list/exam-table-list',
