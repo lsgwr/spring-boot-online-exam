@@ -7,9 +7,6 @@ import router from './router'
 import store from './store/'
 import { VueAxios } from './utils/request'
 
-// mock
-import './mock'
-
 import bootstrap from './core/bootstrap'
 import './core/use'
 import './permission' // permission control
