@@ -9,7 +9,7 @@ user:
     avatar: http://d.lanrentuku.com/down/png/1904/business_avatar/8_avatar_2754583.png
 
 server:
-  port: 8080
+  port: 9527
 
 spring:
   application:

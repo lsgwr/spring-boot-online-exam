@@ -88,7 +88,7 @@ module.exports = {
   devServer: {
     // development server port 8000
     port: 8000,
-    proxy: 'http://localhost:8080'
+    proxy: 'http://localhost:9527'
   },
 
   // disable source map in production
