@@ -26,12 +26,6 @@ export const asyncRouterMap = [
             component: () => import('../views/dashboard/Analysis'),
             meta: { title: '分析页', keepAlive: false, permission: ['dashboard'] }
           },
-          // 外部链接
-          {
-            path: 'https://www.baidu.com/',
-            name: 'Monitor',
-            meta: { title: '监控页（外部）', target: '_blank' }
-          },
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
