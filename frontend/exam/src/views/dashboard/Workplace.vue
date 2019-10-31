@@ -1,8 +1,5 @@
 <template>
   <page-view :avatar="avatar" :title="false">
-    <div slot="headerContent">
-      <div>这里是首页</div>
-    </div>
     <h1>这里是首页</h1>
   </page-view>
 </template>

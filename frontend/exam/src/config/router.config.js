@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '../layouts'
-import { bxAnaalyse, examList, examAdmin, questionAdmin, mine } from '../core/icons'
+import { examList, examAdmin, questionAdmin, mine } from '../core/icons'
 
 export const asyncRouterMap = [
 
@@ -8,7 +8,7 @@ export const asyncRouterMap = [
     path: '/',
     name: 'index',
     component: BasicLayout,
-    meta: { title: '首页' },
+    meta: { title: '在线考试系统' },
     redirect: '/dashboard/workplace',
     children: [
       // dashboard
@@ -18,13 +18,13 @@ export const asyncRouterMap = [
         redirect: '/dashboard/workplace',
         component: RouteView,
         hideChildrenInMenu: true,
-        meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
+        meta: { title: '首页', keepAlive: true, icon: 'home', permission: ['dashboard'] },
         children: [
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
             component: () => import('../views/dashboard/Workplace'),
-            meta: { title: '工作台', keepAlive: true, permission: ['dashboard'] }
+            meta: { title: '系统介绍', keepAlive: true, permission: ['dashboard'] }
           }
         ]
       },
@@ -41,7 +41,7 @@ export const asyncRouterMap = [
             path: '/list/exam-card',
             name: 'ExamCardList',
             component: () => import('../views/list/ExamCardList'),
-            meta: { title: '考试列表', keepAlive: true, permission: ['exam-card'] }
+            meta: { title: '详情', keepAlive: true, permission: ['exam-card'] }
           }
         ]
       },
@@ -58,7 +58,7 @@ export const asyncRouterMap = [
             path: '/list/exam-record-list',
             name: 'ExamRecordList',
             component: () => import('../views/list/ExamRecordList'),
-            meta: { title: '我的考试', keepAlive: true, permission: ['exam-record-list'] }
+            meta: { title: '详情', keepAlive: true, permission: ['exam-record-list'] }
           }
         ]
       },
@@ -75,7 +75,7 @@ export const asyncRouterMap = [
             name: 'QuestionTableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('../views/list/QuestionTableList'),
-            meta: { title: '问题管理', keepAlive: true, permission: ['question-admin'] }
+            meta: { title: '详情', keepAlive: true, permission: ['question-admin'] }
           }
         ]
       },
@@ -93,7 +93,7 @@ export const asyncRouterMap = [
             name: 'ExamTableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('../views/list/ExamTableList'),
-            meta: { title: '考试管理', keepAlive: true, permission: ['exam-table-list'] }
+            meta: { title: '详情', keepAlive: true, permission: ['exam-table-list'] }
           }
         ]
       },
