@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '../layouts'
-import { examList, examAdmin, questionAdmin, mine } from '../core/icons'
+import { examList, examAdmin, questionAdmin } from '../core/icons'
 
 export const asyncRouterMap = [
 
@@ -9,22 +9,22 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: '在线考试系统' },
-    redirect: '/dashboard/workplace',
+    redirect: '/dashboard/home',
     children: [
       // dashboard
       {
         path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/workplace',
+        redirect: '/dashboard/home',
         component: RouteView,
         hideChildrenInMenu: true,
         meta: { title: '首页', keepAlive: true, icon: 'home', permission: ['dashboard'] },
         children: [
           {
-            path: '/dashboard/workplace',
+            path: '/dashboard/home',
             name: 'Workplace',
-            component: () => import('../views/dashboard/Workplace'),
-            meta: { title: '系统介绍', keepAlive: true, permission: ['dashboard'] }
+            component: () => import('../views/Home'),
+            meta: { title: '简介', keepAlive: true, permission: ['dashboard'] }
           }
         ]
       },
@@ -52,7 +52,7 @@ export const asyncRouterMap = [
         redirect: '/list/exam-record-list',
         component: PageView,
         hideChildrenInMenu: true,
-        meta: { title: '我的考试', keepAlive: true, icon: mine, permission: ['exam-record-list'] },
+        meta: { title: '我的考试', keepAlive: true, icon: 'user', permission: ['exam-record-list'] },
         children: [
           {
             path: '/list/exam-record-list',
