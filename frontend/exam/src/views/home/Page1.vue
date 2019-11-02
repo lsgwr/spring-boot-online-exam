@@ -2,7 +2,7 @@
   <div class="home-page page1">
     <div class="home-page-wrapper" id="page1-wrapper">
       <div class="page1-bg" style="transform: translate(0px, 200.953px);">Feature</div>
-      <h2>What can <span>Pro</span> do for you </h2>
+      <h2>What can <span>Online System</span> do for you </h2>
       <div class="title-line-wrapper page1-line"></div>
       <list :data-source="features" />
     </div>
@@ -41,32 +41,11 @@ const featuresCN = [
     shadowColor: 'rgba(26,196,77,.12)'
   },
   {
-    title: '主题',
-    content: '可配置的主题满足多样化的品牌诉求',
-    src: 'https://gw.alipayobjects.com/zos/rmsportal/XxqEexmShHOofjMYOCHi.svg',
-    color: '#FAAD14',
-    shadowColor: 'rgba(250,173,20,.12)'
-  },
-  {
-    title: '国际化',
-    content: '内建业界通用的国际化方案',
-    src: 'https://gw.alipayobjects.com/zos/rmsportal/JsixxWSViARJnQbAAPkI.svg',
-    color: '#722ED1',
-    shadowColor: 'rgba(114,46,209,.12)'
-  },
-  {
     title: '最佳实践',
     content: '良好的工程实践助你持续产出高质量代码',
     src: 'https://gw.alipayobjects.com/zos/rmsportal/pbmKMSFpLurLALLNliUQ.svg',
     color: '#FA8C16',
     shadowColor: 'rgba(250,140,22,.12)'
-  },
-  {
-    title: 'Mock 数据',
-    content: '实用的本地数据调试方案',
-    src: 'https://gw.alipayobjects.com/zos/rmsportal/aLQyKyUyssIUhHTZqCIb.svg',
-    color: '#EB2F96',
-    shadowColor: 'rgba(235,45,150,.12)'
   },
   {
     title: 'UI 测试',
