@@ -31,7 +31,7 @@ export default {
       description: '您可以随意点击下面的考试卡片开始一场属于您的考试',
       linkList: [
         { icon: 'rocket', href: '#', title: '快速开始' },
-        { icon: 'info-circle-o', href: '#', title: '我的考试' },
+        { icon: 'info-circle-o', href: '/list/exam-record-list', title: '我的考试' },
         { icon: 'file-text', href: '#', title: '产品文档' }
       ],
       extraImage: 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png',
