@@ -45,23 +45,6 @@ export const asyncRouterMap = [
           }
         ]
       },
-
-      {
-        path: '/exam-record-list',
-        name: 'exam-record-list',
-        redirect: '/list/exam-record-list',
-        component: PageView,
-        hideChildrenInMenu: true,
-        meta: { title: '我的考试', keepAlive: true, icon: 'user', permission: ['exam-record-list'] },
-        children: [
-          {
-            path: '/list/exam-record-list',
-            name: 'ExamRecordList',
-            component: () => import('../views/list/ExamRecordList'),
-            meta: { title: '详情', keepAlive: true, permission: ['exam-record-list'] }
-          }
-        ]
-      },
       {
         path: '/question-admin',
         name: 'question-admin',
@@ -97,7 +80,22 @@ export const asyncRouterMap = [
           }
         ]
       },
-
+      {
+        path: '/exam-record-list',
+        name: 'exam-record-list',
+        redirect: '/list/exam-record-list',
+        component: PageView,
+        hideChildrenInMenu: true,
+        meta: { title: '我的考试', keepAlive: true, icon: 'user', permission: ['exam-record-list'] },
+        children: [
+          {
+            path: '/list/exam-record-list',
+            name: 'ExamRecordList',
+            component: () => import('../views/list/ExamRecordList'),
+            meta: { title: '详情', keepAlive: true, permission: ['exam-record-list'] }
+          }
+        ]
+      },
       // account
       {
         path: '/account',
