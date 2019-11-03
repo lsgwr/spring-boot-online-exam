@@ -253,7 +253,7 @@ export default {
         path: `/exam/${record.id}`
       })
       // 和点击考试卡片效果一样，跳转到考试页面，里面有所有题目的情况，相当于就是详情了
-      window.open(routeUrl.href, '_blank')
+      this.$router.push(routeUrl.href)
     },
     handleOk () {
       this.$refs.table.refresh()
