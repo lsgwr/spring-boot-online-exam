@@ -17,7 +17,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: aA111111
+    password: xxxxxx
     url: jdbc:mysql://${ip.base}:3306/exam?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
   jpa:
     # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
