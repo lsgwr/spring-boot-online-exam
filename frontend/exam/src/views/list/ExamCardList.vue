@@ -38,7 +38,7 @@ export default {
       const routeUrl = this.$router.resolve({
         path: `/exam/${id}`
       })
-      this.$router.push(routeUrl.href)
+      window.open(routeUrl.href, '_blank')
     }
   },
   mounted () {
