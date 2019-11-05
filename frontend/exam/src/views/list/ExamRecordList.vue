@@ -64,7 +64,7 @@ export default {
         path: `/exam/record/${record.examId}/${record.examRecordId}`
       })
       // 和点击考试卡片效果一样，跳转到考试页面，里面有所有题目的情况，相当于就是详情了
-      this.$router.push(routeUrl.href)
+      window.open(routeUrl.href, '_blank')
     }
   },
   mounted () {
