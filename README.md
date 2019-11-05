@@ -1,6 +1,6 @@
 # spring-boot-online-exam
 
-> 在线Demo预览，http://129.211.88.191:9527 ，账户分别是admin、teacher、student，密码是admin123
+> 在线Demo预览，http://129.211.88.191 ，账户分别是admin、teacher、student，密码是admin123
 
 #### 介绍
 基于springboot的在线考试系统
