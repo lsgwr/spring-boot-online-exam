@@ -10,6 +10,9 @@ user:
 
 server:
   port: 9527
+  # 开发时开放，部署到生产环境时去掉，并参考doc/deploy/nginx.conf自己配置下vue的转发
+  servlet:
+    context-path: /api
 
 spring:
   application:
