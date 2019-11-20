@@ -20,7 +20,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: xxxxxx
+    password: aA111111
     url: jdbc:mysql://${ip.base}:3306/exam?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
   jpa:
     # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
@@ -35,7 +35,7 @@ spring:
 # 拦截器相关的配置
 interceptors:
   # 不需要进行鉴权的接口地址，用逗号隔开
-  auth-ignore-uris: /user/register,/user/login
+  auth-ignore-uris: ${server.servlet.context-path}/user/register,${server.servlet.context-path}/user/login
 
 # SQL语句打印(能打印参数，设置为trace是打印完整语句，默认我们就关掉吧)
 logging:
