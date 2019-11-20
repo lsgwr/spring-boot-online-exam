@@ -1,0 +1,3 @@
+server:
+  servlet:
+    context-path: # 这里配置为空是因为生产环境法需要自己配置nginx的转发,nginx可以参考我的配置doc/deploy/nginx.conf
