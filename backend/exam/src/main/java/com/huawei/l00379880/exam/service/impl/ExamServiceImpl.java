@@ -223,6 +223,9 @@ public class ExamServiceImpl implements ExamService {
         question.setQuestionAnswerOptionIds(questionAnswerOptionIds);
         // 自己生成问题的id
         question.setQuestionId(IdUtil.simpleUUID());
+        // 先把创建时间和更新时间每次都取当前时间吧
+        question.setCreateTime(new Date());
+        question.setUpdateTime(new Date());
         // 保存问题到数据库
         questionRepository.save(question);
     }
