@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
@@ -24,7 +24,11 @@ module.exports = {
   configureWebpack: {
     plugins: [
       // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery'
+      })
     ]
   },
 
@@ -37,6 +41,7 @@ module.exports = {
       .set('@views', resolve('src/views'))
       .set('@layout', resolve('src/layout'))
       .set('@static', resolve('src/static'))
+      .set('jquery', resolve('node_modules/jquery/src/jquery'))
 
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
