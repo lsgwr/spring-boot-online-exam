@@ -180,7 +180,7 @@ export const constantRouterMap = [
       {
         path: 'note',
         name: 'NoteTest',
-        component: () => import('@views/test/NoteDemo')
+        component: () => import('@views/test/SummerNoteDemo')
       }
     ]
   },
