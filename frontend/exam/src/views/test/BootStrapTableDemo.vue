@@ -83,7 +83,8 @@ export default {
       options: {
         search: true,
         showColumns: true,
-        showExport: true
+        showExport: true,
+        showRefresh: true
       }
     }
   },
