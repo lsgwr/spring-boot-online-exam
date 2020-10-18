@@ -9,6 +9,7 @@ import 'tableexport.jquery.plugin/tableExport.min.js'
 import 'bootstrap-table/dist/bootstrap-table'
 import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export'
+import 'bootstrap-table/dist/extensions/toolbar/bootstrap-table-toolbar.min'
 import jQuery from 'jquery'
 window.jQuery = jQuery
 window.$ = jQuery
