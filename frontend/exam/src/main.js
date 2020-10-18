@@ -11,15 +11,10 @@ import bootstrap from './core/bootstrap'
 import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
-
-import BootstrapVue from 'bootstrap-vue'
-
 Vue.config.productionTip = false
 
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)
-
-Vue.use(BootstrapVue)
 
 new Vue({
   router,

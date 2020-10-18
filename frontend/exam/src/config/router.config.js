@@ -181,6 +181,11 @@ export const constantRouterMap = [
         path: 'note',
         name: 'NoteTest',
         component: () => import('@views/test/SummerNoteDemo')
+      },
+      {
+        path: 'table',
+        name: 'TableTest',
+        component: () => import('@views/test/BootStrapTableDemo')
       }
     ]
   },
