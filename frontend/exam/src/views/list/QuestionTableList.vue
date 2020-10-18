@@ -26,8 +26,7 @@
       </span>
 
     </s-table>
-    <create-form ref="createModal" @ok="handleOk"/>
-    <!-- ref是为了方便用this.$refs.modal直接引用，上同 -->
+    <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
     <step-by-step-question-modal ref="createQuestionModal" @ok="handleOk"/>
     <question-view-modal ref="modalView" @ok="handleOk"/>
     <question-edit-modal ref="modalEdit" @ok="handleOk"/>
