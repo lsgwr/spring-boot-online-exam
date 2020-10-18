@@ -111,6 +111,7 @@ export default {
       $element.append(p)
       console.log($element.text()) // 获取元素的值
       row[field] = $element.text() // 更新行的值
+      console.log($element.parent().attr('data-index')) // 获取当前行的数据的id，方便更新data中的rows数组
       alert(field + ':' + row + ', ' + JSON.stringify(row))
     }
   }
