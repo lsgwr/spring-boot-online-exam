@@ -46,7 +46,7 @@ export default {
         {
           title: '题干',
           field: 'name',
-          width: 300,
+          width: 300
         },
         {
           title: '分数',
@@ -143,4 +143,17 @@ export default {
   }
 }
 </script>
+<style>
+h1 {
+  line-height: inherit !important;
+}
 
+.page-header .breadcrumb {
+  background-color: transparent !important;
+  padding: inherit !important;
+}
+
+.row {
+  margin-left: inherit !important;
+}
+</style>
