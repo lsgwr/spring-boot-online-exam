@@ -107,12 +107,15 @@ export default {
     dblClickCell (field, value, row, $element) {
       console.log($element.text()) // 获取元素的值
       console.log($element.html()) // 获取页面元素的值
-      const p = $('<p>这是一个段落</p>')
+      const p = $('<p>弹框出现前修改内容</p>')
       $element.append(p)
       console.log($element.text()) // 获取元素的值
       row[field] = $element.text() // 更新行的值
-      console.log($element.parent().attr('data-index')) // 获取当前行的数据的id，方便更新data中的rows数组
       alert(field + ':' + row + ', ' + JSON.stringify(row))
+      const index = $element.parent().attr('data-index') // 获取当前行的数据的id，方便更新data中的rows数组
+      row[field] = '弹框出现后修改内容'
+      this.data.rows[index] = row
+      this.$refs.table._initTable() // 直接看源码找出这么个重新渲染表格的事件
     }
   }
 }
