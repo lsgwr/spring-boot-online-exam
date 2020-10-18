@@ -16,30 +16,35 @@
       <span slot="serial" slot-scope="text, record, index">
         {{ index + 1 }}
       </span>
-
       <span slot="action" slot-scope="text, record">
         <template>
           <a @click="handleSub(record)">详情</a>
-          <a-divider type="vertical"/>
+          <a-divider type="vertical" />
           <a @click="handleEdit(record)">编辑</a>
         </template>
       </span>
-
     </s-table>
     <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
-    <step-by-step-question-modal ref="createQuestionModal" @ok="handleOk"/>
-    <question-view-modal ref="modalView" @ok="handleOk"/>
-    <question-edit-modal ref="modalEdit" @ok="handleOk"/>
+    <step-by-step-question-modal ref="createQuestionModal" @ok="handleOk" />
+    <question-view-modal ref="modalView" @ok="handleOk" />
+    <question-edit-modal ref="modalEdit" @ok="handleOk" />
+    <BootstrapTable
+      ref="table"
+      :columns="columns"
+      :data="tableData"
+      :options="options"
+    />
   </a-card>
 </template>
 
 <script>
+import '../../plugins/bootstrap-table'
 import { STable } from '../../components'
 import QuestionViewModal from './modules/QuestionViewModal'
 import QuestionEditModal from './modules/QuestionEditModal'
 import StepByStepQuestionModal from './modules/StepByStepQuestionModal'
 import CreateForm from './modules/CreateForm'
-import { getQuestionList } from '../../api/exam'
+import { getQuestionList, getQuestionAll } from '../../api/exam'
 
 export default {
   name: 'QuestionTableList',
@@ -55,41 +60,53 @@ export default {
       // 表头
       columns: [
         {
-          title: '#',
-          scopedSlots: { customRender: 'serial' }
+          title: '序号',
+          field: 'serial',
+          scopedSlots: { customRender: 'serial' },
+          formatter: function (value, row, index) {
+            return index + 1 // 这样的话每翻一页都会重新从1开始，
+          }
         },
         {
           title: '题干',
           dataIndex: 'name',
+          field: 'name',
           width: 250
         },
         {
           title: '分数',
-          dataIndex: 'score'
+          dataIndex: 'score',
+          field: 'score'
         },
         {
           title: '创建人',
-          dataIndex: 'creator'
+          dataIndex: 'creator',
+          field: 'creator'
         },
         {
           title: '难度',
-          dataIndex: 'level'
+          dataIndex: 'level',
+          field: 'level'
         },
         {
           title: '题型',
-          dataIndex: 'type'
+          dataIndex: 'type',
+          field: 'type'
         },
         {
           title: '学科',
-          dataIndex: 'category'
+          dataIndex: 'category',
+          field: 'category'
         },
         {
           title: '更新时间',
-          dataIndex: 'updateTime'
+          dataIndex: 'updateTime',
+          field: 'updateTime'
         },
         {
           title: '操作',
           dataIndex: 'action',
+          field: 'action',
           width: '150px',
           scopedSlots: { customRender: 'action' }
         }
@@ -111,6 +128,7 @@ export default {
             }
           })
       },
+      tableData: [], // bootstrap-table的数据
       selectedRowKeys: [],
       selectedRows: [],
 
@@ -129,6 +147,9 @@ export default {
       }
     }
   },
+  mounted () {
+    this.loadAll() // 加载所有问题的数据
+  },
   methods: {
     handleEdit (record) {
       // 弹出一个可修改的输入框
@@ -146,6 +167,20 @@ export default {
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
+    },
+    loadAll () {
+      const that = this
+      getQuestionAll()
+        .then(res => {
+          if (res.code === 0) {
+            that.tableData = res.data
+          } else {
+            this.$notification.error({
+              message: '获取全部问题的列表失败',
+              description: res.msg
+            })
+          }
+        })
     }
   }
 }

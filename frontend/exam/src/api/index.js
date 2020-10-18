@@ -15,6 +15,7 @@ const api = {
 
   // 考试的接口
   ExamQuestionList: '/exam/question/list',
+  ExamQuestionAll: '/exam/question/all',
   ExamQuestionUpdate: '/exam/question/update',
   ExamQuestionSelection: '/exam/question/selection',
   ExamQuestionCreate: '/exam/question/create',

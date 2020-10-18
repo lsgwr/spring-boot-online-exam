@@ -11,6 +11,13 @@ export function getQuestionList (parameter) {
   })
 }
 
+export function getQuestionAll () {
+  return axios({
+    url: api.ExamQuestionAll,
+    method: 'get'
+  })
+}
+
 export function questionUpdate (parameter) {
   console.log(parameter)
   return axios({
