@@ -8,6 +8,7 @@ package com.huawei.l00379880.exam.service;
 
 import com.huawei.l00379880.exam.entity.Exam;
 import com.huawei.l00379880.exam.entity.ExamRecord;
+import com.huawei.l00379880.exam.entity.Question;
 import com.huawei.l00379880.exam.vo.*;
 
 import java.util.HashMap;
@@ -22,6 +23,11 @@ public interface ExamService {
      * @return 页面对象
      */
     QuestionPageVo getQuestionList(Integer pageNo, Integer pageSize);
+
+    /**
+     * 获取所有的问题列表
+     */
+    List<QuestionVo> getQuestionAll();
 
     /**
      * 根据前端传过来的问题实体更新问题和选项

@@ -56,6 +56,7 @@ export default {
     QuestionEditModal
   },
   data () {
+    const that = this // 方便在bootstrap-table中引用methods
     return {
       // 表头
       columns: [
@@ -108,7 +109,20 @@ export default {
           dataIndex: 'action',
           field: 'action',
           width: '150px',
-          scopedSlots: { customRender: 'action' }
+          scopedSlots: { customRender: 'action' },
+          formatter: (value, row) => {
+            return '<button type="button" class="btn btn-success view-question">详情</button>' +
+              '&nbsp;&nbsp;' +
+              '<button type="button" class="btn btn-success edit-question">编辑</button>'
+          },
+          events: {
+            'click .view-question': function (e, value, row, index) {
+              that.handleSub(row)
+            },
+            'click .edit-question': function (e, value, row, index) {
+              that.handleEdit(row)
+            }
+          }
         }
       ],
       // 计算属性，监听parameter变量，当变化时，自动重新请求后端数据。加载数据方法 必须为 Promise 对象.获取分页数据

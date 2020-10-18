@@ -71,6 +71,19 @@ public class ExamServiceImpl implements ExamService {
         questionPageVo.setTotalPage(questionPage.getTotalPages());
         // 当前页的问题列表
         List<Question> questionList = questionPage.getContent();
+        // 把原始问题转换成vo，方便前端展示
+        List<QuestionVo> questionVoList = getQuestionVos(questionList);
+        questionPageVo.setQuestionVoList(questionVoList);
+        return questionPageVo;
+    }
+
+    @Override
+    public List<QuestionVo> getQuestionAll() {
+        List<Question> questionList = questionRepository.findAll();
+        return getQuestionVos(questionList);
+    }
+
+    private List<QuestionVo> getQuestionVos(List<Question> questionList) {
         // 需要自定义的question列表
         List<QuestionVo> questionVoList = new ArrayList<>();
         // 循环完成每个属性的定制
@@ -141,8 +154,7 @@ public class ExamServiceImpl implements ExamService {
 
             questionVoList.add(questionVo);
         }
-        questionPageVo.setQuestionVoList(questionVoList);
-        return questionPageVo;
+        return questionVoList;
     }
 
     @Override

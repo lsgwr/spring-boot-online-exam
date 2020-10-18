@@ -41,6 +41,20 @@ public class ExamController {
         return resultVO;
     }
 
+    @GetMapping("/question/all")
+    @ApiOperation("获取所有问题的列表")
+    ResultVO<List<QuestionVo>> getQuestionAll() {
+        ResultVO<List<QuestionVo>> resultVO;
+        try {
+            List<QuestionVo> questionAll = examService.getQuestionAll();
+            resultVO = new ResultVO<>(0, "获取全部问题列表成功", questionAll);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultVO = new ResultVO<>(-1, "获取全部问题列表失败", null);
+        }
+        return resultVO;
+    }
+
     @PostMapping("/question/update")
     @ApiOperation("更新问题")
     ResultVO<String> questionUpdate(@RequestBody QuestionVo questionVo) {
