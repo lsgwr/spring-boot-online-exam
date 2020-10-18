@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-table/dist/bootstrap-table.min.css'
+import 'font-awesome/css/font-awesome.css'
 import Vue from 'vue'
 import 'bootstrap'
 import 'tableexport.jquery.plugin/libs/FileSaver/FileSaver.min.js'
