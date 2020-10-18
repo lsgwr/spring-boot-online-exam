@@ -11,6 +11,7 @@
 
 <script>
 import '../../plugins/bootstrap-table'
+import $ from 'jquery'
 
 export default {
   data () {
@@ -81,13 +82,36 @@ export default {
         search: true,
         showColumns: true,
         showExport: true,
-        showRefresh: true
+        showRefresh: true,
+        // 下面是常用的事件，更多的点击事件可以参考：http://www.itxst.com/bootstrap-table-events/tutorial.html
+        // onClickRow: that.clickRow,
+        // onClickCell: that.clickCell, // 单元格单击事件
+        onDblClickCell: that.dblClickCell // 单元格双击事件
       }
     }
   },
   methods: {
     clickRow (row, value, index) {
       alert(JSON.stringify(row) + ', ' + index)
+    },
+    clickCell (field, value, row, $element) {
+      alert(JSON.stringify(field))
+    },
+    /**
+     * 单元格双击事件
+     * @param field 字段名，如id、name、price等
+     * @param value 字段值 如Item 1、$1等
+     * @param row 一行的值，如{"id":3,"name":"Item 3","price":"$3"}
+     * @param $element 行所在的dom元素，可以动态往里面加入页面元素，比如双击可编辑或者弹出富文本框等
+     */
+    dblClickCell (field, value, row, $element) {
+      console.log($element.text()) // 获取元素的值
+      console.log($element.html()) // 获取页面元素的值
+      const p = $('<p>这是一个段落</p>')
+      $element.append(p)
+      console.log($element.text()) // 获取元素的值
+      row[field] = $element.text() // 更新行的值
+      alert(field + ':' + row + ', ' + JSON.stringify(row))
     }
   }
 }
