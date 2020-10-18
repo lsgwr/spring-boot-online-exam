@@ -5,18 +5,16 @@
       :columns="columns"
       :data="data"
       :options="options"
-      @on-post-body="vueFormatterPostBody"
     />
   </div>
 </template>
 
 <script>
 import '../../plugins/bootstrap-table'
-import tableMixin from '../../mixins/table'
 
 export default {
-  mixins: [tableMixin],
   data () {
+    const that = this // 方便在bootstrap-table中引用methods
     return {
       columns: [
         {
@@ -40,13 +38,12 @@ export default {
           title: 'Actions',
           align: 'center',
           formatter: (value, row) => {
-            return this.vueFormatter({
-              template: '<a-button @click="clickRow(row)">Click</a-button>',
-              data: { row },
-              methods: {
-                clickRow: this.clickRow
-              }
-            })
+            return '<button type="button" class="btn btn-success mybtn">Success</button>'
+          },
+          events: {
+            'click .mybtn': function (e, value, row, index) { // 双击是dblclick
+              that.clickRow(row, value, index)
+            }
           }
         }
       ],
@@ -89,8 +86,8 @@ export default {
     }
   },
   methods: {
-    clickRow (row) {
-      alert(JSON.stringify(row))
+    clickRow (row, value, index) {
+      alert(JSON.stringify(row) + ', ' + index)
     }
   }
 }
