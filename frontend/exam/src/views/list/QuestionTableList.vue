@@ -2,24 +2,6 @@
   <a-card :bordered="false">
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="$refs.createQuestionModal.create()">新建</a-button>
-      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>
-      <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1">
-            <a-icon type="delete"/>
-            删除
-          </a-menu-item>
-          <!-- lock | unlock -->
-          <a-menu-item key="2">
-            <a-icon type="lock"/>
-            锁定
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down"/>
-        </a-button>
-      </a-dropdown>
     </div>
 
     <s-table
@@ -53,7 +35,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { STable } from '../../components'
 import QuestionViewModal from './modules/QuestionViewModal'
 import QuestionEditModal from './modules/QuestionEditModal'
@@ -72,11 +53,6 @@ export default {
   },
   data () {
     return {
-      mdl: {},
-      // 高级搜索 展开/关闭
-      advanced: false,
-      // 查询参数
-      queryParam: {},
       // 表头
       columns: [
         {
@@ -151,38 +127,10 @@ export default {
           selectedRowKeys: this.selectedRowKeys,
           onChange: this.onSelectChange
         }
-      },
-      optionAlertShow: false
+      }
     }
   },
-  created () {
-    this.tableOption()
-  },
   methods: {
-    tableOption () {
-      if (!this.optionAlertShow) {
-        this.options = {
-          alert: {
-            show: true,
-            clear: () => {
-              this.selectedRowKeys = []
-            }
-          },
-          rowSelection: {
-            selectedRowKeys: this.selectedRowKeys,
-            onChange: this.onSelectChange
-          }
-        }
-        this.optionAlertShow = true
-      } else {
-        this.options = {
-          alert: false,
-          rowSelection: null
-        }
-        this.optionAlertShow = false
-      }
-    },
-
     handleEdit (record) {
       // 弹出一个可修改的输入框
       console.log(record)
@@ -199,14 +147,6 @@ export default {
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
-    },
-    toggleAdvanced () {
-      this.advanced = !this.advanced
-    },
-    resetSearchForm () {
-      this.queryParam = {
-        date: moment(new Date())
-      }
     }
   }
 }
