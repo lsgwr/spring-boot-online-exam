@@ -31,7 +31,12 @@
     "vue-ls": "^3.2.0",
     "vue-router": "^3.0.1",
     "vue-svg-component-runtime": "^1.0.1",
-    "vuex": "^3.1.0"
+    "vuex": "^3.1.0",
+    "bootstrap": "^4.1.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
+    "codemirror": "^5.37.0",
+    "summernote": "^0.8.10"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -53,12 +58,7 @@
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2",
     "vue-svg-icon-loader": "^2.1.1",
-    "vue-template-compiler": "^2.5.22",
-    "bootstrap": "^4.1.1",
-    "font-awesome": "^4.7.0",
-    "jquery": "^3.3.1",
-    "codemirror": "^5.37.0",
-    "summernote": "^0.8.10"
+    "vue-template-compiler": "^2.5.22"
   },
   "eslintConfig": {
     "root": true,
