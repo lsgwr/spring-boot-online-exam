@@ -27,20 +27,6 @@ public class ExamController {
     @Autowired
     private ExamService examService;
 
-    @GetMapping("/question/list")
-    @ApiOperation("获取问题的列表")
-    ResultVO<QuestionPageVo> getQuestionList(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize) {
-        ResultVO<QuestionPageVo> resultVO;
-        try {
-            QuestionPageVo questionPageVo = examService.getQuestionList(pageNo, pageSize);
-            resultVO = new ResultVO<>(0, "获取问题列表成功", questionPageVo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new ResultVO<>(-1, "获取问题列表失败", null);
-        }
-        return resultVO;
-    }
-
     @GetMapping("/question/all")
     @ApiOperation("获取所有问题的列表")
     ResultVO<List<QuestionVo>> getQuestionAll() {

@@ -54,30 +54,6 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public QuestionPageVo getQuestionList(Integer pageNo, Integer pageSize) {
-        // 按照日期降序排列
-        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
-        // 构造分页请求,注意前端面页面的分页是从1开始的，后端是从0开始地，所以要减去1哈
-        PageRequest pageRequest = PageRequest.of(pageNo - 1, pageSize, sort);
-        Page<Question> questionPage = questionRepository.findAll(pageRequest);
-        QuestionPageVo questionPageVo = new QuestionPageVo();
-        // 设置页码
-        questionPageVo.setPageNo(pageNo);
-        // 设置页大小
-        questionPageVo.setPageSize(pageSize);
-        // 设置总共有多少个元素
-        questionPageVo.setTotalCount(questionPage.getTotalElements());
-        // 设置一共有多少页
-        questionPageVo.setTotalPage(questionPage.getTotalPages());
-        // 当前页的问题列表
-        List<Question> questionList = questionPage.getContent();
-        // 把原始问题转换成vo，方便前端展示
-        List<QuestionVo> questionVoList = getQuestionVos(questionList);
-        questionPageVo.setQuestionVoList(questionVoList);
-        return questionPageVo;
-    }
-
-    @Override
     public List<QuestionVo> getQuestionAll() {
         List<Question> questionList = questionRepository.findAll();
         return getQuestionVos(questionList);

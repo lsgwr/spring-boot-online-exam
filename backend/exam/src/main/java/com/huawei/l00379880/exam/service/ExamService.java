@@ -16,15 +16,6 @@ import java.util.List;
 
 public interface ExamService {
     /**
-     * 获取问题的列表
-     *
-     * @param pageNo   页码编号
-     * @param pageSize 页面大小
-     * @return 页面对象
-     */
-    QuestionPageVo getQuestionList(Integer pageNo, Integer pageSize);
-
-    /**
      * 获取所有的问题列表
      */
     List<QuestionVo> getQuestionAll();
