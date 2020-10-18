@@ -26,4 +26,16 @@ export default {
   #app {
     height: 100%;
   }
+  h1 {
+    line-height: inherit !important;
+  }
+
+  .page-header .breadcrumb {
+    background-color: transparent !important;
+    padding: inherit !important;
+  }
+
+  .row {
+    margin-left: inherit !important;
+  }
 </style>
