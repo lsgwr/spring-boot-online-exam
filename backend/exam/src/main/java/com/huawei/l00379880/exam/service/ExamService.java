@@ -50,15 +50,6 @@ public interface ExamService {
     QuestionDetailVo getQuestionDetail(String id);
 
     /**
-     * 获取问题的列表
-     *
-     * @param pageNo   页码编号
-     * @param pageSize 页面大小
-     * @return 考试页面对象
-     */
-    ExamPageVo getExamList(Integer pageNo, Integer pageSize);
-
-    /**
      * 获取全部考试的列表
      */
     List<ExamVo> getExamAll();

@@ -101,21 +101,6 @@ public class ExamController {
         return resultVO;
     }
 
-    @GetMapping("/list")
-    @ApiOperation("获取考试列表")
-    ResultVO<ExamPageVo> getExamList(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize) {
-        // 需要拼接前端需要的考试列表对象
-        ResultVO<ExamPageVo> resultVO;
-        try {
-            ExamPageVo examPageVo = examService.getExamList(pageNo, pageSize);
-            resultVO = new ResultVO<>(0, "获取考试列表成功", examPageVo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resultVO = new ResultVO<>(-1, "获取考试列表失败", null);
-        }
-        return resultVO;
-    }
-
     @GetMapping("/all")
     @ApiOperation("获取全部考试的列表")
     ResultVO<List<ExamVo>> getExamAll() {

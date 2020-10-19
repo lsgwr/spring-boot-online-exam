@@ -266,30 +266,6 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public ExamPageVo getExamList(Integer pageNo, Integer pageSize) {
-        // 获取考试列表
-        // 按照日期降序排列
-        Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
-        // 构造分页请求,注意前端面页面的分页是从1开始的，后端是从0开始地，所以要减去1哈
-        PageRequest pageRequest = PageRequest.of(pageNo - 1, pageSize, sort);
-        Page<Exam> examPage = examRepository.findAll(pageRequest);
-        ExamPageVo examPageVo = new ExamPageVo();
-        // 设置页码
-        examPageVo.setPageNo(pageNo);
-        // 设置每页有多少条数据
-        examPageVo.setPageSize(pageSize);
-        // 设置总共有多少个元素
-        examPageVo.setTotalCount(examPage.getTotalElements());
-        // 设置一共有多少页
-        examPageVo.setTotalPage(examPage.getTotalPages());
-        // 取出当前页的考试列表
-        List<Exam> examList = examPage.getContent();
-        List<ExamVo> examVoList = getExamVos(examList);
-        examPageVo.setExamVoList(examVoList);
-        return examPageVo;
-    }
-
-    @Override
     public List<ExamVo> getExamAll() {
         List<Exam> examList = examRepository.findAll();
         return getExamVos(examList);
