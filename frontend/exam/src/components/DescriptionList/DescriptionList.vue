@@ -79,75 +79,78 @@ export default {
 
 <style lang="less" scoped>
 
-  .description-list {
+.description-list {
 
-    .title {
-      color: rgba(0,0,0,.85);
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 16px;
-    }
+  .title {
+    color: rgba(0, 0, 0, .85);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
 
-    /deep/ .term {
-      color: rgba(0,0,0,.85);
-      display: table-cell;
-      line-height: 20px;
-      margin-right: 8px;
-      padding-bottom: 16px;
-      white-space: nowrap;
+  /deep/ .term {
+    color: rgba(0, 0, 0, .85);
+    display: table-cell;
+    line-height: 20px;
+    margin-right: 8px;
+    padding-bottom: 16px;
+    white-space: nowrap;
 
-      &:not(:empty):after {
-        content: ":";
-        margin: 0 8px 0 2px;
-        position: relative;
-        top: -.5px;
-      }
-    }
-
-    /deep/ .content {
-      color: rgba(0,0,0,.65);
-      display: table-cell;
-      min-height: 22px;
-      line-height: 22px;
-      padding-bottom: 16px;
-      width: 100%;
-      &:empty {
-        content: ' ';
-        height: 38px;
-        padding-bottom: 16px;
-      }
-    }
-
-    &.small {
-
-      .title {
-        font-size: 14px;
-        color: rgba(0, 0, 0, .65);
-        font-weight: normal;
-        margin-bottom: 12px;
-      }
-      /deep/ .term, .content {
-        padding-bottom: 8px;
-      }
-    }
-
-    &.large {
-      /deep/ .term, .content {
-        padding-bottom: 16px;
-      }
-
-      .title {
-        font-size: 16px;
-      }
-    }
-
-    &.vertical {
-      .term {
-        padding-bottom: 8px;
-      }
-      /deep/ .term, .content {
-        display: block;
-      }
+    &:not(:empty):after {
+      content: ":";
+      margin: 0 8px 0 2px;
+      position: relative;
+      top: -.5px;
     }
   }
+
+  /deep/ .content {
+    color: rgba(0, 0, 0, .65);
+    display: table-cell;
+    min-height: 22px;
+    line-height: 22px;
+    padding-bottom: 16px;
+    width: 100%;
+
+    &:empty {
+      content: ' ';
+      height: 38px;
+      padding-bottom: 16px;
+    }
+  }
+
+  &.small {
+
+    .title {
+      font-size: 14px;
+      color: rgba(0, 0, 0, .65);
+      font-weight: normal;
+      margin-bottom: 12px;
+    }
+
+    /deep/ .term, .content {
+      padding-bottom: 8px;
+    }
+  }
+
+  &.large {
+    /deep/ .term, .content {
+      padding-bottom: 16px;
+    }
+
+    .title {
+      font-size: 16px;
+    }
+  }
+
+  &.vertical {
+    .term {
+      padding-bottom: 8px;
+    }
+
+    /deep/ .term, .content {
+      display: block;
+    }
+  }
+}
 </style>
