@@ -35,13 +35,13 @@ export const asyncRouterMap = [
         redirect: '/list/exam-card',
         component: PageView,
         hideChildrenInMenu: true,
-        meta: { title: '考试列表', keepAlive: true, icon: examList, permission: ['exam-card'] },
+        meta: { title: '考试卡片', keepAlive: true, icon: examList, permission: ['exam-card'] },
         children: [
           {
             path: '/list/exam-card',
             name: 'ExamCardList',
             component: () => import('../views/list/ExamCardList'),
-            meta: { title: '详情', keepAlive: true, permission: ['exam-card'] }
+            meta: { title: '考试卡片列表', keepAlive: true, permission: ['exam-card'] }
           }
         ]
       },
@@ -58,7 +58,7 @@ export const asyncRouterMap = [
             name: 'QuestionTableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('../views/list/QuestionTableList'),
-            meta: { title: '详情', keepAlive: true, permission: ['question-admin'] }
+            meta: { title: '问题列表', keepAlive: true, permission: ['question-admin'] }
           }
         ]
       },
@@ -76,7 +76,7 @@ export const asyncRouterMap = [
             name: 'ExamTableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('../views/list/ExamTableList'),
-            meta: { title: '详情', keepAlive: true, permission: ['exam-table-list'] }
+            meta: { title: '考试列表', keepAlive: true, permission: ['exam-table-list'] }
           }
         ]
       },
@@ -92,7 +92,7 @@ export const asyncRouterMap = [
             path: '/list/exam-record-list',
             name: 'ExamRecordList',
             component: () => import('../views/list/ExamRecordList'),
-            meta: { title: '详情', keepAlive: true, permission: ['exam-record-list'] }
+            meta: { title: '我参与过的考试列表', keepAlive: true, permission: ['exam-record-list'] }
           }
         ]
       },
