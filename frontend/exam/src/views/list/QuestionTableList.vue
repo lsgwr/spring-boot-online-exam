@@ -1,5 +1,9 @@
 <template>
   <a-card :bordered="false">
+    <div id="toolbar">
+      <a-button type="primary" icon="plus" @click="$refs.createQuestionModal.create()">新建</a-button>&nbsp;
+      <a-button type="primary" icon="reload" @click="loadAll()">刷新</a-button>
+    </div>
     <BootstrapTable
       ref="table"
       :columns="columns"
@@ -97,8 +101,8 @@ export default {
         search: true,
         showColumns: true,
         showExport: true,
-        showRefresh: true,
         pagination: true,
+        toolbar: '#toolbar',
         // 下面两行是支持高级搜索，即按照字段搜索
         advancedSearch: true,
         idTable: 'advancedTable',
@@ -114,9 +118,8 @@ export default {
   },
   methods: {
     handleEdit (record) {
-      // 弹出一个可修改的输入框
-      console.log(record)
-      this.$refs.modalEdit.edit(record)
+      const that = this
+      this.$refs.modalEdit.edit(record, that)
     },
     handleSub (record) {
       // 查看题目
@@ -124,16 +127,19 @@ export default {
       this.$refs.modalView.edit(record)
     },
     handleOk () {
-      this.$refs.table.refresh()
+      console.log('进入handleOk啦')
+      this.loadAll() // 加载所有问题的数据
     },
     loadAll () {
+      console.log('进入loadAll啦')
       const that = this
       getQuestionAll()
         .then(res => {
           if (res.code === 0) {
             that.tableData = res.data
+            that.$refs.table._initTable()
           } else {
-            this.$notification.error({
+            that.$notification.error({
               message: '获取全部问题的列表失败',
               description: res.msg
             })

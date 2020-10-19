@@ -176,6 +176,7 @@ export default {
           })
           // 关闭弹出框
           this.visible = false
+          this.$emit('ok')
         }
       }).catch(err => {
         // 失败就弹出警告消息
