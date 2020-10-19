@@ -7,7 +7,7 @@
     </div>
     <div class="copyright">
       Copyright
-      <a-icon type="copyright" /> 2019 <span>Liang Shan Guang</span>
+      <a-icon type="copyright" /> 2020 <span>Liang Shan Guang</span>
     </div>
   </div>
 </template>

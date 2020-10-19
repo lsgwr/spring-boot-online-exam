@@ -22,7 +22,7 @@
           <a href="mailto:liangshanguang2@gmail.com">联系我</a>
         </div>
         <div class="copyright">
-          Copyright &copy; 2019 Liang Shan Guang
+          Copyright &copy; 2020 Liang Shan Guang
         </div>
       </div>
     </div>
