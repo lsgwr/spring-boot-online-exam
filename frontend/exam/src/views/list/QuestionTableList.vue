@@ -19,19 +19,15 @@
 
 <script>
 import '../../plugins/bootstrap-table'
-import { STable } from '../../components'
 import QuestionViewModal from './modules/QuestionViewModal'
 import QuestionEditModal from './modules/QuestionEditModal'
 import StepByStepQuestionModal from './modules/StepByStepQuestionModal'
-import CreateForm from './modules/CreateForm'
 import { getQuestionAll } from '../../api/exam'
 
 export default {
   name: 'QuestionTableList',
   components: {
     StepByStepQuestionModal,
-    STable,
-    CreateForm,
     QuestionViewModal,
     QuestionEditModal
   },
@@ -127,11 +123,9 @@ export default {
       this.$refs.modalView.edit(record)
     },
     handleOk () {
-      console.log('进入handleOk啦')
       this.loadAll() // 加载所有问题的数据
     },
     loadAll () {
-      console.log('进入loadAll啦')
       const that = this
       getQuestionAll()
         .then(res => {

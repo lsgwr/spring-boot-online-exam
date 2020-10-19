@@ -120,7 +120,6 @@ export default {
       this.loadAll()
     },
     loadAll () {
-      console.log('进入loadAll啦')
       const that = this
       getExamAll()
         .then(res => {
