@@ -54,6 +54,13 @@ export function getExamList (parameter) {
   })
 }
 
+export function getExamAll () {
+  return axios({
+    url: api.ExamAll,
+    method: 'get'
+  })
+}
+
 // 获取所有问题，按照单选、多选和判断进行分类
 export function getExamQuestionTypeList () {
   return axios({

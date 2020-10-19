@@ -284,6 +284,18 @@ public class ExamServiceImpl implements ExamService {
         examPageVo.setTotalPage(examPage.getTotalPages());
         // 取出当前页的考试列表
         List<Exam> examList = examPage.getContent();
+        List<ExamVo> examVoList = getExamVos(examList);
+        examPageVo.setExamVoList(examVoList);
+        return examPageVo;
+    }
+
+    @Override
+    public List<ExamVo> getExamAll() {
+        List<Exam> examList = examRepository.findAll();
+        return getExamVos(examList);
+    }
+
+    private List<ExamVo> getExamVos(List<Exam> examList) {
         // 需要自定义的exam列表
         List<ExamVo> examVoList = new ArrayList<>();
         // 循环完成每个属性的定制
@@ -339,9 +351,10 @@ public class ExamServiceImpl implements ExamService {
             // 把examVo加到examVoList中
             examVoList.add(examVo);
         }
-        examPageVo.setExamVoList(examVoList);
-        return examPageVo;
+        return examVoList;
     }
+
+
 
     @Override
     public ExamQuestionTypeVo getExamQuestionType() {

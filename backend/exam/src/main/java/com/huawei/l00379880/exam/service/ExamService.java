@@ -59,6 +59,11 @@ public interface ExamService {
     ExamPageVo getExamList(Integer pageNo, Integer pageSize);
 
     /**
+     * 获取全部考试的列表
+     */
+    List<ExamVo> getExamAll();
+
+    /**
      * 获取所有问题的下拉列表，方便前端创建考试时筛选
      *
      * @return 适配前端的问题下拉列表
@@ -114,4 +119,6 @@ public interface ExamService {
      * @return 考试详情
      */
     RecordDetailVo getRecordDetail(String recordId);
+
+
 }

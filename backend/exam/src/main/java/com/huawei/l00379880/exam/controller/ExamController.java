@@ -116,6 +116,21 @@ public class ExamController {
         return resultVO;
     }
 
+    @GetMapping("/all")
+    @ApiOperation("获取全部考试的列表")
+    ResultVO<List<ExamVo>> getExamAll() {
+        // 需要拼接前端需要的考试列表对象
+        ResultVO<List<ExamVo>> resultVO;
+        try {
+            List<ExamVo> examVos = examService.getExamAll();
+            resultVO = new ResultVO<>(0, "获取全部考试的列表成功", examVos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultVO = new ResultVO<>(-1, "获取全部考试的列表失败", null);
+        }
+        return resultVO;
+    }
+
     @GetMapping("/question/type/list")
     @ApiOperation("获取问题列表，按照单选、多选和判断题分类返回")
     ResultVO<ExamQuestionTypeVo> getExamQuestionTypeList() {

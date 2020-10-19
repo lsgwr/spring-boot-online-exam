@@ -20,6 +20,7 @@ const api = {
   ExamQuestionSelection: '/exam/question/selection',
   ExamQuestionCreate: '/exam/question/create',
   ExamList: '/exam/list',
+  ExamAll: '/exam/all',
   // 获取问题列表，按照单选、多选和判断进行分类
   ExamQuestionTypeList: '/exam/question/type/list',
   ExamCreate: '/exam/create',

@@ -38,7 +38,7 @@ import { STable } from '../../components'
 import QuestionViewModal from './modules/QuestionViewModal'
 import QuestionEditModal from './modules/QuestionEditModal'
 import CreateForm from './modules/CreateForm'
-import { getExamList } from '../../api/exam'
+import { getExamList, getExamAll } from '../../api/exam'
 import StepByStepExamModal from './modules/StepByStepExamModal'
 
 export default {
