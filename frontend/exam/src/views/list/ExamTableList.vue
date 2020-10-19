@@ -1,125 +1,102 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.createExamModal.create()">新建</a-button>
+    <div id="toolbar">
+      <a-button type="primary" icon="plus" @click="$refs.createExamModal.create()">新建</a-button>&nbsp;
+      <a-button type="primary" icon="reload" @click="loadAll()">刷新</a-button>
     </div>
-
-    <s-table
+    <BootstrapTable
       ref="table"
-      size="default"
-      rowKey="key"
       :columns="columns"
-      :data="loadData"
-      :alert="options.alert"
-      :rowSelection="options.rowSelection"
-    >
-      <span slot="serial" slot-scope="text, record, index">
-        {{ index + 1 }}
-      </span>
-
-      <span slot="action" slot-scope="text, record">
-        <template>
-          <a @click="handleSub(record)">详情</a>
-          <a-divider type="vertical"/>
-          <a @click="handleEdit(record)">编辑</a>
-        </template>
-      </span>
-
-    </s-table>
+      :data="tableData"
+      :options="options"
+    />
     <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
     <step-by-step-exam-modal ref="createExamModal" @ok="handleOk"/>
-    <question-view-modal ref="modalView" @ok="handleOk"/>
-    <question-edit-modal ref="modalEdit" @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-import { STable } from '../../components'
-import QuestionViewModal from './modules/QuestionViewModal'
-import QuestionEditModal from './modules/QuestionEditModal'
-import CreateForm from './modules/CreateForm'
-import { getExamList, getExamAll } from '../../api/exam'
+import '../../plugins/bootstrap-table'
+import { getExamAll } from '../../api/exam'
 import StepByStepExamModal from './modules/StepByStepExamModal'
 
 export default {
   name: 'ExamTableList',
   components: {
-    StepByStepExamModal,
-    STable,
-    CreateForm,
-    QuestionViewModal,
-    QuestionEditModal
+    StepByStepExamModal
   },
   data () {
+    const that = this // 方便在bootstrap-table中引用methods
     return {
       // 表头
       columns: [
         {
-          title: '#',
-          scopedSlots: { customRender: 'serial' }
+          title: '序号',
+          field: 'serial',
+          formatter: function (value, row, index) {
+            return index + 1 // 这样的话每翻一页都会重新从1开始，
+          }
         },
         {
           title: '名称',
-          dataIndex: 'name',
+          field: 'name',
           width: 250
         },
         {
           title: '总分数',
-          dataIndex: 'score'
+          field: 'score'
         },
         {
           title: '创建人',
-          dataIndex: 'creator'
+          field: 'creator'
         },
         {
           title: '时长',
-          dataIndex: 'elapse'
+          field: 'elapse'
         },
         {
           title: '更新时间',
-          dataIndex: 'updateTime'
+          field: 'updateTime'
         },
         {
           title: '操作',
-          dataIndex: 'action',
+          field: 'action',
           width: '150px',
-          scopedSlots: { customRender: 'action' }
+          formatter: (value, row) => {
+            return '<button type="button" class="btn btn-success view-exam">详情</button>' +
+              '&nbsp;&nbsp;' +
+              '<button type="button" class="btn btn-success edit-exam">编辑</button>'
+          },
+          events: {
+            'click .view-exam': function (e, value, row, index) {
+              that.handleSub(row)
+            },
+            'click .edit-exam': function (e, value, row, index) {
+              that.handleEdit(row)
+            }
+          }
         }
       ],
-      // 取parameter变量，当变化时，自动重新请求后端数据。加载数据方法 必须为 Promise 对象
-      loadData: parameter => {
-        // 从表格组件中获取分页参数
-        console.log('loadData.parameter', parameter)
-        // 给queryParam赋值，然后把queryParam传给后端,待数据验证
-        return getExamList(Object.assign(parameter, this.queryParam))
-          .then(res => {
-            if (res.code === 0) {
-              return res.data
-            } else {
-              this.$notification.error({
-                message: '获取问题列表失败',
-                description: res.msg
-              })
-            }
-          })
-      },
-      selectedRowKeys: [],
-      selectedRows: [],
-
-      // custom table alert & rowSelection
+      tableData: [], // bootstrap-table的数据
+      // custom bootstrap-table
       options: {
-        alert: {
-          show: true,
-          clear: () => {
-            this.selectedRowKeys = []
-          }
-        },
-        rowSelection: {
-          selectedRowKeys: this.selectedRowKeys,
-          onChange: this.onSelectChange
-        }
+        search: true,
+        showColumns: true,
+        showExport: true,
+        pagination: true,
+        toolbar: '#toolbar',
+        // 下面两行是支持高级搜索，即按照字段搜索
+        advancedSearch: true,
+        idTable: 'advancedTable'
+        // 下面是常用的事件，更多的点击事件可以参考：http://www.itxst.com/bootstrap-table-events/tutorial.html
+        // onClickRow: that.clickRow,
+        // onClickCell: that.clickCell, // 单元格单击事件
+        // onDblClickCell: that.dblClickCell // 单元格双击事件
       }
     }
+  },
+  mounted () {
+    this.loadAll() // 加载所有问题的数据
   },
   methods: {
     handleEdit (record) {
@@ -128,7 +105,7 @@ export default {
       this.$refs.modalEdit.edit(record)
     },
     handleSub (record) {
-      // 查看题目，不在模态框里查啦，太麻烦
+      // 查看考试，不在模态框里查啦，太麻烦
       // console.log(record)
       // this.$refs.modalView.edit(record)
 
@@ -140,11 +117,23 @@ export default {
       window.open(routeUrl.href, '_blank')
     },
     handleOk () {
-      this.$refs.table.refresh()
+      this.loadAll()
     },
-    onSelectChange (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
+    loadAll () {
+      console.log('进入loadAll啦')
+      const that = this
+      getExamAll()
+        .then(res => {
+          if (res.code === 0) {
+            that.tableData = res.data
+            that.$refs.table._initTable()
+          } else {
+            that.$notification.error({
+              message: '获取全部考试的列表失败',
+              description: res.msg
+            })
+          }
+        })
     }
   }
 }

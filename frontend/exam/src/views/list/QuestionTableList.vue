@@ -105,11 +105,11 @@ export default {
         toolbar: '#toolbar',
         // 下面两行是支持高级搜索，即按照字段搜索
         advancedSearch: true,
-        idTable: 'advancedTable',
+        idTable: 'advancedTable'
         // 下面是常用的事件，更多的点击事件可以参考：http://www.itxst.com/bootstrap-table-events/tutorial.html
         // onClickRow: that.clickRow,
         // onClickCell: that.clickCell, // 单元格单击事件
-        onDblClickCell: that.dblClickCell // 单元格双击事件
+        // onDblClickCell: that.dblClickCell // 单元格双击事件
       }
     }
   },
