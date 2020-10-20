@@ -1,3 +1,9 @@
+spring:
+  datasource:
+    username: root
+    password: aA111111
+    url: jdbc:mysql://129.211.88.191:3306/exam?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+
 server:
   servlet:
     context-path: # 这里配置为空是因为生产环境法需要自己配置nginx的转发,nginx可以参考我的配置doc/deploy/nginx.conf

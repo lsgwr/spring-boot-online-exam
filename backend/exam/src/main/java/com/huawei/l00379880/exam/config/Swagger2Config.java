@@ -51,7 +51,7 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("online exam by springboot")
-                .description("在线考试系统 by 梁山广 at 2019")
+                .description("在线考试系统 by 梁山广 at 2020")
                 .termsOfServiceUrl("https://github.com/19920625lsg/spring-boot-online-exam")
                 .version("1.0")
                 .contact(new Contact("liangshanguang", "https://github.com/19920625lsg/spring-boot-online-exam", "liangshanguang2@gmail.com"))
