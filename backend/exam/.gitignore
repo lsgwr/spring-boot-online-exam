@@ -2,3 +2,4 @@
 *.iml
 src/main/resources/public
 target/
+dist/

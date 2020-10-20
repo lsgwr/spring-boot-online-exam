@@ -23,7 +23,7 @@ spring:
       max-file-size: 100MB # 最大支持文件大小
       max-request-size: 100MB # 最大支持请求大小
   profiles:
-    active: dev # 开发时配dev, 生产时配prod
+    active: prod # 开发时配dev, 生产时配prod
 
 # 拦截器相关的配置
 interceptors:
