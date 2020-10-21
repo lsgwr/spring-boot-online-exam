@@ -114,8 +114,7 @@ export default {
   },
   methods: {
     handleEdit (record) {
-      const that = this
-      this.$refs.modalEdit.edit(record, that)
+      this.$refs.modalEdit.edit(record)
     },
     handleSub (record) {
       // 查看题目
