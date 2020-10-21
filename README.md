@@ -4,11 +4,20 @@
 
 ### 快速体验
 在安装了docker的机器上执行如下命令：
+安装mysql:
 ```shell
-docker run -d -p 80:80 -p 9527:9527 --name exam waterknife/exam
+docker run --name exam-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=aA111111 -d mysql:5.7.15
 ```
 
-然后访问 http://localhost 即可
+然后用`doc/sql/exam.sql`初始化一个名为exam的数据库(用navicate比较方便)
+
+然后运行前后端的容器：
+
+```shell
+docker run -d --network=host --name exam-backend-frontend waterknife/exam
+```
+
+然后访问 http://localhost 即可访问自己搭建的考试系统
 
 
 ### 介绍
