@@ -2,6 +2,15 @@
 
 > 在线Demo预览，http://129.211.88.191 ，账户分别是admin、teacher、student，密码是admin123
 
+### 快速体验
+在安装了docker的机器上执行如下命令：
+```shell
+docker run -d -p 80:80 -p 9527:9527 --name exam waterknife/exam
+```
+
+然后访问 http://localhost 即可
+
+
 ### 介绍
 基于springboot的在线考试系统
 
