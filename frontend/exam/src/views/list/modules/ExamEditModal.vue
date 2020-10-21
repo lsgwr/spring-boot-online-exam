@@ -20,18 +20,14 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['name', {rules: [{required: true}]}]"/>
+            <a-input :value="exam.name"/>
           </a-form-item>
           <a-form-item
             label="考试限时"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input-number
-              :min="1"
-              :max="200"
-              v-decorator="['elapse', {initialValue: '90',rules: [{required: true}]}]"
-            />
+            <a-input-number :min="1" :max="200" :value="exam.elapse" />
             分钟
           </a-form-item>
           <a-form-item
@@ -39,14 +35,14 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-textarea :rows="2" v-decorator="['desc', {rules: [{required: true}]}]"></a-textarea>
+            <a-textarea :rows="2" :value="exam.desc"></a-textarea>
           </a-form-item>
           <a-form-item
             label="考试小图"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-textarea :rows="2" v-decorator="['avatar', {rules: [{required: true}]}]"></a-textarea>
+            <a-textarea :rows="2" :value="exam.avatar"></a-textarea>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
@@ -55,11 +51,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input-number
-              :min="1"
-              :max="20"
-              v-decorator="['radioScore', {initialValue: '5',rules: [{required: true}]}]"
-            />
+            <a-input-number :min="1" :max="20" :value="exam.radioScore" />
             分
           </a-form-item>
 
@@ -68,11 +60,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input-number
-              :min="1"
-              :max="20"
-              v-decorator="['checkScore', {initialValue: '5',rules: [{required: true}]}]"
-            />
+            <a-input-number :min="1" :max="20" :value="exam.checkScore" />
             分
           </a-form-item>
 
@@ -81,11 +69,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input-number
-              :min="1"
-              :max="20"
-              v-decorator="['judgeScore', {initialValue: '5',rules: [{required: true}]}]"
-            />
+            <a-input-number :min="1" :max="20" :value="exam.judgeScore" />
             分
           </a-form-item>
         </div>
@@ -193,7 +177,8 @@ export default {
       confirmLoading: false,
       currentStep: 0,
       mdl: {},
-
+      // 考试的对象
+      exam: {},
       form: this.$form.createForm(this),
       // 单选题对象列表
       radios: [],
@@ -205,16 +190,17 @@ export default {
   },
   methods: {
     edit (exam) {
+      this.exam = exam
       this.visible = true
       // 从后端数据获取单选题、多选题和判断题的列表.Todo:在编辑的时候需要在点击"编辑的时候传入进来"
       getExamQuestionTypeList().then(res => {
         console.log(res)
         if (res.code === 0) {
           console.log(res.data)
-          // Todo:下面这些信息和其他的考试信息应该从exam中获取，而不是从接口获取
           this.radios = res.data.radios
           this.checks = res.data.checks
           this.judges = res.data.judges
+          // Todo:从exam里面的radios、checks、judges设置下上面的this里面的三个属性，把checked属性设置为true
         } else {
           this.$notification.error({
             message: '获取问题列表失败',

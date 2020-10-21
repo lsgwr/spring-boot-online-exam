@@ -12,6 +12,8 @@
     />
     <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
     <step-by-step-exam-modal ref="createExamModal" @ok="handleOk"/>
+    <!--  Todo:这里的详情需要传进去  -->
+    <exam-edit-modal ref="editExamModal" @ok="handleOk"/>
   </a-card>
 </template>
 
@@ -19,10 +21,12 @@
 import '../../plugins/bootstrap-table'
 import { getExamAll } from '../../api/exam'
 import StepByStepExamModal from './modules/StepByStepExamModal'
+import ExamEditModal from './modules/ExamEditModal'
 
 export default {
   name: 'ExamTableList',
   components: {
+    ExamEditModal,
     StepByStepExamModal
   },
   data () {
@@ -101,8 +105,9 @@ export default {
   methods: {
     handleEdit (record) {
       // Todo:修改考试信息和下面的题目，弹出一个可修改的输入框，实际上复用创建题目的模态框即可，还没做完
+      console.log('开始编辑啦')
       console.log(record)
-      this.$refs.modalEdit.edit(record)
+      this.$refs.editExamModal.edit(record)
     },
     handleSub (record) {
       // 查看考试，不在模态框里查啦，太麻烦
