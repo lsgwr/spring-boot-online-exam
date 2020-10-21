@@ -118,7 +118,7 @@
             :wrapperCol="wrapperCol"
             enterButton="Search"
           >
-            <!-- 单选 -->
+            <!-- 多选 -->
             <a-select
               mode="multiple"
               :size="size"
@@ -139,7 +139,7 @@
             :wrapperCol="wrapperCol"
             enterButton="Search"
           >
-            <!-- 单选 -->
+            <!-- 判断 -->
             <a-select
               mode="multiple"
               :size="size"
