@@ -40,6 +40,7 @@
             <a-select
               mode="multiple"
               :size="size"
+              :default-value="defaultRadios"
               placeholder="请选择单选题"
               style="width: 100%"
               @popupScroll="popupScroll"
@@ -56,6 +57,7 @@
             <a-select
               mode="multiple"
               :size="size"
+              :default-value="defaultChecks"
               placeholder="请选择多选题"
               style="width: 100%"
               @popupScroll="popupScroll"
@@ -72,6 +74,7 @@
             <a-select
               mode="multiple"
               :size="size"
+              :default-value="defaultJudges"
               placeholder="请选择判断题"
               style="width: 100%"
               @popupScroll="popupScroll"
@@ -129,24 +132,40 @@ export default {
       // 多选题对象列表
       checks: [],
       // 判断题对象列表
-      judges: []
+      judges: [],
+      defaultRadios: [],
+      defaultChecks: [],
+      defaultJudges: []
     }
   },
   methods: {
     edit (exam) {
       this.exam = exam
       this.visible = true
-      // 从后端数据获取单选题、多选题和判断题的列表.Todo:在编辑的时候需要在点击"编辑的时候传入进来"
+      this.defaultRadios = []
+      this.defaultChecks = []
+      this.defaultJudges = []
+      const that = this
+      // 从后端数据获取单选题、多选题和判断题的列表.在编辑的时候需要在点击"编辑的时候传入进来"
       getExamQuestionTypeList().then(res => {
         console.log(res)
         if (res.code === 0) {
           console.log(res.data)
-          this.radios = res.data.radios
-          this.checks = res.data.checks
-          this.judges = res.data.judges
-          // Todo:从exam里面的radios、checks、judges设置下上面的this里面的三个属性，把checked属性设置为true
+          that.radios = res.data.radios
+          that.checks = res.data.checks
+          that.judges = res.data.judges
+          // 从exam里面的radios、checks、judges设置下上面的this里面的三个属性，把checked属性设置为true
+          for (let i = 0; i < exam.radios.length; i++) { // 遍历所有的题目的选项
+            that.defaultRadios.push(exam.radios[i].name)
+          }
+          for (let i = 0; i < exam.checks.length; i++) { // 遍历所有的题目的选项
+            that.defaultChecks.push(exam.checks[i].name)
+          }
+          for (let i = 0; i < exam.judges.length; i++) { // 遍历所有的题目的选项
+            that.defaultJudges.push(exam.judges[i].name)
+          }
         } else {
-          this.$notification.error({
+          that.$notification.error({
             message: '获取问题列表失败',
             description: res.msg
           })
@@ -249,7 +268,7 @@ export default {
     // 更新多选题信息
     handleCheckChange (values) {
       console.log(values)
-      // 更新单选题的信息
+      // 更新多选题的信息
       for (let i = 0; i < this.checks.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
         const name = this.checks[i].name
@@ -274,7 +293,7 @@ export default {
     // 更新判断题信息
     handleJudgeChange (values) {
       console.log(values)
-      // 更新单选题的信息
+      // 更新判断题的信息
       for (let i = 0; i < this.judges.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
         const name = this.judges[i].name
