@@ -1,10 +1,6 @@
 <template>
   <div>
-    <a-card
-      style="margin-top: 24px"
-      :bordered="false"
-      title="参加过的考试">
-
+    <a-card style="margin-top: 24px" :bordered="false" title="参加过的考试">
       <div slot="extra">
         <a-input-search style="margin-left: 16px; width: 272px;"/>
       </div>

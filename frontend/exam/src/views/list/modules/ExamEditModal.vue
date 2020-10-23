@@ -1,11 +1,5 @@
 <template>
-  <a-modal
-    title="更新考试"
-    :width="640"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    @cancel="handleCancel"
-  >
+  <a-modal title="更新考试" :width="640" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
     <a-spin :spinning="confirmLoading">
       <a-steps :current="currentStep" :style="{ marginBottom: '28px' }" size="small">
         <a-step title="考试描述"/>
@@ -15,72 +9,33 @@
       <a-form :form="form">
         <!-- step1 -->
         <div v-show="currentStep === 0">
-          <a-form-item
-            label="考试名称"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
+          <a-form-item label="考试名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-input :value="exam.name"/>
           </a-form-item>
-          <a-form-item
-            label="考试限时"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
-            <a-input-number :min="1" :max="200" :value="exam.elapse" />
-            分钟
+          <a-form-item label="考试限时" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-input-number :min="1" :max="200" :value="exam.elapse" />分钟
           </a-form-item>
-          <a-form-item
-            label="考试简述"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
+          <a-form-item label="考试简述" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-textarea :rows="2" :value="exam.desc"></a-textarea>
           </a-form-item>
-          <a-form-item
-            label="考试小图"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
+          <a-form-item label="考试小图" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-textarea :rows="2" :value="exam.avatar"></a-textarea>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
-          <a-form-item
-            label="单选题"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
-            <a-input-number :min="1" :max="20" :value="exam.radioScore" />
-            分
+          <a-form-item label="单选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-input-number :min="1" :max="20" :value="exam.radioScore" />分
           </a-form-item>
-
-          <a-form-item
-            label="多选题"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
-            <a-input-number :min="1" :max="20" :value="exam.checkScore" />
-            分
+          <a-form-item label="多选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-input-number :min="1" :max="20" :value="exam.checkScore" />分
           </a-form-item>
-
-          <a-form-item
-            label="判断题"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
-            <a-input-number :min="1" :max="20" :value="exam.judgeScore" />
-            分
+          <a-form-item label="判断题" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-input-number :min="1" :max="20" :value="exam.judgeScore" />分
           </a-form-item>
         </div>
 
         <div v-show="currentStep === 2">
-          <a-form-item
-            label="选择单选题"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            enterButton="Search"
-          >
+          <a-form-item label="选择单选题" :labelCol="labelCol" :wrapperCol="wrapperCol" enterButton="Search">
             <!-- 单选 -->
             <a-select
               mode="multiple"
@@ -96,12 +51,7 @@
             </a-select>
           </a-form-item>
 
-          <a-form-item
-            label="选择多选题"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            enterButton="Search"
-          >
+          <a-form-item label="选择多选题" :labelCol="labelCol" :wrapperCol="wrapperCol" enterButton="Search">
             <!-- 多选 -->
             <a-select
               mode="multiple"
@@ -117,12 +67,7 @@
             </a-select>
           </a-form-item>
 
-          <a-form-item
-            label="选择判断题"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            enterButton="Search"
-          >
+          <a-form-item label="选择判断题" :labelCol="labelCol" :wrapperCol="wrapperCol" enterButton="Search">
             <!-- 判断 -->
             <a-select
               mode="multiple"
@@ -130,8 +75,7 @@
               placeholder="请选择判断题"
               style="width: 100%"
               @popupScroll="popupScroll"
-              @change="handleJudgeChange"
-            >
+              @change="handleJudgeChange">
               <a-select-option v-for="judge in judges" :value="judge.name" :key="judge.id">
                 {{ judge.name }}
               </a-select-option>
