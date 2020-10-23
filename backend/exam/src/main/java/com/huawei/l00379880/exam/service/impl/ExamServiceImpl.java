@@ -530,7 +530,7 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public List<ExamRecordVo> getExamRecordList(String userId) {
         // 获取指定用户下的考试记录列表
-        List<ExamRecord> examRecordList = examRecordRepository.findByExamJoinerId(userId);
+        List<ExamRecord> examRecordList = examRecordRepository.findByExamJoinerIdOrderByExamJoinDateDesc(userId);
         List<ExamRecordVo> examRecordVoList = new ArrayList<>();
         for (ExamRecord examRecord : examRecordList) {
             ExamRecordVo examRecordVo = new ExamRecordVo();

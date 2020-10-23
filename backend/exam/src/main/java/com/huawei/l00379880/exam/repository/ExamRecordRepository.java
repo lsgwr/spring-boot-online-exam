@@ -18,5 +18,5 @@ public interface ExamRecordRepository extends JpaRepository<ExamRecord, String> 
      * @param userId 用户id
      * @return 用户参加过的所有考试
      */
-    List<ExamRecord> findByExamJoinerId(String userId);
+    List<ExamRecord> findByExamJoinerIdOrderByExamJoinDateDesc(String userId);
 }
