@@ -91,6 +91,15 @@ export function examCreate (parameter) {
   })
 }
 
+export function examUpdate (parameter) {
+  console.log(parameter)
+  return axios({
+    url: api.ExamUpdate,
+    method: 'post',
+    data: parameter
+  })
+}
+
 export function getExamDetail (examId) {
   return axios({
     url: api.ExamDetail + examId,

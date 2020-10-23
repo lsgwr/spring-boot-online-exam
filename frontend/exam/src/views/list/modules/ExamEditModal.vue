@@ -10,27 +10,27 @@
         <!-- step1 -->
         <div v-show="currentStep === 0">
           <a-form-item label="考试名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input :value="exam.name"/>
+            <a-input v-model="exam.name"/>
           </a-form-item>
           <a-form-item label="考试限时" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="200" :value="exam.elapse" />分钟
+            <a-input-number :min="1" :max="200" v-model="exam.elapse" />分钟
           </a-form-item>
           <a-form-item label="考试简述" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-textarea :rows="2" :value="exam.desc"></a-textarea>
+            <a-textarea :rows="2" v-model="exam.desc"></a-textarea>
           </a-form-item>
           <a-form-item label="考试小图" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-textarea :rows="2" :value="exam.avatar"></a-textarea>
+            <a-textarea :rows="2" v-model="exam.avatar"></a-textarea>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
           <a-form-item label="单选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" :value="exam.radioScore" />分
+            <a-input-number :min="1" :max="20" v-model="exam.radioScore" />分
           </a-form-item>
           <a-form-item label="多选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" :value="exam.checkScore" />分
+            <a-input-number :min="1" :max="20" v-model="exam.checkScore" />分
           </a-form-item>
           <a-form-item label="判断题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" :value="exam.judgeScore" />分
+            <a-input-number :min="1" :max="20" v-model="exam.judgeScore" />分
           </a-form-item>
         </div>
 
@@ -46,7 +46,7 @@
               @popupScroll="popupScroll"
               @change="handleRadioChange"
             >
-              <a-select-option v-for="radio in radios" :value="radio.name" :key="radio.id">
+              <a-select-option v-for="radio in exam.radios" :value="radio.name" :key="radio.id">
                 {{ radio.name }}
               </a-select-option>
             </a-select>
@@ -63,7 +63,7 @@
               @popupScroll="popupScroll"
               @change="handleCheckChange"
             >
-              <a-select-option v-for="check in checks" :value="check.name" :key="check.id">
+              <a-select-option v-for="check in exam.checks" :value="check.name" :key="check.id">
                 {{ check.name }}
               </a-select-option>
             </a-select>
@@ -79,7 +79,7 @@
               style="width: 100%"
               @popupScroll="popupScroll"
               @change="handleJudgeChange">
-              <a-select-option v-for="judge in judges" :value="judge.name" :key="judge.id">
+              <a-select-option v-for="judge in exam.judges" :value="judge.name" :key="judge.id">
                 {{ judge.name }}
               </a-select-option>
             </a-select>
@@ -99,7 +99,7 @@
 
 <script>
 // import pick from 'lodash.pick'
-import { getExamQuestionTypeList, examCreate } from '../../../api/exam'
+import { getExamQuestionTypeList, examUpdate } from '../../../api/exam'
 
 const stepForms = [
   ['name', 'elapse', 'desc', 'avatar'],
@@ -127,12 +127,6 @@ export default {
       // 考试的对象
       exam: {},
       form: this.$form.createForm(this),
-      // 单选题对象列表
-      radios: [],
-      // 多选题对象列表
-      checks: [],
-      // 判断题对象列表
-      judges: [],
       defaultRadios: [],
       defaultChecks: [],
       defaultJudges: []
@@ -142,6 +136,7 @@ export default {
     edit (exam) {
       this.exam = exam
       this.visible = true
+      // 每次编辑需要先清空下之前的数据
       this.defaultRadios = []
       this.defaultChecks = []
       this.defaultJudges = []
@@ -151,9 +146,6 @@ export default {
         console.log(res)
         if (res.code === 0) {
           console.log(res.data)
-          that.radios = res.data.radios
-          that.checks = res.data.checks
-          that.judges = res.data.judges
           // 从exam里面的radios、checks、judges设置下上面的this里面的三个属性，把checked属性设置为true
           for (let i = 0; i < exam.radios.length; i++) { // 遍历所有的题目的选项
             that.defaultRadios.push(exam.radios[i].name)
@@ -196,40 +188,28 @@ export default {
       }
       // last step，最后一步，代表完成考试编写，需要点击"完成"创建考试
       this.confirmLoading = true
-      validateFields((errors, values) => { // values就是表单中校验的值，后面提交到后端接口时主要就是用这个values
-        console.log('提交数据到后端')
-        console.log('errors:', errors, 'val:', values)
-        // 设置单选题、多选题和判断题的内容，但是提交前需要保证都已经被正确更新了
-        values.radios = this.radios
-        values.checks = this.checks
-        values.judges = this.judges
-        this.confirmLoading = false
-        if (!errors) {
-          // 在这里把创建的考试的内容(存放在values中)提交给后端接口，需要的参数都已经封装成values这个json啦
-          console.log('values:', values)
-          // 把data中的question属性提交到后端，待写完后端接口.把前端的创建的题型提交到后端
-          examCreate(values).then(res => {
-            // 成功就跳转到结果页面
-            console.log(res)
-            if (res.code === 0) {
-              this.$notification.success({
-                message: '更新成功',
-                description: '考试更新成功'
-              })
-              // 关闭弹出框
-              this.visible = false
-              this.$emit('ok')
-            }
-          }).catch(err => {
-            // 失败就弹出警告消息
-            this.$notification.error({
-              message: '考试更新失败',
-              description: err.message
-            })
+      console.log('提交数据到后端')
+      // 设置单选题、多选题和判断题的内容，但是提交前需要保证都已经被正确更新了
+      this.confirmLoading = false
+      const that = this
+      examUpdate(that.exam).then(res => {
+        // 成功就跳转到结果页面
+        console.log(res)
+        if (res.code === 0) {
+          that.$notification.success({
+            message: '更新成功',
+            description: '考试更新成功'
           })
-        } else {
-          this.confirmLoading = false
+          // 关闭弹出框
+          that.visible = false
+          that.$emit('ok')
         }
+      }).catch(err => {
+        // 失败就弹出警告消息
+        that.$notification.error({
+          message: '考试更新失败',
+          description: err.message
+        })
       })
     },
     backward () {
@@ -244,9 +224,9 @@ export default {
     handleRadioChange (values) {
       console.log(values)
       // 更新单选题的信息
-      for (let i = 0; i < this.radios.length; i++) { // 遍历所有的题目的选项
+      for (let i = 0; i < this.exam.radios.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
-        const name = this.radios[i].name
+        const name = this.exam.radios[i].name
         // 当前问题是否被问题创建者选中
         let checked = false
         for (let j = 0; j < values.length; j++) { // 拿着
@@ -254,13 +234,13 @@ export default {
           if (name === value) {
             // 说明这个问题被考试创建者选中
             checked = true
-            this.radios[i].checked = true
+            this.exam.radios[i].checked = true
             break // 跳出内部的for循环
           }
         }
         // 这个选项遍历到最后，发现还不是答案(不在答案数组中)，那么就把这个选项的answer属性设置为false
         if (checked === false) {
-          this.radios[i].checked = false
+          this.exam.radios[i].checked = false
         }
       }
     },
@@ -269,9 +249,9 @@ export default {
     handleCheckChange (values) {
       console.log(values)
       // 更新多选题的信息
-      for (let i = 0; i < this.checks.length; i++) { // 遍历所有的题目的选项
+      for (let i = 0; i < this.exam.checks.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
-        const name = this.checks[i].name
+        const name = this.exam.checks[i].name
         // 当前问题是否被问题创建者选中
         let checked = false
         for (let j = 0; j < values.length; j++) { // 拿着
@@ -279,13 +259,13 @@ export default {
           if (name === value) {
             // 说明这个问题被考试创建者选中
             checked = true
-            this.checks[i].checked = true
+            this.exam.checks[i].checked = true
             break // 跳出内部的for循环
           }
         }
         // 这个选项遍历到最后，发现还不是答案(不在答案数组中)，那么就把这个选项的answer属性设置为false
         if (checked === false) {
-          this.checks[i].checked = false
+          this.exam.checks[i].checked = false
         }
       }
     },
@@ -294,9 +274,9 @@ export default {
     handleJudgeChange (values) {
       console.log(values)
       // 更新判断题的信息
-      for (let i = 0; i < this.judges.length; i++) { // 遍历所有的题目的选项
+      for (let i = 0; i < this.exam.judges.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
-        const name = this.judges[i].name
+        const name = this.exam.judges[i].name
         // 当前问题是否被问题创建者选中
         let checked = false
         for (let j = 0; j < values.length; j++) { // 拿着
@@ -304,17 +284,16 @@ export default {
           if (name === value) {
             // 说明这个问题被考试创建者选中
             checked = true
-            this.judges[i].checked = true
+            this.exam.judges[i].checked = true
             break // 跳出内部的for循环
           }
         }
         // 这个选项遍历到最后，发现还不是答案(不在答案数组中)，那么就把这个选项的answer属性设置为false
         if (checked === false) {
-          this.judges[i].checked = false
+          this.exam.judges[i].checked = false
         }
       }
     }
-
   }
 }
 </script>
