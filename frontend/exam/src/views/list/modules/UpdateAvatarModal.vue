@@ -1,40 +1,75 @@
 <template>
-  <a-modal
-    title="编辑封面"
-    :width="640"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    @cancel="handleCancel"
-  >
-    <p>{{ avatar }}</p>
-    <template slot="footer">
-      <a-button key="update" @click="handleUpdate">完成</a-button>
-      <a-button key="cancel" @click="handleCancel">关闭</a-button>
-    </template>
-  </a-modal>
+  <div>
+    <a-modal
+      title="编辑封面"
+      :width="640"
+      :visible="visible"
+      :confirmLoading="confirmLoading"
+      @cancel="handleCancel"
+    >
+      <div id="summernote-exam-avatar" v-if="true"></div>
+      <template slot="footer">
+        <a-button key="update" @click="handleUpdate">完成</a-button>
+        <a-button key="cancel" @click="handleCancel">关闭</a-button>
+      </template>
+    </a-modal>
+  </div>
 </template>
 
 <script>
-import { examUpdate } from '../../../api/exam'
+import { examUpdate } from '@api/exam'
+import '../../../plugins/summernote'
+import $ from 'jquery'
+
 export default {
   // 编译图片的弹出框，用富文本编辑
   name: 'UpdateAvatarModal',
   data () {
     return {
-      visible: false,
       confirmLoading: false,
-      form: this.$form.createForm(this),
+      visible: false,
       // 每个问题
-      exam: {},
-      avatar: ''
+      exam: {}
     }
   },
   methods: {
+    initSummernote () {
+      console.log('初始化富文本插件')
+      $('#summernote-exam-avatar').summernote({
+        lang: 'zh-CN',
+        placeholder: '请输入内容',
+        height: 300,
+        width: 600,
+        htmlMode: true,
+        toolbar: [
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['fontsize', ['fontsize']],
+          ['fontname', ['fontname']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['insert', ['link', 'picture']],
+          ['mybutton', ['myVideo']]
+        ],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+        fontNames: [
+          'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
+          'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
+          'Tahoma', 'Times New Roman', 'Verdana'
+        ],
+        callbacks: {
+          onSubmit: function () {
+            this.richContent = $('#summernote').summernote('code')
+          }
+        }
+      })
+    },
     edit (exam) {
       this.visible = true
       // 把当前的记录赋值到data中的变量
       Object.assign(this.exam, exam)
       this.avatar = exam.avatar
+      this.initSummernote()
+      $('#summernote-exam-avatar').summernote('code', this.exam.avatar)
     },
     handleCancel () {
       // clear form & currentStep
@@ -42,6 +77,7 @@ export default {
     },
     handleUpdate () {
       const that = this
+      that.exam.avatar = $('#summernote-exam-avatar').summernote('code')
       examUpdate(that.exam).then(res => {
         // 成功就跳转到结果页面
         console.log(res)

@@ -296,6 +296,7 @@ public class ExamServiceImpl implements ExamService {
             for (Question question : radioQuestionList) {
                 ExamQuestionSelectVo radioQuestionVo = new ExamQuestionSelectVo();
                 BeanUtils.copyProperties(question, radioQuestionVo);
+                radioQuestionVo.setChecked(true); // 考试中的问题肯定被选中的
                 radioQuestionVoList.add(radioQuestionVo);
             }
             examVo.setExamQuestionSelectVoRadioList(radioQuestionVoList);
@@ -308,6 +309,7 @@ public class ExamServiceImpl implements ExamService {
             for (Question question : checkQuestionList) {
                 ExamQuestionSelectVo checkQuestionVo = new ExamQuestionSelectVo();
                 BeanUtils.copyProperties(question, checkQuestionVo);
+                checkQuestionVo.setChecked(true); // 考试中的问题肯定被选中的
                 checkQuestionVoList.add(checkQuestionVo);
             }
             examVo.setExamQuestionSelectVoCheckList(checkQuestionVoList);
@@ -320,6 +322,7 @@ public class ExamServiceImpl implements ExamService {
             for (Question question : judgeQuestionList) {
                 ExamQuestionSelectVo judgeQuestionVo = new ExamQuestionSelectVo();
                 BeanUtils.copyProperties(question, judgeQuestionVo);
+                judgeQuestionVo.setChecked(true); // 考试中的问题肯定被选中的
                 judgeQuestionVoList.add(judgeQuestionVo);
             }
             examVo.setExamQuestionSelectVoJudgeList(judgeQuestionVoList);
