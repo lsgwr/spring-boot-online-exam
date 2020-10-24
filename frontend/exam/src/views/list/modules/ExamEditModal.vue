@@ -133,36 +133,10 @@ export default {
       form: this.$form.createForm(this),
       radios: [],
       checks: [],
-      judges: []
-    }
-  },
-  computed: {
-    // a computed getter
-    defaultRadios: function () {
-      const res = []
-      if (JSON.stringify(this.exam) === '{}') return res
-      for (let i = 0; i < this.exam.radios.length; i++) { // 遍历所有的题目的选项
-        res.push(this.exam.radios[i].name)
-      }
-      return res
-    },
-    // a computed getter
-    defaultChecks: function () {
-      const res = []
-      if (JSON.stringify(this.exam) === '{}') return res
-      for (let i = 0; i < this.exam.checks.length; i++) { // 遍历所有的题目的选项
-        res.push(this.exam.checks[i].name)
-      }
-      return res
-    },
-    // a computed getter
-    defaultJudges: function () {
-      const res = []
-      if (JSON.stringify(this.exam) === '{}') return res
-      for (let i = 0; i < this.exam.judges.length; i++) { // 遍历所有的题目的选项
-        res.push(this.exam.judges[i].name)
-      }
-      return res
+      judges: [],
+      defaultRadios: [],
+      defaultChecks: [],
+      defaultJudges: []
     }
   },
   methods: {
@@ -173,21 +147,34 @@ export default {
       this.radios = []
       this.checks = []
       this.judges = []
+      this.defaultRadios = []
+      this.defaultChecks = []
+      this.defaultJudges = []
       const that = this
       // 从后端数据获取单选题、多选题和判断题的列表.在编辑的时候需要在点击"编辑的时候传入进来"
       getExamQuestionTypeList().then(res => {
         console.log(res)
-        if (res.code === 0) {
-          console.log(res.data)
-          that.radios = res.data.radios
-          that.checks = res.data.checks
-          that.judges = res.data.judges
-        } else {
+        if (res.code !== 0) {
           that.$notification.error({
             message: '获取问题列表失败',
             description: res.msg
           })
         }
+        console.log(res.data)
+        that.radios = res.data.radios
+        that.checks = res.data.checks
+        that.judges = res.data.judges
+        // 从exam里面的radios、checks、judges设置下上面的this里面的三个属性，把checked属性设置为true
+        for (let i = 0; i < exam.radios.length; i++) { // 遍历所有的题目的选项
+          that.defaultRadios.push(exam.radios[i].name)
+        }
+        for (let i = 0; i < exam.checks.length; i++) { // 遍历所有的题目的选项
+          that.defaultChecks.push(exam.checks[i].name)
+        }
+        for (let i = 0; i < exam.judges.length; i++) { // 遍历所有的题目的选项
+          that.defaultJudges.push(exam.judges[i].name)
+        }
+        that.$forceUpdate() // 强制刷新组件
       }).catch(err => {
         // 失败就弹出警告消息
         this.$notification.error({
