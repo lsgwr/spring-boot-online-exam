@@ -147,6 +147,22 @@ public class ExamController {
         return resultVO;
     }
 
+    @PostMapping("/update")
+    @ApiOperation("更新考试")
+    ResultVO<Exam> updateExam(@RequestBody ExamVo examVo, HttpServletRequest request) {
+        // 从前端传参数过来，在这里完成考试的入库
+        ResultVO<Exam> resultVO;
+        String userId = (String) request.getAttribute("user_id");
+        try {
+            Exam exam = examService.update(examVo, userId);
+            resultVO = new ResultVO<>(0, "更新考试成功", exam);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultVO = new ResultVO<>(-1, "更新考试失败", null);
+        }
+        return resultVO;
+    }
+
     @GetMapping("/card/list")
     @ApiOperation("获取考试列表，适配前端卡片列表")
     ResultVO<List<ExamCardVo>> getExamCardList() {

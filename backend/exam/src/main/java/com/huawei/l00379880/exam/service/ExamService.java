@@ -112,4 +112,12 @@ public interface ExamService {
     RecordDetailVo getRecordDetail(String recordId);
 
 
+    /**
+     * 更新考试
+     *
+     * @param examVo 获取所有考试的接口中返回的考试信息结构
+     * @param userId 当前的用户
+     * @return 更新后的考试详情
+     */
+    Exam update(ExamVo examVo, String userId);
 }

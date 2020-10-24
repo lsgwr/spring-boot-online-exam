@@ -421,6 +421,54 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public Exam update(ExamVo examVo, String userId) {
+        Exam exam = new Exam();
+        BeanUtils.copyProperties(examVo, exam);
+        exam.setExamCreatorId(userId); // 考试的更新人为最新的创建人
+        exam.setUpdateTime(new Date()); // 考试的更新日期要记录下
+
+        String radioIdsStr = "";
+        String checkIdsStr = "";
+        String judgeIdsStr = "";
+        List<ExamQuestionSelectVo> radios = examVo.getExamQuestionSelectVoRadioList();
+        List<ExamQuestionSelectVo> checks = examVo.getExamQuestionSelectVoCheckList();
+        List<ExamQuestionSelectVo> judges = examVo.getExamQuestionSelectVoJudgeList();
+        int radioCnt = 0, checkCnt = 0, judgeCnt = 0;
+        for (ExamQuestionSelectVo radio : radios) {
+            if (radio.getChecked()) {
+                radioIdsStr += radio.getQuestionId() + "-";
+                radioCnt++;
+            }
+        }
+        radioIdsStr = replaceLastSeparator(radioIdsStr);
+        for (ExamQuestionSelectVo check : checks) {
+            if (check.getChecked()) {
+                checkIdsStr += check.getQuestionId() + "-";
+                checkCnt++;
+            }
+        }
+        checkIdsStr = replaceLastSeparator(checkIdsStr);
+        for (ExamQuestionSelectVo judge : judges) {
+            if (judge.getChecked()) {
+                judgeIdsStr += judge.getQuestionId() + "-";
+                judgeCnt++;
+            }
+        }
+        judgeIdsStr = replaceLastSeparator(judgeIdsStr);
+        exam.setExamQuestionIds(radioIdsStr + "-" + checkIdsStr + "-" + judgeIdsStr);
+        // 设置各个题目的id
+        exam.setExamQuestionIdsRadio(radioIdsStr);
+        exam.setExamQuestionIdsCheck(checkIdsStr);
+        exam.setExamQuestionIdsJudge(judgeIdsStr);
+
+        // 计算总分数
+        int examScore = radioCnt * exam.getExamScoreRadio() + checkCnt * exam.getExamScoreCheck() + judgeCnt * exam.getExamScoreJudge();
+        exam.setExamScore(examScore);
+        examRepository.save(exam);
+        return exam;
+    }
+
+    @Override
     public List<ExamCardVo> getExamCardList() {
         List<Exam> examList = examRepository.findAll();
         List<ExamCardVo> examCardVoList = new ArrayList<>();
