@@ -3,6 +3,7 @@
     <div id="toolbar">
       <a-button type="primary" icon="plus" @click="$refs.createExamModal.create()">新建</a-button>&nbsp;
       <a-button type="primary" icon="reload" @click="loadAll()">刷新</a-button>
+      封面图片可以双击修改
     </div>
     <BootstrapTable
       ref="table"
@@ -12,7 +13,7 @@
     />
     <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
     <step-by-step-exam-modal ref="createExamModal" @ok="handleOk"/>
-    <!--  Todo:这里的详情需要传进去  -->
+    <!-- 这里的详情需要传进去  -->
     <exam-edit-modal ref="editExamModal" @ok="handleOk"/>
   </a-card>
 </template>
