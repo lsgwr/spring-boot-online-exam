@@ -12,9 +12,11 @@
       :options="options"
     />
     <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
-    <step-by-step-exam-modal ref="createExamModal" @ok="handleOk"/>
+    <step-by-step-exam-modal ref="createExamModal" @ok="handleOk" />
     <!-- 这里的详情需要传进去  -->
-    <exam-edit-modal ref="editExamModal" @ok="handleOk"/>
+    <exam-edit-modal ref="editExamModal" @ok="handleOk" />
+    <!--  更新考试封面图片  -->
+    <update-avatar-modal ref="updateAvatarModal" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -23,10 +25,12 @@ import '../../plugins/bootstrap-table'
 import { getExamAll } from '../../api/exam'
 import StepByStepExamModal from './modules/StepByStepExamModal'
 import ExamEditModal from './modules/ExamEditModal'
+import UpdateAvatarModal from '@views/list/modules/UpdateAvatarModal'
 
 export default {
   name: 'ExamTableList',
   components: {
+    UpdateAvatarModal,
     ExamEditModal,
     StepByStepExamModal
   },
@@ -45,7 +49,15 @@ export default {
         {
           title: '封面',
           field: 'avatar',
-          width: 50
+          width: 50,
+          formatter: (value, row) => {
+            return '<div class="exam-avatar">' + value + '</div>'
+          },
+          events: {
+            'dblclick .exam-avatar': function (e, value, row, index) {
+              that.handleAvatarEdit(row)
+            }
+          }
         },
         {
           title: '名称',
@@ -114,6 +126,12 @@ export default {
       console.log('开始编辑啦')
       console.log(record)
       this.$refs.editExamModal.edit(record)
+    },
+    handleAvatarEdit (record) {
+      // Todo:修改考试信息和下面的题目，弹出一个可修改的输入框，实际上复用创建题目的模态框即可，还没做完
+      console.log('开始更新封面啦')
+      console.log(record)
+      this.$refs.updateAvatarModal.edit(record)
     },
     handleSub (record) {
       // 查看考试，不在模态框里查啦，太麻烦
