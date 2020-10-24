@@ -8,7 +8,7 @@
         <a-card :hoverable="true" @click="joinExam(item.id)">
           <a-card-meta>
             <div style="margin-bottom: 3px" slot="title">{{ item.title }}</div>
-            <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="large"/>
+            <a-avatar class="card-avatar" slot="avatar" :src="item.avatar | imgSrcFilter" size="large" />
             <div class="meta-content" slot="description">{{ item.content }}</div>
           </a-card-meta>
           <template class="ant-card-actions" slot="actions">
