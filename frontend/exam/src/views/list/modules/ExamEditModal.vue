@@ -10,31 +10,31 @@
         <!-- step1 -->
         <div v-show="currentStep === 0">
           <a-form-item label="考试名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input v-model="exam.name" />
+            <a-input v-model="name" />
           </a-form-item>
           <a-form-item label="考试限时" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="200" v-model="exam.elapse" />
+            <a-input-number :min="1" :max="200" v-model="elapse" />
             分钟
           </a-form-item>
           <a-form-item label="考试简述" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-textarea :rows="2" v-model="exam.desc"></a-textarea>
+            <a-textarea :rows="2" v-model="desc"></a-textarea>
           </a-form-item>
           <a-form-item label="考试小图" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-textarea :rows="2" v-model="exam.avatar"></a-textarea>
+            <a-textarea :rows="2" v-model="avatar"></a-textarea>
             <div id="summernote-exam-avatar"></div>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
           <a-form-item label="单选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" v-model="exam.radioScore" />
+            <a-input-number :min="1" :max="20" v-model="radioScore" />
             分
           </a-form-item>
           <a-form-item label="多选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" v-model="exam.checkScore" />
+            <a-input-number :min="1" :max="20" v-model="checkScore" />
             分
           </a-form-item>
           <a-form-item label="判断题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" v-model="exam.judgeScore" />
+            <a-input-number :min="1" :max="20" v-model="judgeScore" />
             分
           </a-form-item>
         </div>
@@ -133,9 +133,16 @@ export default {
       confirmLoading: false,
       currentStep: 0,
       mdl: {},
+      form: this.$form.createForm(this),
       // 考试的对象
       exam: {},
-      form: this.$form.createForm(this),
+      name: '',
+      elapse: 0,
+      desc: '',
+      avatar: '',
+      radioScore: 0,
+      checkScore: 0,
+      judgeScore: 0,
       radios: [],
       checks: [],
       judges: [],
@@ -167,6 +174,13 @@ export default {
       this.defaultRadios = []
       this.defaultChecks = []
       this.defaultJudges = []
+      this.name = exam.name
+      this.elapse = exam.elapse
+      this.desc = exam.desc
+      this.avatar = exam.avatar
+      this.radioScore = exam.radioScore
+      this.checkScore = exam.checkScore
+      this.judgeScore = exam.judgeScore
       const that = this
       // 从后端数据获取单选题、多选题和判断题的列表.在编辑的时候需要在点击"编辑的时候传入进来"
       getExamQuestionTypeList().then(res => {
@@ -222,6 +236,13 @@ export default {
       this.confirmLoading = true
       console.log('提交数据到后端')
       this.confirmLoading = false
+      this.exam.name = this.name
+      this.exam.elapse = this.elapse
+      this.exam.desc = this.desc
+      this.exam.avatar = this.avatar
+      this.exam.radioScore = this.radioScore
+      this.exam.checkScore = this.checkScore
+      this.exam.judgeScore = this.judgeScore
       // 设置单选题、多选题和判断题的内容，但是提交前需要保证都已经被正确更新了
       this.exam.radios = this.radios
       this.exam.checks = this.checks
