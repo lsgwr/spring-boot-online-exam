@@ -19,9 +19,8 @@
           <a-form-item label="考试简述" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-textarea :rows="2" v-model="desc"></a-textarea>
           </a-form-item>
-          <a-form-item label="考试小图" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <p>截图直接粘贴到下面即可，建议图片不要大于80*80</p>
-            <div id="summernote-exam-all-avatar"></div>
+          <a-form-item label="考试封面" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <p>直接双击列表图片修改，建议图片不要大于80*80</p>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
@@ -106,8 +105,6 @@
 </template>
 
 <script>
-import '../../../plugins/summernote'
-import $ from 'jquery'
 import { getExamQuestionTypeList, examUpdate } from '../../../api/exam'
 
 const stepForms = [
@@ -151,44 +148,7 @@ export default {
       defaultJudges: []
     }
   },
-  mounted () {
-    $('#summernote-exam-avatar').summernote({
-      lang: 'zh-CN',
-      placeholder: '请粘贴或者上传一张图片作为考试封面^_^',
-      height: 300,
-      width: 600,
-      htmlMode: true,
-      toolbar: [
-        ['insert', ['picture']]
-      ]
-    })
-  },
-  updated () {
-    this.initSummernote()
-    console.log('updated')
-    console.log()
-    if ($('#summernote-exam-all-avatar').summernote('code') === '<p><br></p>') {
-      $('#summernote-exam-all-avatar').summernote('code', this.avatar) // 把图片数据写入到富文本框中
-    }
-  },
   methods: {
-    initSummernote () {
-      console.log('初始化富文本插件')
-      $('#summernote-exam-all-avatar').summernote({
-        lang: 'zh-CN',
-        placeholder: '请输入内容',
-        height: 200,
-        width: 320,
-        htmlMode: true,
-        toolbar: [],
-        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
-        fontNames: [
-          'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
-          'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
-          'Tahoma', 'Times New Roman', 'Verdana'
-        ]
-      })
-    },
     edit (exam) {
       Object.assign(this.exam, exam) // 深度拷贝
       this.visible = true
@@ -264,7 +224,7 @@ export default {
       this.exam.name = this.name
       this.exam.elapse = this.elapse
       this.exam.desc = this.desc
-      this.exam.avatar = $('#summernote-exam-all-avatar').summernote('code') // 更新图标
+      this.exam.avatar = this.avatar
       this.exam.radioScore = this.radioScore
       this.exam.checkScore = this.checkScore
       this.exam.judgeScore = this.judgeScore
@@ -283,6 +243,7 @@ export default {
           })
           // 关闭弹出框
           that.visible = false
+          that.currentStep = 0
           that.$emit('ok')
         }
       }).catch(err => {
