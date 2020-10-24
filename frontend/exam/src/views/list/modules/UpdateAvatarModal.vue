@@ -6,6 +6,7 @@
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
   >
+    <p>截图直接粘贴到下面即可，建议图片不要大于80*80</p>
     <div id="summernote-exam-avatar" v-if="true"></div>
     <template slot="footer">
       <a-button key="update" @click="handleUpdate">完成</a-button>
@@ -44,13 +45,7 @@ export default {
         width: 600,
         htmlMode: true,
         toolbar: [
-          ['style', ['bold', 'italic', 'underline', 'clear']],
-          ['fontsize', ['fontsize']],
-          ['fontname', ['fontname']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['insert', ['link', 'picture']],
-          ['mybutton', ['myVideo']]
+          ['insert', []]
         ],
         fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
         fontNames: [
