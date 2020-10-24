@@ -1,19 +1,17 @@
 <template>
-  <div>
-    <a-modal
-      title="编辑封面"
-      :width="640"
-      :visible="visible"
-      :confirmLoading="confirmLoading"
-      @cancel="handleCancel"
-    >
-      <div id="summernote-exam-avatar" v-if="true"></div>
-      <template slot="footer">
-        <a-button key="update" @click="handleUpdate">完成</a-button>
-        <a-button key="cancel" @click="handleCancel">关闭</a-button>
-      </template>
-    </a-modal>
-  </div>
+  <a-modal
+    title="编辑封面"
+    :width="640"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    @cancel="handleCancel"
+  >
+    <div id="summernote-exam-avatar" v-if="true"></div>
+    <template slot="footer">
+      <a-button key="update" @click="handleUpdate">完成</a-button>
+      <a-button key="cancel" @click="handleCancel">关闭</a-button>
+    </template>
+  </a-modal>
 </template>
 
 <script>
