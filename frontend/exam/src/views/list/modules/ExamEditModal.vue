@@ -45,6 +45,7 @@
               mode="multiple"
               :size="size"
               :default-value="defaultRadios"
+              v-if="visible"
               placeholder="请选择单选题"
               style="width: 100%"
               @popupScroll="popupScroll"
@@ -62,6 +63,7 @@
               mode="multiple"
               :size="size"
               :default-value="defaultChecks"
+              v-if="visible"
               placeholder="请选择多选题"
               style="width: 100%"
               @popupScroll="popupScroll"
@@ -79,6 +81,7 @@
               mode="multiple"
               :size="size"
               :default-value="defaultJudges"
+              v-if="visible"
               placeholder="请选择判断题"
               style="width: 100%"
               @popupScroll="popupScroll"
@@ -174,7 +177,6 @@ export default {
         for (let i = 0; i < exam.judges.length; i++) { // 遍历所有的题目的选项
           that.defaultJudges.push(exam.judges[i].name)
         }
-        that.$forceUpdate() // 强制刷新组件
       }).catch(err => {
         // 失败就弹出警告消息
         this.$notification.error({
