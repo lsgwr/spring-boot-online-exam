@@ -21,6 +21,7 @@
           </a-form-item>
           <a-form-item label="考试小图" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-textarea :rows="2" v-model="exam.avatar"></a-textarea>
+            <div id="summernote-exam-avatar"></div>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
@@ -105,7 +106,8 @@
 </template>
 
 <script>
-// import pick from 'lodash.pick'
+import '../../../plugins/summernote'
+import $ from 'jquery'
 import { getExamQuestionTypeList, examUpdate } from '../../../api/exam'
 
 const stepForms = [
@@ -141,6 +143,18 @@ export default {
       defaultChecks: [],
       defaultJudges: []
     }
+  },
+  mounted () {
+    $('#summernote-exam-avatar').summernote({
+      lang: 'zh-CN',
+      placeholder: '请粘贴或者上传一张图片作为考试封面^_^',
+      height: 300,
+      width: 600,
+      htmlMode: true,
+      toolbar: [
+        ['insert', ['picture']]
+      ]
+    })
   },
   methods: {
     edit (exam) {
