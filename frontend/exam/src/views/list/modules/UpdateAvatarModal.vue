@@ -52,12 +52,7 @@ export default {
           'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
           'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
           'Tahoma', 'Times New Roman', 'Verdana'
-        ],
-        callbacks: {
-          onSubmit: function () {
-            this.richContent = $('#summernote').summernote('code')
-          }
-        }
+        ]
       })
     },
     edit (exam) {
