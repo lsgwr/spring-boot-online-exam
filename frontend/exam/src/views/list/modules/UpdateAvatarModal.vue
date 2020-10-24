@@ -30,6 +30,10 @@ export default {
       exam: {}
     }
   },
+  updated () {
+    this.initSummernote()
+    $('#summernote-exam-avatar').summernote('code', this.exam.avatar) // 把图片数据写入进去
+  },
   methods: {
     initSummernote () {
       console.log('初始化富文本插件')
@@ -66,8 +70,6 @@ export default {
       // 把当前的记录赋值到data中的变量
       Object.assign(this.exam, exam)
       this.avatar = exam.avatar
-      this.initSummernote()
-      $('#summernote-exam-avatar').summernote('code', this.exam.avatar)
     },
     handleCancel () {
       // clear form & currentStep
