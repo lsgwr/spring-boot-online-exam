@@ -2,18 +2,19 @@
   <a-modal title="更新考试" :width="640" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
     <a-spin :spinning="confirmLoading">
       <a-steps :current="currentStep" :style="{ marginBottom: '28px' }" size="small">
-        <a-step title="考试描述"/>
-        <a-step title="每题分数"/>
-        <a-step title="选择题目"/>
+        <a-step title="考试描述" />
+        <a-step title="每题分数" />
+        <a-step title="选择题目" />
       </a-steps>
       <a-form :form="form">
         <!-- step1 -->
         <div v-show="currentStep === 0">
           <a-form-item label="考试名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input v-model="exam.name"/>
+            <a-input v-model="exam.name" />
           </a-form-item>
           <a-form-item label="考试限时" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="200" v-model="exam.elapse" />分钟
+            <a-input-number :min="1" :max="200" v-model="exam.elapse" />
+            分钟
           </a-form-item>
           <a-form-item label="考试简述" :labelCol="labelCol" :wrapperCol="wrapperCol">
             <a-textarea :rows="2" v-model="exam.desc"></a-textarea>
@@ -24,13 +25,16 @@
         </div>
         <div v-show="currentStep === 1">
           <a-form-item label="单选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" v-model="exam.radioScore" />分
+            <a-input-number :min="1" :max="20" v-model="exam.radioScore" />
+            分
           </a-form-item>
           <a-form-item label="多选题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" v-model="exam.checkScore" />分
+            <a-input-number :min="1" :max="20" v-model="exam.checkScore" />
+            分
           </a-form-item>
           <a-form-item label="判断题" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-input-number :min="1" :max="20" v-model="exam.judgeScore" />分
+            <a-input-number :min="1" :max="20" v-model="exam.judgeScore" />
+            分
           </a-form-item>
         </div>
 
@@ -46,7 +50,7 @@
               @popupScroll="popupScroll"
               @change="handleRadioChange"
             >
-              <a-select-option v-for="radio in exam.radios" :value="radio.name" :key="radio.id">
+              <a-select-option v-for="radio in radios" :value="radio.name" :key="radio.id">
                 {{ radio.name }}
               </a-select-option>
             </a-select>
@@ -63,7 +67,7 @@
               @popupScroll="popupScroll"
               @change="handleCheckChange"
             >
-              <a-select-option v-for="check in exam.checks" :value="check.name" :key="check.id">
+              <a-select-option v-for="check in checks" :value="check.name" :key="check.id">
                 {{ check.name }}
               </a-select-option>
             </a-select>
@@ -79,7 +83,7 @@
               style="width: 100%"
               @popupScroll="popupScroll"
               @change="handleJudgeChange">
-              <a-select-option v-for="judge in exam.judges" :value="judge.name" :key="judge.id">
+              <a-select-option v-for="judge in judges" :value="judge.name" :key="judge.id">
                 {{ judge.name }}
               </a-select-option>
             </a-select>
@@ -127,35 +131,57 @@ export default {
       // 考试的对象
       exam: {},
       form: this.$form.createForm(this),
-      defaultRadios: [],
-      defaultChecks: [],
-      defaultJudges: []
+      radios: [],
+      checks: [],
+      judges: []
+    }
+  },
+  computed: {
+    // a computed getter
+    defaultRadios: function () {
+      const res = []
+      if (JSON.stringify(this.exam) === '{}') return res
+      for (let i = 0; i < this.exam.radios.length; i++) { // 遍历所有的题目的选项
+        res.push(this.exam.radios[i].name)
+      }
+      return res
+    },
+    // a computed getter
+    defaultChecks: function () {
+      const res = []
+      if (JSON.stringify(this.exam) === '{}') return res
+      for (let i = 0; i < this.exam.checks.length; i++) { // 遍历所有的题目的选项
+        res.push(this.exam.checks[i].name)
+      }
+      return res
+    },
+    // a computed getter
+    defaultJudges: function () {
+      const res = []
+      if (JSON.stringify(this.exam) === '{}') return res
+      for (let i = 0; i < this.exam.judges.length; i++) { // 遍历所有的题目的选项
+        res.push(this.exam.judges[i].name)
+      }
+      return res
     }
   },
   methods: {
     edit (exam) {
-      this.exam = exam
+      Object.assign(this.exam, exam) // 深度拷贝
       this.visible = true
       // 每次编辑需要先清空下之前的数据
-      this.defaultRadios = []
-      this.defaultChecks = []
-      this.defaultJudges = []
+      this.radios = []
+      this.checks = []
+      this.judges = []
       const that = this
       // 从后端数据获取单选题、多选题和判断题的列表.在编辑的时候需要在点击"编辑的时候传入进来"
       getExamQuestionTypeList().then(res => {
         console.log(res)
         if (res.code === 0) {
           console.log(res.data)
-          // 从exam里面的radios、checks、judges设置下上面的this里面的三个属性，把checked属性设置为true
-          for (let i = 0; i < exam.radios.length; i++) { // 遍历所有的题目的选项
-            that.defaultRadios.push(exam.radios[i].name)
-          }
-          for (let i = 0; i < exam.checks.length; i++) { // 遍历所有的题目的选项
-            that.defaultChecks.push(exam.checks[i].name)
-          }
-          for (let i = 0; i < exam.judges.length; i++) { // 遍历所有的题目的选项
-            that.defaultJudges.push(exam.judges[i].name)
-          }
+          that.radios = res.data.radios
+          that.checks = res.data.checks
+          that.judges = res.data.judges
         } else {
           that.$notification.error({
             message: '获取问题列表失败',
@@ -189,8 +215,11 @@ export default {
       // last step，最后一步，代表完成考试编写，需要点击"完成"创建考试
       this.confirmLoading = true
       console.log('提交数据到后端')
-      // 设置单选题、多选题和判断题的内容，但是提交前需要保证都已经被正确更新了
       this.confirmLoading = false
+      // 设置单选题、多选题和判断题的内容，但是提交前需要保证都已经被正确更新了
+      this.exam.radios = this.radios
+      this.exam.checks = this.checks
+      this.exam.judges = this.judges
       const that = this
       examUpdate(that.exam).then(res => {
         // 成功就跳转到结果页面
