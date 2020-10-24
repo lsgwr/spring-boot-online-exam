@@ -20,8 +20,8 @@
             <a-textarea :rows="2" v-model="desc"></a-textarea>
           </a-form-item>
           <a-form-item label="考试小图" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <a-textarea :rows="2" v-model="avatar"></a-textarea>
-            <div id="summernote-exam-avatar"></div>
+            <p>截图直接粘贴到下面即可，建议图片不要大于80*80</p>
+            <div id="summernote-exam-all-avatar"></div>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
@@ -163,7 +163,34 @@ export default {
       ]
     })
   },
+  updated () {
+    this.initSummernote()
+    console.log('updated')
+    console.log()
+    if ($('#summernote-exam-all-avatar').summernote('code') === '<p><br></p>') {
+      $('#summernote-exam-all-avatar').summernote('code', this.avatar) // 把图片数据写入到富文本框中
+    }
+  },
   methods: {
+    initSummernote () {
+      console.log('初始化富文本插件')
+      $('#summernote-exam-all-avatar').summernote({
+        lang: 'zh-CN',
+        placeholder: '请输入内容',
+        height: 150,
+        width: 300,
+        htmlMode: true,
+        toolbar: [
+          ['insert', []]
+        ],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+        fontNames: [
+          'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
+          'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
+          'Tahoma', 'Times New Roman', 'Verdana'
+        ]
+      })
+    },
     edit (exam) {
       Object.assign(this.exam, exam) // 深度拷贝
       this.visible = true
@@ -239,7 +266,7 @@ export default {
       this.exam.name = this.name
       this.exam.elapse = this.elapse
       this.exam.desc = this.desc
-      this.exam.avatar = this.avatar
+      this.exam.avatar = $('#summernote-exam-all-avatar').summernote('code') // 更新图标
       this.exam.radioScore = this.radioScore
       this.exam.checkScore = this.checkScore
       this.exam.judgeScore = this.judgeScore

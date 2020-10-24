@@ -7,7 +7,7 @@
     @cancel="handleCancel"
   >
     <p>截图直接粘贴到下面即可，建议图片不要大于80*80</p>
-    <div id="summernote-exam-avatar" v-if="true"></div>
+    <div id="summernote-exam-avatar"></div>
     <template slot="footer">
       <a-button key="update" @click="handleUpdate">完成</a-button>
       <a-button key="cancel" @click="handleCancel">关闭</a-button>
