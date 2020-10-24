@@ -185,12 +185,15 @@ export default {
         for (let i = 0; i < exam.radios.length; i++) { // 遍历所有的题目的选项
           that.defaultRadios.push(exam.radios[i].name)
         }
+        that.handleRadioChange(that.defaultRadios)
         for (let i = 0; i < exam.checks.length; i++) { // 遍历所有的题目的选项
           that.defaultChecks.push(exam.checks[i].name)
         }
+        that.handleCheckChange(that.defaultChecks)
         for (let i = 0; i < exam.judges.length; i++) { // 遍历所有的题目的选项
           that.defaultJudges.push(exam.judges[i].name)
         }
+        that.handleJudgeChange(that.defaultJudges)
       }).catch(err => {
         // 失败就弹出警告消息
         this.$notification.error({
@@ -256,9 +259,9 @@ export default {
     handleRadioChange (values) {
       console.log(values)
       // 更新单选题的信息
-      for (let i = 0; i < this.exam.radios.length; i++) { // 遍历所有的题目的选项
+      for (let i = 0; i < this.radios.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
-        const name = this.exam.radios[i].name
+        const name = this.radios[i].name
         // 当前问题是否被问题创建者选中
         let checked = false
         for (let j = 0; j < values.length; j++) { // 拿着
@@ -266,13 +269,13 @@ export default {
           if (name === value) {
             // 说明这个问题被考试创建者选中
             checked = true
-            this.exam.radios[i].checked = true
+            this.radios[i].checked = true
             break // 跳出内部的for循环
           }
         }
         // 这个选项遍历到最后，发现还不是答案(不在答案数组中)，那么就把这个选项的answer属性设置为false
         if (checked === false) {
-          this.exam.radios[i].checked = false
+          this.radios[i].checked = false
         }
       }
     },
@@ -281,9 +284,9 @@ export default {
     handleCheckChange (values) {
       console.log(values)
       // 更新多选题的信息
-      for (let i = 0; i < this.exam.checks.length; i++) { // 遍历所有的题目的选项
+      for (let i = 0; i < this.checks.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
-        const name = this.exam.checks[i].name
+        const name = this.checks[i].name
         // 当前问题是否被问题创建者选中
         let checked = false
         for (let j = 0; j < values.length; j++) { // 拿着
@@ -291,13 +294,13 @@ export default {
           if (name === value) {
             // 说明这个问题被考试创建者选中
             checked = true
-            this.exam.checks[i].checked = true
+            this.checks[i].checked = true
             break // 跳出内部的for循环
           }
         }
         // 这个选项遍历到最后，发现还不是答案(不在答案数组中)，那么就把这个选项的answer属性设置为false
         if (checked === false) {
-          this.exam.checks[i].checked = false
+          this.checks[i].checked = false
         }
       }
     },
@@ -306,9 +309,9 @@ export default {
     handleJudgeChange (values) {
       console.log(values)
       // 更新判断题的信息
-      for (let i = 0; i < this.exam.judges.length; i++) { // 遍历所有的题目的选项
+      for (let i = 0; i < this.judges.length; i++) { // 遍历所有的题目的选项
         // 取出一个选项的id
-        const name = this.exam.judges[i].name
+        const name = this.judges[i].name
         // 当前问题是否被问题创建者选中
         let checked = false
         for (let j = 0; j < values.length; j++) { // 拿着
@@ -316,13 +319,13 @@ export default {
           if (name === value) {
             // 说明这个问题被考试创建者选中
             checked = true
-            this.exam.judges[i].checked = true
+            this.judges[i].checked = true
             break // 跳出内部的for循环
           }
         }
         // 这个选项遍历到最后，发现还不是答案(不在答案数组中)，那么就把这个选项的answer属性设置为false
         if (checked === false) {
-          this.exam.judges[i].checked = false
+          this.judges[i].checked = false
         }
       }
     }
