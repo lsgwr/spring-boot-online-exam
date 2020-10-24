@@ -1,7 +1,7 @@
 <template>
   <a-modal
     title="编辑封面"
-    :width="640"
+    :width="400"
     :visible="visible"
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
@@ -41,12 +41,10 @@ export default {
       $('#summernote-exam-avatar').summernote({
         lang: 'zh-CN',
         placeholder: '请输入内容',
-        height: 300,
-        width: 600,
+        height: 200,
+        width: 320,
         htmlMode: true,
-        toolbar: [
-          ['insert', []]
-        ],
+        toolbar: [],
         fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
         fontNames: [
           'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',

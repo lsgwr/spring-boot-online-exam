@@ -3,7 +3,6 @@
     <div id="toolbar">
       <a-button type="primary" icon="plus" @click="$refs.createExamModal.create()">新建</a-button>&nbsp;
       <a-button type="primary" icon="reload" @click="loadAll()">刷新</a-button>
-      封面图片可以双击修改
     </div>
     <BootstrapTable
       ref="table"

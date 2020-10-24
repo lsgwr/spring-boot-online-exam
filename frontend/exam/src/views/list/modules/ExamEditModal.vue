@@ -177,12 +177,10 @@ export default {
       $('#summernote-exam-all-avatar').summernote({
         lang: 'zh-CN',
         placeholder: '请输入内容',
-        height: 150,
-        width: 300,
+        height: 200,
+        width: 320,
         htmlMode: true,
-        toolbar: [
-          ['insert', []]
-        ],
+        toolbar: [],
         fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
         fontNames: [
           'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
