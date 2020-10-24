@@ -7,7 +7,7 @@
       <a-list size="large">
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.exam.examDescription">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.exam.examAvatar"/>
+            <a-avatar slot="avatar" size="large" shape="square" :src="item.exam.examAvatar | imgSrcFilter"/>
             <a slot="title">{{ item.exam.examName }}</a>
           </a-list-item-meta>
           <div slot="actions">

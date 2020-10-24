@@ -3,7 +3,7 @@
     <a-layout-header class="header" style="color: #fff">
       <!--   v-if="examDetail.exam" 是为了防止 异步请求时页面渲染的时候还没有拿到这个值而报错， 下面多处这个判断都是这个道理 -->
       <span style="font-size:25px;margin-left: 0px;" v-if="examDetail.exam">
-        <a-avatar slot="avatar" size="large" shape="circle" :src="examDetail.exam.examAvatar"/>
+        <a-avatar slot="avatar" size="large" shape="circle" :src="examDetail.exam.examAvatar | imgSrcFilter"/>
         {{ examDetail.exam.examName }}
         <span style="font-size:15px;">{{ examDetail.exam.examDescription }} </span>
       </span>
