@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     getContent () {
-      alert($('#summernote').summernote('code'))
+      console.log($('#summernote').summernote('code'))
     },
     setContent () {
       $('#summernote').summernote('code', 'hello world!')

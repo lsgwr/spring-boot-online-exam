@@ -42,6 +42,11 @@ export default {
           }
         },
         {
+          title: '封面',
+          field: 'avatar',
+          width: 50
+        },
+        {
           title: '名称',
           field: 'name',
           width: 250
