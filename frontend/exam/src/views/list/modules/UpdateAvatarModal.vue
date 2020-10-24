@@ -8,7 +8,7 @@
   >
     <p>{{ avatar }}</p>
     <template slot="footer">
-      <a-button key="cancel" @click="handleCancel">完成</a-button>
+      <a-button key="update" @click="handleUpdate">完成</a-button>
       <a-button key="cancel" @click="handleCancel">关闭</a-button>
     </template>
   </a-modal>
