@@ -64,80 +64,82 @@ public class ExamServiceImpl implements ExamService {
         List<QuestionVo> questionVoList = new ArrayList<>();
         // 循环完成每个属性的定制
         for (Question question : questionList) {
-            QuestionVo questionVo = new QuestionVo();
-            // 先复制能复制的属性
-            BeanUtils.copyProperties(question, questionVo);
-            // 设置问题的创建者
-            questionVo.setQuestionCreator(
-                    Objects.requireNonNull(
-                            userRepository.findById(
-                                    question.getQuestionCreatorId()
-                            ).orElse(null)
-                    ).getUserUsername());
-
-            // 设置问题的难度
-            questionVo.setQuestionLevel(
-                    Objects.requireNonNull(
-                            questionLevelRepository.findById(
-                                    question.getQuestionLevelId()
-                            ).orElse(null)
-                    ).getQuestionLevelDescription());
-
-            // 设置题目的类别，比如单选、多选、判断等
-            questionVo.setQuestionType(
-                    Objects.requireNonNull(
-                            questionTypeRepository.findById(
-                                    question.getQuestionTypeId()
-                            ).orElse(null)
-                    ).getQuestionTypeDescription());
-
-            // 设置题目分类，比如数学、语文、英语、生活、人文等
-            questionVo.setQuestionCategory(
-                    Objects.requireNonNull(
-                            questionCategoryRepository.findById(
-                                    question.getQuestionCategoryId()
-                            ).orElse(null)
-                    ).getQuestionCategoryName()
-            );
-
-            // 选项的自定义Vo列表
-            List<QuestionOptionVo> optionVoList = new ArrayList<>();
-
-            // 获得所有的选项列表
-            List<QuestionOption> optionList = questionOptionRepository.findAllById(
-                    Arrays.asList(question.getQuestionOptionIds().split("-"))
-            );
-
-            // 获取所有的答案列表optionList中每个option的isAnswer选项
-            List<QuestionOption> answerList = questionOptionRepository.findAllById(
-                    Arrays.asList(question.getQuestionAnswerOptionIds().split("-"))
-            );
-
-            // 根据选项和答案的id相同设置optionVo的isAnswer属性
-            for (QuestionOption option : optionList) {
-                QuestionOptionVo optionVo = new QuestionOptionVo();
-                BeanUtils.copyProperties(option, optionVo);
-                for (QuestionOption answer : answerList) {
-                    if (option.getQuestionOptionId().equals(answer.getQuestionOptionId())) {
-                        optionVo.setAnswer(true);
-                    }
-                }
-                optionVoList.add(optionVo);
-            }
-
-            // 设置题目的所有选项
-            questionVo.setQuestionOptionVoList(optionVoList);
-
+            QuestionVo questionVo = getQuestionVo(question);
             questionVoList.add(questionVo);
         }
         return questionVoList;
     }
 
+    private QuestionVo getQuestionVo(Question question) {
+        QuestionVo questionVo = new QuestionVo();
+        // 先复制能复制的属性
+        BeanUtils.copyProperties(question, questionVo);
+        // 设置问题的创建者
+        questionVo.setQuestionCreator(
+                Objects.requireNonNull(
+                        userRepository.findById(
+                                question.getQuestionCreatorId()
+                        ).orElse(null)
+                ).getUserUsername());
+
+        // 设置问题的难度
+        questionVo.setQuestionLevel(
+                Objects.requireNonNull(
+                        questionLevelRepository.findById(
+                                question.getQuestionLevelId()
+                        ).orElse(null)
+                ).getQuestionLevelDescription());
+
+        // 设置题目的类别，比如单选、多选、判断等
+        questionVo.setQuestionType(
+                Objects.requireNonNull(
+                        questionTypeRepository.findById(
+                                question.getQuestionTypeId()
+                        ).orElse(null)
+                ).getQuestionTypeDescription());
+
+        // 设置题目分类，比如数学、语文、英语、生活、人文等
+        questionVo.setQuestionCategory(
+                Objects.requireNonNull(
+                        questionCategoryRepository.findById(
+                                question.getQuestionCategoryId()
+                        ).orElse(null)
+                ).getQuestionCategoryName()
+        );
+
+        // 选项的自定义Vo列表
+        List<QuestionOptionVo> optionVoList = new ArrayList<>();
+
+        // 获得所有的选项列表
+        List<QuestionOption> optionList = questionOptionRepository.findAllById(
+                Arrays.asList(question.getQuestionOptionIds().split("-"))
+        );
+
+        // 获取所有的答案列表optionList中每个option的isAnswer选项
+        List<QuestionOption> answerList = questionOptionRepository.findAllById(
+                Arrays.asList(question.getQuestionAnswerOptionIds().split("-"))
+        );
+
+        // 根据选项和答案的id相同设置optionVo的isAnswer属性
+        for (QuestionOption option : optionList) {
+            QuestionOptionVo optionVo = new QuestionOptionVo();
+            BeanUtils.copyProperties(option, optionVo);
+            for (QuestionOption answer : answerList) {
+                if (option.getQuestionOptionId().equals(answer.getQuestionOptionId())) {
+                    optionVo.setAnswer(true);
+                }
+            }
+            optionVoList.add(optionVo);
+        }
+
+        // 设置题目的所有选项
+        questionVo.setQuestionOptionVoList(optionVoList);
+        return questionVo;
+    }
+
     @Override
-    public void updateQuestion(QuestionVo questionVo) {
+    public QuestionVo updateQuestion(QuestionVo questionVo) {
         // 1.把需要的属性都设置好
-        String questionName = questionVo.getQuestionName();
-        String questionDesc = questionVo.getQuestionDescription();
         StringBuilder questionAnswerOptionIds = new StringBuilder();
         List<QuestionOption> questionOptionList = new ArrayList<>();
         List<QuestionOptionVo> questionOptionVoList = questionVo.getQuestionOptionVoList();
@@ -156,19 +158,20 @@ public class ExamServiceImpl implements ExamService {
                     questionAnswerOptionIds.append(questionOptionVo.getQuestionOptionId());
                 }
             }
-
         }
 
         // 1.更新问题
         Question question = questionRepository.findById(questionVo.getQuestionId()).orElse(null);
         assert question != null;
-        question.setQuestionName(questionName);
-        question.setQuestionDescription(questionDesc);
+        BeanUtils.copyProperties(questionVo, question);
         question.setQuestionAnswerOptionIds(questionAnswerOptionIds.toString());
         questionRepository.save(question);
 
         // 2.更新所有的option
         questionOptionRepository.saveAll(questionOptionList);
+
+        // 返回更新后的问题，方便前端局部刷新
+        return getQuestionVo(question);
     }
 
     @Override

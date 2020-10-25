@@ -52,7 +52,7 @@ export default {
           field: 'name',
           width: 200,
           formatter: (value, row) => {
-            return '<div class="question-name">' + value + '</div>'
+            return '<div class="question-name" style="height: 100%;width: 100%">' + value + '</div>'
           },
           events: {
             'dblclick .question-name': function (e, value, row, index) {
@@ -80,13 +80,9 @@ export default {
             return '<div class="question-score">' + value + '</div>'
           },
           events: {
-            'dblclick .question-score': function (e, value, row, index) {
+            'click .question-score': function (e, value, row, index) {
               const $element = $(e.target) // 把元素转换成html对象
-              $element.html('<input type="text" value="' + value + '"><button class="question-score-save-btn">保存</button>')
-            },
-            'click .question-score-save-btn': function (e, value, row, index) {
-              const $element = $(e.target)
-              console.log($element.parent())
+              $element.html('<input type="text" value="' + value + '">')
             }
           }
         },
@@ -139,11 +135,11 @@ export default {
         toolbar: '#toolbar',
         // 下面两行是支持高级搜索，即按照字段搜索
         advancedSearch: true,
-        idTable: 'advancedTable'
+        idTable: 'advancedTable',
         // 下面是常用的事件，更多的点击事件可以参考：http://www.itxst.com/bootstrap-table-events/tutorial.html
         // onClickRow: that.clickRow,
-        // onClickCell: that.clickCell, // 单元格单击事件
-        // onDblClickCell: that.dblClickCell // 单元格双击事件
+        // onClickCell: that.clickCell // 单元格单击事件
+        onDblClickCell: that.dblClickCell // 单元格双击事件
       }
     }
   },
@@ -161,6 +157,23 @@ export default {
     },
     handleOk () {
       this.loadAll() // 加载所有问题的数据
+    },
+    dblClickCell (field, value, row, $element) {
+      if (field === 'score') { // 更新分数
+        row.score = $element.children('.question-score').children('input')[0].value
+        const that = this
+        questionUpdate(row).then(res => {
+          // 成功就跳转到结果页面
+          console.log(res)
+          if (res.code === 0) {
+            $element.html('<div class="question-desc">' + row.score + '</div>')
+            that.$notification.success({
+              message: '更新成功',
+              description: '更新成功'
+            })
+          }
+        })
+      }
     },
     loadAll () {
       const that = this
