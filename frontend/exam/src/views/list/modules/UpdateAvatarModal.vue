@@ -1,5 +1,11 @@
 <template>
-  <a-modal title="编辑封面" :width="400" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
+  <a-modal
+    title="编辑封面"
+    :width="400"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    @cancel="handleCancel"
+  >
     <p>截图直接粘贴到下面即可，建议图片不要大于80*80</p>
     <div id="summernote-exam-avatar"></div>
     <template slot="footer">

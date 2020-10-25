@@ -137,6 +137,7 @@ public class ExamServiceImpl implements ExamService {
     public void updateQuestion(QuestionVo questionVo) {
         // 1.把需要的属性都设置好
         String questionName = questionVo.getQuestionName();
+        String questionDesc = questionVo.getQuestionDescription();
         StringBuilder questionAnswerOptionIds = new StringBuilder();
         List<QuestionOption> questionOptionList = new ArrayList<>();
         List<QuestionOptionVo> questionOptionVoList = questionVo.getQuestionOptionVoList();
@@ -162,6 +163,7 @@ public class ExamServiceImpl implements ExamService {
         Question question = questionRepository.findById(questionVo.getQuestionId()).orElse(null);
         assert question != null;
         question.setQuestionName(questionName);
+        question.setQuestionDescription(questionDesc);
         question.setQuestionAnswerOptionIds(questionAnswerOptionIds.toString());
         questionRepository.save(question);
 
