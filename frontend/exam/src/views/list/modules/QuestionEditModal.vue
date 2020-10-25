@@ -2,23 +2,21 @@
   <a-modal title="编辑题目" :width="640" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <h3>
-          题目：
-          <a-input type="textarea" v-model="question.name"/>
-        </h3>
+        <h3><b>题干：</b></h3>
+        <div id="summernote-question-name-edit" />
         <ul v-show="question.type==='多选题'">
           <li v-for="option in question.options" :key="option.id">
-            <a-input v-model="option.content"/>
+            <a-input v-model="option.content" />
           </li>
         </ul>
 
         <ul v-show="question.type!=='多选题'">
           <li v-for="option in question.options" :key="option.id">
-            <a-input v-model="option.content"/>
+            <a-input v-model="option.content" />
           </li>
         </ul>
 
-        <h4>答案</h4>
+        <h3><b>答案：</b></h3>
         <ul v-show="question.type!=='多选题'">
           <li>
             <a-select :size="size" :value="answerOptionId" style="width: 100%" @change="handleSingleChange">
@@ -46,7 +44,8 @@
             </a-select>
           </li>
         </ul>
-
+        <h3><b>解析：</b></h3>
+        <div id="summernote-question-desc-edit" />
       </a-form>
     </a-spin>
     <template slot="footer">
@@ -57,7 +56,8 @@
 </template>
 
 <script>
-
+import '../../../plugins/summernote'
+import $ from 'jquery'
 import { questionUpdate } from '../../../api/exam'
 
 export default {
@@ -80,18 +80,61 @@ export default {
         display: 'block',
         height: '30px',
         lineHeight: '30px'
-      }
+      },
+      name: '',
+      desc: ''
     }
   },
 
+  updated () {
+    this.initSummernote('summernote-question-name-edit')
+    this.initSummernote('summernote-question-desc-edit')
+    this.setSummernoteContent('summernote-question-name-edit', this.name)
+    this.setSummernoteContent('summernote-question-desc-edit', this.desc)
+  },
   methods: {
+    initSummernote (divId) {
+      console.log('初始化富文本插件：' + divId)
+      $('#' + divId).summernote({
+        lang: 'zh-CN',
+        placeholder: '请输入内容',
+        height: 200,
+        width: '100%',
+        htmlMode: true,
+        toolbar: [
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['fontsize', ['fontsize']],
+          ['fontname', ['fontname']],
+          ['para', ['ul', 'ol', 'paragraph']]
+        ],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+        fontNames: [
+          'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
+          'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
+          'Tahoma', 'Times New Roman', 'Verdana'
+        ],
+        callbacks: {
+          onSubmit: function () {
+            this.richContent = $('#summernote').summernote('code')
+          }
+        }
+      })
+    },
+    getSummernoteContent (divId) {
+      return $('#' + divId).summernote('code')
+    },
+    setSummernoteContent (divId, content) {
+      return $('#' + divId).summernote('code', content)
+    },
     edit (record) {
+      this.name = record.name // 题干
+      this.desc = record.description // 解析
+      // 把当前的记录赋值到data中的变量
+      this.question = record
       // 上来先把之前的清理干净
       this.answerOptionId = ''
       this.answerOptionIds = []
       this.visible = true
-      // 把当前的记录赋值到data中的变量
-      this.question = record
       // 单选题的处理情况,设置默认值
       for (let i = 0; i < this.question.options.length; i++) {
         if (this.question.options[i].answer === true) {
@@ -154,22 +197,26 @@ export default {
     },
 
     handleUpdate () {
+      const that = this
+      that.question.name = that.getSummernoteContent('summernote-question-name-edit')
+      that.question.description = that.getSummernoteContent('summernote-question-desc-edit')
+      console.log(that.question)
       // 把data中的question属性提交到后端，待写完后端接口
-      questionUpdate(this.question).then(res => {
+      questionUpdate(that.question).then(res => {
         // 成功就跳转到结果页面
         console.log(res)
         if (res.code === 0) {
-          this.$notification.success({
+          that.$notification.success({
             message: '更新成功',
             description: '问题更新成功'
           })
           // 关闭弹出框
-          this.visible = false
-          this.$emit('ok')
+          that.visible = false
+          that.$emit('ok')
         }
       }).catch(err => {
         // 失败就弹出警告消息
-        this.$notification.error({
+        that.$notification.error({
           message: '更新',
           description: err.message
         })
