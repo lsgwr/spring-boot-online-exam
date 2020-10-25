@@ -8,18 +8,21 @@
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <h3>题目：{{ question.name }}</h3>
+        <h3><b>题干：</b></h3>
+        <div v-html="question.name"></div>
+        <br>
+        <h3><b>选项：</b></h3>
         <ul>
-          <li v-for="option in question.options" :key="option.id">
-            {{ option.content }}
-          </li>
+          <li v-for="option in question.options" :key="option.id" v-html="option.content"/>
         </ul>
-        <h4>答案</h4>
+        <br>
+        <h3><b>答案：</b></h3>
         <ul>
-          <li v-for="option in question.options" :key="option.id" v-show="option.answer===true">
-            {{ option.content }}
-          </li>
+          <li v-for="option in question.options" :key="option.id" v-show="option.answer===true" v-html="option.content"/>
         </ul>
+        <br>
+        <h3><b>解析：</b></h3>
+        <div v-html="question.description"></div>
       </a-form>
     </a-spin>
     <template slot="footer">
