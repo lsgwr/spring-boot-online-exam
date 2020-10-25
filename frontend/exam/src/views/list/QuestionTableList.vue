@@ -272,6 +272,69 @@ export default {
           }
         })
       }
+
+      if (field === 'level') { // 更新难度
+        const childrenSelect = $element.children('.question-level').children('select') // 获取输入框的值
+        if (childrenSelect.length === 0) return
+        const optionSelected = $(childrenSelect[0]).find('option:selected')
+        row.levelId = optionSelected.val()
+        console.log(row.levelId)
+        row.level = optionSelected.text()
+        console.log(row.level)
+        const that = this
+        questionUpdate(row).then(res => {
+          // 成功就跳转到结果页面
+          console.log(res)
+          if (res.code === 0) {
+            $element.children('.question-level').text(row.level)
+            that.$notification.success({
+              message: '更新成功',
+              description: '更新成功'
+            })
+          }
+        })
+      }
+
+      if (field === 'type') { // 更新题型
+        const childrenSelect = $element.children('.question-type').children('select') // 获取输入框的值
+        if (childrenSelect.length === 0) return
+        const optionSelected = $(childrenSelect[0]).find('option:selected')
+        row.typeId = optionSelected.val()
+        row.type = optionSelected.text()
+        const that = this
+        questionUpdate(row).then(res => {
+          // 成功就跳转到结果页面
+          console.log(res)
+          if (res.code === 0) {
+            $element.children('.question-type').text(row.type)
+            that.$notification.success({
+              message: '更新成功',
+              description: '更新成功'
+            })
+          }
+        })
+      }
+
+      if (field === 'category') { // 更新学科
+        const childrenSelect = $element.children('.question-category').children('select') // 获取输入框的值
+        console.log(childrenSelect)
+        if (childrenSelect.length === 0) return
+        const optionSelected = $(childrenSelect[0]).find('option:selected')
+        row.categoryId = optionSelected.val()
+        row.category = optionSelected.text()
+        const that = this
+        questionUpdate(row).then(res => {
+          // 成功就跳转到结果页面
+          console.log(res)
+          if (res.code === 0) {
+            $element.children('.question-category').text(row.category)
+            that.$notification.success({
+              message: '更新成功',
+              description: '更新成功'
+            })
+          }
+        })
+      }
     },
     loadAll () {
       const that = this
