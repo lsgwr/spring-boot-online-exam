@@ -1,11 +1,5 @@
 <template>
-  <a-modal
-    title="题目信息"
-    :width="640"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    @cancel="handleCancel"
-  >
+  <a-modal title="题目信息" :width="640" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <h3><b>题干：</b></h3>
