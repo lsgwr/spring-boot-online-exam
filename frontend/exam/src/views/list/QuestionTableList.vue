@@ -55,7 +55,7 @@ export default {
             return '<div class="question-name" style="height: 100%;width: 100%">' + value + '</div>'
           },
           events: {
-            'dblclick .question-name': function (e, value, row, index) {
+            'click .question-name': function (e, value, row, index) {
               that.$refs.questionUpdateModal.edit('summernote-question-name-update', row, 'name', '更新题干', questionUpdate)
             }
           }
@@ -68,7 +68,7 @@ export default {
             return '<div class="question-desc">' + value + '</div>'
           },
           events: {
-            'dblclick .question-desc': function (e, value, row, index) {
+            'click .question-desc': function (e, value, row, index) {
               that.$refs.questionUpdateModal.edit('summernote-question-desc-update', row, 'description', '更新题目解析', questionUpdate)
             }
           }
