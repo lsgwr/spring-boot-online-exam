@@ -1,16 +1,16 @@
 <template>
   <a-modal
     title="创建问题"
-    :width="640"
+    :width="800"
     :visible="visible"
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
   >
     <a-spin :spinning="confirmLoading">
       <a-steps :current="currentStep" :style="{ marginBottom: '28px' }" size="small">
-        <a-step title="问题内容"/>
-        <a-step title="问题分类"/>
-        <a-step title="问题选项"/>
+        <a-step title="问题内容" />
+        <a-step title="问题分类" />
+        <a-step title="问题选项" />
       </a-steps>
       <a-form :form="form">
         <!-- step1 -->
@@ -20,14 +20,14 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['name', {rules: [{required: true}]}]"/>
+            <div id="summernote-question-name"></div>
           </a-form-item>
           <a-form-item
             label="解析"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-textarea :rows="4" v-decorator="['desc', {rules: [{required: true}]}]"></a-textarea>
+            <div id="summernote-question-desc"></div>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
@@ -139,19 +139,20 @@
     <template slot="footer">
       <a-button key="back" @click="backward" v-if="currentStep > 0" :style="{ float: 'left' }">上一步</a-button>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleNext(currentStep)">{{ currentStep
-        === 2 && '完成' || '下一步' }}
+      <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleNext(currentStep)">
+        {{ currentStep === 2 && '完成' || '下一步' }}
       </a-button>
     </template>
   </a-modal>
 </template>
 
 <script>
-// import pick from 'lodash.pick'
+import '../../../plugins/summernote'
+import $ from 'jquery'
 import { getQuestionSelection, questionCreate } from '../../../api/exam'
 
 const stepForms = [
-  ['name', 'desc'],
+  [],
   ['type', 'category', 'level'],
   ['option']
 ]
@@ -161,13 +162,13 @@ export default {
   data () {
     return {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 }
+        xs: { span: 2 },
+        sm: { span: 2 }
       },
       size: 'default',
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 13 }
+        xs: { span: 22 },
+        sm: { span: 22 }
       },
       // 单选和判断题的答案
       answerOption: '',
@@ -197,7 +198,41 @@ export default {
       type: ''
     }
   },
+  updated () {
+    this.initSummernote('summernote-question-name')
+    this.initSummernote('summernote-question-desc')
+  },
   methods: {
+    initSummernote (divId) {
+      console.log('初始化富文本插件：' + divId)
+      $('#' + divId).summernote({
+        lang: 'zh-CN',
+        placeholder: '请输入内容',
+        height: 150,
+        width: '100%',
+        htmlMode: true,
+        toolbar: [
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['fontsize', ['fontsize']],
+          ['fontname', ['fontname']],
+          ['para', ['ul', 'ol', 'paragraph']]
+        ],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+        fontNames: [
+          'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
+          'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
+          'Tahoma', 'Times New Roman', 'Verdana'
+        ],
+        callbacks: {
+          onSubmit: function () {
+            this.richContent = $('#summernote').summernote('code')
+          }
+        }
+      })
+    },
+    getSummernoteContent (divId) {
+      return $('#' + divId).summernote('code')
+    },
     create () {
       this.visible = true
       // const { form: { setFieldsValue } } = this
@@ -260,6 +295,8 @@ export default {
         console.log('提交数据到后端')
         console.log('errors:', errors, 'val:', values)
         values.options = this.options
+        values.name = this.getSummernoteContent('summernote-question-name')
+        values.desc = this.getSummernoteContent('summernote-question-desc')
         this.confirmLoading = false
         if (!errors) {
           console.log('values:', values)
