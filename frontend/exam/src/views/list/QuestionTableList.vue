@@ -25,6 +25,7 @@ import QuestionEditModal from './modules/QuestionEditModal'
 import StepByStepQuestionModal from './modules/StepByStepQuestionModal'
 import { getQuestionAll, questionUpdate } from '../../api/exam'
 import SummernoteUpdateModal from '@views/list/modules/SummernoteUpdateModal'
+import $ from 'jquery'
 
 export default {
   name: 'QuestionTableList',
@@ -74,7 +75,20 @@ export default {
         },
         {
           title: '分数',
-          field: 'score'
+          field: 'score',
+          formatter: (value, row) => {
+            return '<div class="question-score">' + value + '</div>'
+          },
+          events: {
+            'dblclick .question-score': function (e, value, row, index) {
+              const $element = $(e.target) // 把元素转换成html对象
+              $element.html('<input type="text" value="' + value + '"><button class="question-score-save-btn">保存</button>')
+            },
+            'click .question-score-save-btn': function (e, value, row, index) {
+              const $element = $(e.target)
+              console.log($element.parent())
+            }
+          }
         },
         {
           title: '创建人',
