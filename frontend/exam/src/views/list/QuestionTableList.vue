@@ -23,7 +23,7 @@ import '../../plugins/bootstrap-table'
 import QuestionViewModal from './modules/QuestionViewModal'
 import QuestionEditModal from './modules/QuestionEditModal'
 import StepByStepQuestionModal from './modules/StepByStepQuestionModal'
-import { getQuestionAll, questionUpdate } from '../../api/exam'
+import { getQuestionAll, questionUpdate, getQuestionSelection } from '../../api/exam'
 import SummernoteUpdateModal from '@views/list/modules/SummernoteUpdateModal'
 import $ from 'jquery'
 
@@ -92,7 +92,38 @@ export default {
         },
         {
           title: '难度',
-          field: 'level'
+          field: 'level',
+          formatter: (value, row) => {
+            return '<div class="question-level">' + value + '</div>'
+          },
+          events: {
+            'click .question-level': function (e, value, row, index) {
+              const $element = $(e.target) // 把元素转换成html对象
+              getQuestionSelection().then(res => {
+                console.log(res)
+                if (res.code === 0) {
+                  console.log(res.data)
+                  const levels = res.data.levels
+                  let inner = '<select>'
+                  for (let i = 0; i < levels.length; i++) {
+                    if (levels[i].description === value) {
+                      // 设置默认的选中值为当前的值
+                      inner += '<option value ="' + levels[i].id + '" name="' + levels[i].name + '" selected="selected">' + levels[i].description + '</option>'
+                    } else {
+                      inner += '<option value ="' + levels[i].id + '" name="' + levels[i].name + '">' + levels[i].description + '</option>'
+                    }
+                  }
+                  inner += '</select>'
+                  $element.html(inner)
+                } else {
+                  that.$notification.error({
+                    message: '获取问题下拉选项失败',
+                    description: res.msg
+                  })
+                }
+              })
+            }
+          }
         },
         {
           title: '题型',
