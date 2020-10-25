@@ -49,8 +49,7 @@
         <a-layout-content :style="{ margin: '24px 16px 0',height: '84vh', overflow: 'initial' }">
           <div :style="{ padding: '24px', background: '#fff',height: '84vh'}">
             <span v-show="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎参加考试，请点击左侧题目编号开始答题</span>
-            <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }}
-            <br><br>
+            <strong>{{ currentQuestion.type }} </strong> <p v-html="currentQuestion.name"></p>
             <!-- 单选题和判断题 --> <!-- key不重复只需要在一个for循环中保证即可 -->
             <a-radio-group @change="onRadioChange" v-model="radioValue" v-if="currentQuestion.type === '单选题' || currentQuestion.type === '判断题'">
               <a-radio v-for="option in currentQuestion.options" :key="option.questionOptionId" :style="optionStyle" :value="option.questionOptionId">
