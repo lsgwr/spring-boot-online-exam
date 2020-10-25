@@ -20,7 +20,7 @@
             <a-textarea :rows="2" v-model="desc"></a-textarea>
           </a-form-item>
           <a-form-item label="考试封面" :labelCol="labelCol" :wrapperCol="wrapperCol">
-            <p>直接双击列表图片修改，建议图片不要大于80*80</p>
+            <p>直接点击列表图片修改，建议图片不要大于80*80</p>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">

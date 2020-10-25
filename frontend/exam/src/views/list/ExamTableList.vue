@@ -53,7 +53,7 @@ export default {
             return '<div class="exam-avatar">' + value + '</div>'
           },
           events: {
-            'dblclick .exam-avatar': function (e, value, row, index) {
+            'click .exam-avatar': function (e, value, row, index) {
               that.handleAvatarEdit(row)
             }
           }
