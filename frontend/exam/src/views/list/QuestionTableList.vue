@@ -127,11 +127,73 @@ export default {
         },
         {
           title: '题型',
-          field: 'type'
+          field: 'type',
+          formatter: (value, row) => {
+            return '<div class="question-type">' + value + '</div>'
+          },
+          events: {
+            'click .question-type': function (e, value, row, index) {
+              const $element = $(e.target) // 把元素转换成html对象
+              getQuestionSelection().then(res => {
+                console.log(res)
+                if (res.code === 0) {
+                  console.log(res.data)
+                  const types = res.data.types
+                  let inner = '<select>'
+                  for (let i = 0; i < types.length; i++) {
+                    if (types[i].description === value) {
+                      // 设置默认的选中值为当前的值
+                      inner += '<option value ="' + types[i].id + '" name="' + types[i].name + '" selected="selected">' + types[i].description + '</option>'
+                    } else {
+                      inner += '<option value ="' + types[i].id + '" name="' + types[i].name + '">' + types[i].description + '</option>'
+                    }
+                  }
+                  inner += '</select>'
+                  $element.html(inner)
+                } else {
+                  that.$notification.error({
+                    message: '获取问题下拉选项失败',
+                    description: res.msg
+                  })
+                }
+              })
+            }
+          }
         },
         {
           title: '学科',
-          field: 'category'
+          field: 'category',
+          formatter: (value, row) => {
+            return '<div class="question-category">' + value + '</div>'
+          },
+          events: {
+            'click .question-category': function (e, value, row, index) {
+              const $element = $(e.target) // 把元素转换成html对象
+              getQuestionSelection().then(res => {
+                console.log(res)
+                if (res.code === 0) {
+                  console.log(res.data)
+                  const categories = res.data.categories
+                  let inner = '<select>'
+                  for (let i = 0; i < categories.length; i++) {
+                    if (categories[i].name === value) { // 学科还是用名字吧
+                      // 设置默认的选中值为当前的值
+                      inner += '<option value ="' + categories[i].id + '" name="' + categories[i].description + '" selected="selected">' + categories[i].name + '</option>'
+                    } else {
+                      inner += '<option value ="' + categories[i].id + '" name="' + categories[i].description + '">' + categories[i].name + '</option>'
+                    }
+                  }
+                  inner += '</select>'
+                  $element.html(inner)
+                } else {
+                  that.$notification.error({
+                    message: '获取问题下拉选项失败',
+                    description: res.msg
+                  })
+                }
+              })
+            }
+          }
         },
         {
           title: '更新时间',
