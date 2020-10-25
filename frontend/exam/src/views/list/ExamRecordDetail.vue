@@ -55,7 +55,7 @@
           <div :style="{ padding: '24px', background: '#fff',height: '84vh'}">
             <span v-if="currentQuestion === ''" style="font-size: 30px;font-family: Consolas">欢迎查看本次考试情况，点击左侧题目编号可以查看答题详情</span>
             <span v-if="currentQuestion !== ''">
-              <strong>{{ currentQuestion.type }} </strong> {{ currentQuestion.name }} &nbsp;
+              <strong>{{ currentQuestion.type }} </strong> <p v-html="currentQuestion.name"></p>
               <strong style="color: green;" v-if="questionRight">本题您答对啦！</strong>
               <strong style="color: red;" v-if="!questionRight">本题您答错啦！</strong>
             </span>
@@ -93,6 +93,9 @@
                 </a-checkbox>
               </a-checkbox-group>
             </div>
+
+            <span style="color: red;"><br/>答案解析：<br/></span>
+            <p v-html="currentQuestion.description"></p>
           </div>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">
