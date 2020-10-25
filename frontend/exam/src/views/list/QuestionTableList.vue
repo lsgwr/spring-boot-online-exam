@@ -12,6 +12,7 @@
     />
     <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
     <step-by-step-question-modal ref="createQuestionModal" @ok="handleOk" />
+    <summernote-update-modal ref="questionNameUpdateModal" @ok="handleOk" />
     <question-view-modal ref="modalView" @ok="handleOk" />
     <question-edit-modal ref="modalEdit" @ok="handleOk" />
   </a-card>
@@ -22,11 +23,13 @@ import '../../plugins/bootstrap-table'
 import QuestionViewModal from './modules/QuestionViewModal'
 import QuestionEditModal from './modules/QuestionEditModal'
 import StepByStepQuestionModal from './modules/StepByStepQuestionModal'
-import { getQuestionAll } from '../../api/exam'
+import { getQuestionAll, questionUpdate } from '../../api/exam'
+import SummernoteUpdateModal from '@views/list/modules/SummernoteUpdateModal'
 
 export default {
   name: 'QuestionTableList',
   components: {
+    SummernoteUpdateModal,
     StepByStepQuestionModal,
     QuestionViewModal,
     QuestionEditModal
@@ -46,7 +49,15 @@ export default {
         {
           title: '题干',
           field: 'name',
-          width: 200
+          width: 200,
+          formatter: (value, row) => {
+            return '<div class="question-name">' + value + '</div>'
+          },
+          events: {
+            'dblclick .question-name': function (e, value, row, index) {
+              that.handleQuestionNameEdit(row)
+            }
+          }
         },
         {
           title: '解析',
@@ -120,6 +131,9 @@ export default {
   methods: {
     handleEdit (record) {
       this.$refs.modalEdit.edit(record)
+    },
+    handleQuestionNameEdit (record) {
+      this.$refs.questionNameUpdateModal.edit('summernote-question-name-update', record, 'name', '更新题干', questionUpdate)
     },
     handleSub (record) {
       // 查看题目

@@ -1,5 +1,5 @@
 <template>
-  <a-modal :title="title" :width="400" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
+  <a-modal :title="title" :width="600" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
     <div :id="divId"></div>
     <template slot="footer">
       <a-button key="update" @click="handleUpdate">完成</a-button>
@@ -37,7 +37,7 @@ export default {
       $('#' + divId).summernote({
         lang: 'zh-CN',
         placeholder: '请输入内容',
-        height: 200,
+        height: 300,
         width: '100%',
         htmlMode: true,
         toolbar: [
