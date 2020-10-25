@@ -25,7 +25,7 @@ public interface ExamService {
      *
      * @param questionVo 问题实体
      */
-    void updateQuestion(QuestionVo questionVo);
+    QuestionVo updateQuestion(QuestionVo questionVo);
 
     /**
      * 问题创建

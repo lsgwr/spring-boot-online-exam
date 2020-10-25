@@ -43,12 +43,12 @@ public class ExamController {
 
     @PostMapping("/question/update")
     @ApiOperation("更新问题")
-    ResultVO<String> questionUpdate(@RequestBody QuestionVo questionVo) {
+    ResultVO<QuestionVo> questionUpdate(@RequestBody QuestionVo questionVo) {
         // 完成问题的更新
         System.out.println(questionVo);
         try {
-            examService.updateQuestion(questionVo);
-            return new ResultVO<>(0, "更新问题成功", null);
+            QuestionVo questionVoResult = examService.updateQuestion(questionVo);
+            return new ResultVO<>(0, "更新问题成功", questionVoResult);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultVO<>(-1, "更新问题失败", null);
