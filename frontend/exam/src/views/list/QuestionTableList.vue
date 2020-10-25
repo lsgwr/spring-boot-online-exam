@@ -12,7 +12,7 @@
     />
     <!-- ref是为了方便用this.$refs.modal直接引用，下同 -->
     <step-by-step-question-modal ref="createQuestionModal" @ok="handleOk" />
-    <summernote-update-modal ref="questionNameUpdateModal" @ok="handleOk" />
+    <summernote-update-modal ref="questionUpdateModal" @ok="handleOk" />
     <question-view-modal ref="modalView" @ok="handleOk" />
     <question-edit-modal ref="modalEdit" @ok="handleOk" />
   </a-card>
@@ -55,14 +55,22 @@ export default {
           },
           events: {
             'dblclick .question-name': function (e, value, row, index) {
-              that.handleQuestionNameEdit(row)
+              that.$refs.questionUpdateModal.edit('summernote-question-name-update', row, 'name', '更新题干', questionUpdate)
             }
           }
         },
         {
           title: '解析',
           field: 'description',
-          width: 200
+          width: 200,
+          formatter: (value, row) => {
+            return '<div class="question-desc">' + value + '</div>'
+          },
+          events: {
+            'dblclick .question-desc': function (e, value, row, index) {
+              that.$refs.questionUpdateModal.edit('summernote-question-desc-update', row, 'description', '更新题目解析', questionUpdate)
+            }
+          }
         },
         {
           title: '分数',
@@ -131,9 +139,6 @@ export default {
   methods: {
     handleEdit (record) {
       this.$refs.modalEdit.edit(record)
-    },
-    handleQuestionNameEdit (record) {
-      this.$refs.questionNameUpdateModal.edit('summernote-question-name-update', record, 'name', '更新题干', questionUpdate)
     },
     handleSub (record) {
       // 查看题目
