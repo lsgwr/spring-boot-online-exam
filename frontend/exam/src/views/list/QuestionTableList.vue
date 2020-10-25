@@ -46,7 +46,12 @@ export default {
         {
           title: '题干',
           field: 'name',
-          width: 300
+          width: 200
+        },
+        {
+          title: '解析',
+          field: 'description',
+          width: 200
         },
         {
           title: '分数',
