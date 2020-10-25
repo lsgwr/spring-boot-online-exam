@@ -37,10 +37,22 @@ public class QuestionVo {
     private String questionLevel;
 
     /**
+     * 问题难度级别在数据库表question_level中的id
+     */
+    @JsonProperty("levelId")
+    private int questionLevelId;
+
+    /**
      * 问题类型，根据questionTypeId获取
      */
     @JsonProperty("type")
     private String questionType;
+
+    /**
+     * 问题类型在数据库表question_type中的id
+     */
+    @JsonProperty("typeId")
+    private int questionTypeId;
 
     /**
      * 问题分类，根据questionCategoryId获得
@@ -48,12 +60,18 @@ public class QuestionVo {
     @JsonProperty("category")
     private String questionCategory;
 
+    /**
+     * 问题分类在数据库表question_category中的id
+     */
+    @JsonProperty("categoryId")
+    private int questionCategoryId;
+
 
     @JsonProperty("description")
     private String questionDescription;
 
     /**
-     * 问题选项列表，从questionOptionIds获得,副院长哦自己额外给isAnswer赋值
+     * 问题选项列表，从questionOptionIds获得,需要自己额外给isAnswer赋值
      */
     @JsonProperty("options")
     private List<QuestionOptionVo> questionOptionVoList;
