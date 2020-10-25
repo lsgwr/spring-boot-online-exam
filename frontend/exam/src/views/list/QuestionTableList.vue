@@ -160,13 +160,15 @@ export default {
     },
     dblClickCell (field, value, row, $element) {
       if (field === 'score') { // 更新分数
-        row.score = $element.children('.question-score').children('input')[0].value
+        const childrenInput = $element.children('.question-score').children('input') // 获取输入框的值
+        if (childrenInput.length === 0) return
+        row.score = childrenInput[0].value
         const that = this
         questionUpdate(row).then(res => {
           // 成功就跳转到结果页面
           console.log(res)
           if (res.code === 0) {
-            $element.html('<div class="question-desc">' + row.score + '</div>')
+            $element.children('.question-score').text(row.score)
             that.$notification.success({
               message: '更新成功',
               description: '更新成功'
