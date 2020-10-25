@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <div id="toolbar">
       <a-button type="primary" icon="plus" @click="$refs.createQuestionModal.create()">新建</a-button>&nbsp;
-      <a-button type="primary" icon="reload" @click="loadAll()">刷新</a-button>
+      <a-button type="primary" icon="reload" @click="loadAll()">全量刷新</a-button>
     </div>
     <BootstrapTable
       ref="table"
@@ -99,6 +99,7 @@ export default {
           events: {
             'click .question-level': function (e, value, row, index) {
               const $element = $(e.target) // 把元素转换成html对象
+              if ($element.children().length > 0) return // 防止重复渲染
               getQuestionSelection().then(res => {
                 console.log(res)
                 if (res.code === 0) {
@@ -134,6 +135,7 @@ export default {
           events: {
             'click .question-type': function (e, value, row, index) {
               const $element = $(e.target) // 把元素转换成html对象
+              if ($element.children().length > 0) return // 防止重复渲染
               getQuestionSelection().then(res => {
                 console.log(res)
                 if (res.code === 0) {
@@ -169,6 +171,7 @@ export default {
           events: {
             'click .question-category': function (e, value, row, index) {
               const $element = $(e.target) // 把元素转换成html对象
+              if ($element.children().length > 0) return // 防止重复渲染
               getQuestionSelection().then(res => {
                 console.log(res)
                 if (res.code === 0) {
