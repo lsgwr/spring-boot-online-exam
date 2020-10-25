@@ -42,11 +42,12 @@
             <a-textarea :rows="2" v-decorator="['desc', {rules: [{required: true}]}]"></a-textarea>
           </a-form-item>
           <a-form-item
-            label="考试小图"
+            label="考试封面"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-textarea :rows="2" v-decorator="['avatar', {rules: [{required: true}]}]"></a-textarea>
+            <!-- 创建考试的时候传入的图片 -->
+            <div id="summernote-exam-avatar-create"></div>
           </a-form-item>
         </div>
         <div v-show="currentStep === 1">
@@ -167,11 +168,12 @@
 </template>
 
 <script>
-// import pick from 'lodash.pick'
+import '../../../plugins/summernote'
+import $ from 'jquery'
 import { getExamQuestionTypeList, examCreate } from '../../../api/exam'
 
 const stepForms = [
-  ['name', 'elapse', 'desc', 'avatar'],
+  ['name', 'elapse', 'desc'],
   ['radioScore', 'checkScore', 'judgeScore'],
   ['option']
 ]
@@ -203,7 +205,27 @@ export default {
       judges: []
     }
   },
+  updated () {
+    this.initSummernote()
+  },
   methods: {
+    initSummernote () {
+      console.log('初始化富文本插件')
+      $('#summernote-exam-avatar-create').summernote({
+        lang: 'zh-CN',
+        placeholder: '粘贴截图到这即可，图片最好不要大于80*80',
+        height: 200,
+        width: 320,
+        htmlMode: true,
+        toolbar: [],
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+        fontNames: [
+          'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
+          'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
+          'Tahoma', 'Times New Roman', 'Verdana'
+        ]
+      })
+    },
     create () {
       this.visible = true
       // 从后端数据获取单选题、多选题和判断题的列表
@@ -247,12 +269,12 @@ export default {
       // last step，最后一步，代表完成考试编写，需要点击"完成"创建考试
       this.confirmLoading = true
       validateFields((errors, values) => { // values就是表单中校验的值，后面提交到后端接口时主要就是用这个values
-        console.log('提交数据到后端')
-        console.log('errors:', errors, 'val:', values)
+        values.avatar = $('#summernote-exam-avatar-create').summernote('code')
         // 设置单选题、多选题和判断题的内容，但是提交前需要保证都已经被正确更新了
         values.radios = this.radios
         values.checks = this.checks
         values.judges = this.judges
+        console.log('提交数据到后端')
         this.confirmLoading = false
         if (!errors) {
           // 在这里把创建的考试的内容(存放在values中)提交给后端接口，需要的参数都已经封装成values这个json啦
