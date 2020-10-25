@@ -1,11 +1,5 @@
 <template>
-  <a-modal
-    title="编辑题目"
-    :width="640"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    @cancel="handleCancel"
-  >
+  <a-modal title="编辑题目" :width="640" :visible="visible" :confirmLoading="confirmLoading" @cancel="handleCancel">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <h3>
@@ -27,12 +21,7 @@
         <h4>答案</h4>
         <ul v-show="question.type!=='多选题'">
           <li>
-            <a-select
-              :size="size"
-              :value="answerOptionId"
-              style="width: 100%"
-              @change="handleSingleChange"
-            >
+            <a-select :size="size" :value="answerOptionId" style="width: 100%" @change="handleSingleChange">
               <a-select-option v-for="option in question.options" :key="option.id">
                 {{ option.content }}
               </a-select-option>
