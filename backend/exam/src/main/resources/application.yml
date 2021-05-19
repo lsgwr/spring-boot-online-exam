@@ -7,7 +7,8 @@ user:
 
 server:
   port: 9527 # 这个端口要和vue项目里vue.config.js里的devServer里面配置的相同
-
+  servlet:
+    context-path: /api
 spring:
   application:
     name: service-exam
