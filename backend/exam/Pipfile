@@ -1,0 +1,24 @@
+[[source]]
+url = "http://mirrors.aliyun.com/pypi/simple/"
+verify_ssl = false
+name = "pypi"
+
+[packages]
+django = "==3.2.4"
+djangorestframework = "==3.12.4"
+django-cors-headers = "==3.7.0"
+python-jose = "==3.3.0"
+pymysql = "==1.0.2"
+django-filter = "==2.4.0"
+coreapi = "==2.3.3"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+dev = "python manage.py runserver 0.0.0.0:5678"
+migrate = "python manage.py migrate"
+makemigrations = "python manage.py makemigrations"
+collect = "python manage.py collectstatic"
