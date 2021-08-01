@@ -16,6 +16,11 @@ coreapi = "2.3.3"
 
 [tool.poetry.dev-dependencies]
 
+[tool.poetry.scripts]
+dev = "python manage.py runserver 0.0.0.0:8888"
+migrate = "python manage.py migrate"
+makemigrations = "python manage.py makemigrations"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
