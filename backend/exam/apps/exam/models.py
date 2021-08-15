@@ -1,7 +1,10 @@
+from uuid import uuid4
+
 from django.db import models
 
 
 class TblExam(models.Model):
+    exam_id = models.CharField(max_length=40, default=uuid4, primary_key=True)
     name = models.CharField(max_length=128, verbose_name='考试名称', help_text='考试名称')
     avatar = models.TextField(verbose_name='考试的预览图', help_text='考试的预览图')
     description = models.CharField(max_length=256, blank=True, null=True, verbose_name='考试描述', help_text='考试描述')
@@ -25,6 +28,7 @@ class TblExam(models.Model):
 
 
 class TblRecord(models.Model):
+    exam_record_id = models.CharField(max_length=40, default=uuid4, primary_key=True)
     joiner_id = models.CharField(max_length=32, verbose_name='考试参与者的用户id', help_text='考试参与者的用户id')
     join_date = models.DateTimeField(auto_now_add=True, verbose_name='参加考试的时间', help_text='参加考试的时间')
     time_cost = models.IntegerField(default=0, verbose_name='完成考试所用的时间,单位分钟', help_text='完成考试所用的时间,单位分钟')

@@ -1,8 +1,12 @@
 from django.urls import path
+from rest_framework.routers import SimpleRouter
 
-from exam.views import LoginView, RegisterView
+from exam.views import ExamViewset
+
+router = SimpleRouter()
+router.register('exam', ExamViewset)
 
 urlpatterns = [
-    path('question/all', LoginView.as_view()),
-    path('register', RegisterView.as_view())
 ]
+
+urlpatterns += router.urls

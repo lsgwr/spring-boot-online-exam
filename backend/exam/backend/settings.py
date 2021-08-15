@@ -65,7 +65,7 @@ MIDDLEWARE = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'demo'),
+        'NAME': os.environ.get('DB_NAME', 'exam1'),
         'USER': os.environ.get('DB_USER', 'root'),
         'PASSWORD': os.environ.get('DB_PASSWD', 'aA111111'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),

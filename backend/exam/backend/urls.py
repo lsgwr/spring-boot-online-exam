@@ -26,7 +26,9 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='API 文档', description='开发接口文档', authentication_classes=(),
                                     permission_classes=())),
     path('admin/', admin.site.urls),
-    path('user/', include('users.urls'))
+    path('user/', include('users.urls')),
+    path('exam/', include('exam.urls')),
+    path('question/', include('question.urls'))
 ]
 
 # 生产环境中使 API 文档也可访问
