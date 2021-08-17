@@ -1,5 +1,5 @@
 [[source]]
-url = "https://pypi.org/simple"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 verify_ssl = true
 name = "pypi"
 
@@ -15,4 +15,4 @@ coreapi = "2.3.3"
 [dev-packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
