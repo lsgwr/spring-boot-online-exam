@@ -1,12 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import action
 
 from exam.models import TblExam
 from exam.serializers import ExamSerializers, ExamListSerializers
 
 
 class ExamViewset(ModelViewSet):
-    queryset = TblExam.objects.all()
+    queryset = TblExam.objects.all().order_by('create_time')
     serializer_class = ExamSerializers
 
     def get_serializer_class(self):

@@ -20,7 +20,7 @@
               placeholder="请输入帐户名/邮箱/手机号"
               v-decorator="[
                 'username',
-                {rules: [{ required: true, message: '请输入帐户名/邮箱/手机号' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                {rules: [{ required: true, message: '请输入帐户名/邮箱/手机号' }], validateTrigger: 'change'}
               ]"
             >
               <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -61,13 +61,6 @@
         </a-button>
       </a-form-item>
     </a-form>
-
-    <two-step-captcha
-      v-if="requiredTwoStepCaptcha"
-      :visible="stepCaptchaVisible"
-      @success="stepCaptchaSuccess"
-      @cancel="stepCaptchaCancel"
-    ></two-step-captcha>
   </div>
 </template>
 
@@ -75,7 +68,6 @@
 import TwoStepCaptcha from '../../components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '../../utils/util'
-import { getSmsCaptcha, get2step } from '../../api/login'
 
 export default {
   components: {
@@ -85,43 +77,20 @@ export default {
     return {
       customActiveKey: 'tab1',
       loginBtn: false,
-      // login type: 0 email, 1 username, 2 telephone
-      loginType: 0,
-      requiredTwoStepCaptcha: false,
       stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {
         time: 60,
         loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
-        loginType: 0,
         smsSendBtn: false
       }
     }
   },
   created () {
-    get2step({})
-      .then(res => {
-        this.requiredTwoStepCaptcha = res.result.stepCode
-      })
-      .catch(() => {
-        this.requiredTwoStepCaptcha = false
-      })
-    // this.requiredTwoStepCaptcha = true
   },
   methods: {
     ...mapActions(['Login', 'Logout']), // 这个是从Vuex中直接继承过来，从而可以当本地方法用，见store/modules/user.js
-    // handler
-    handleUsernameOrEmail (rule, value, callback) {
-      const { state } = this
-      const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
-      if (regex.test(value)) {
-        state.loginType = 0
-      } else {
-        state.loginType = 1
-      }
-      callback()
-    },
+
     handleTabClick (key) {
       this.customActiveKey = key
       // this.form.resetFields()
@@ -143,10 +112,7 @@ export default {
         console.log(values) // 打印用户的登录参数
         if (!err) {
           const loginParams = {} // 声明登录的参数
-          // delete loginParams.username
-          // loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          loginParams.loginType = state.loginType // 登录类型，0 email, 1 username
-          loginParams.userInfo = values.username // 设置用户信息，因为email还是username不确定，所以用userinfo字段来代替
+          loginParams.username = values.username // 设置用户信息，因为email还是username不确定，所以用userinfo字段来代替
           loginParams.password = values.password // 用户的密码，无加密
           console.log(loginParams)
           Login(loginParams) // 请求登录接口
@@ -159,40 +125,6 @@ export default {
           setTimeout(() => {
             state.loginBtn = false
           }, 600)
-        }
-      })
-    },
-    getCaptcha (e) {
-      e.preventDefault()
-      const { form: { validateFields }, state } = this
-
-      validateFields(['mobile'], { force: true }, (err, values) => {
-        if (!err) {
-          state.smsSendBtn = true
-
-          const interval = window.setInterval(() => {
-            if (state.time-- <= 0) {
-              state.time = 60
-              state.smsSendBtn = false
-              window.clearInterval(interval)
-            }
-          }, 1000)
-
-          const hide = this.$message.loading('验证码发送中..', 0)
-          getSmsCaptcha({ mobile: values.mobile }).then(res => {
-            setTimeout(hide, 2500)
-            this.$notification['success']({
-              message: '提示',
-              description: '验证码获取成功，您的验证码为：' + res.result.captcha,
-              duration: 8
-            })
-          }).catch(err => {
-            setTimeout(hide, 1)
-            clearInterval(interval)
-            state.time = 60
-            state.smsSendBtn = false
-            this.requestFailed(err)
-          })
         }
       })
     },
@@ -231,12 +163,6 @@ export default {
   .user-layout-login {
     label {
       font-size: 14px;
-    }
-
-    .getCaptcha {
-      display: block;
-      width: 100%;
-      height: 40px;
     }
 
     .forge-password {

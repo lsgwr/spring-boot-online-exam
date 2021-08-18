@@ -26,5 +26,3 @@ class UserBackend(backends.ModelBackend):
                 return user
         except UserInfo.DoesNotExist as e:
             logger.error(f'[username={username}]: {e}')
-
-        raise AuthenticateException(detail="SysUserTbl matching query does not exist.")

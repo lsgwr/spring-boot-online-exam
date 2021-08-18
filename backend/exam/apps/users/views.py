@@ -7,7 +7,6 @@
 import logging
 from django.db.models import Q
 from django.contrib.auth import authenticate
-from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status as HttpStatus
@@ -35,7 +34,7 @@ class LoginView(GenericAPIView):
         username = ser.data.get('username')
         password = ser.data.get('password')
 
-        ret = {'code': 'success', 'msg': ''}
+        ret = {'code': 0, 'msg': ''}
         try:
             user = authenticate(request, username=username, password=password)
             ret['msg'] = '登录成功'
