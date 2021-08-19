@@ -278,60 +278,65 @@ CORS_ALLOW_HEADERS = ['*']
 
 ## Django日志记录
 
-在settings.py中增加如下配置：
+使用loguru模块，一个非常优秀的日志记录开源库，在utils目录中增加logger.py文件，配置内容如下：
 
 ```python
 # 日志配置
-LOGGING = {
-    "version": 1,
-    # True表示禁用logger
-    "disable_existing_loggers": False,
-    'formatters': {
-        'default': {
-            'format': '%(levelno)s %(module)s %(asctime)s %(message)s ',
-            'datefmt': '%Y-%m-%d %A %H:%M:%S',
-        },
-    },
+import time
+from pathlib import Path
+from loguru import logger
 
-    'handlers': {
-        'request_handlers': {
-            'level': 'DEBUG',
-            # 日志文件指定为5M, 超过5m重新命名，然后写入新的日志文件
-            'class': 'logging.handlers.RotatingFileHandler',
-            # 指定文件大小
-            'maxBytes': 5 * 1024,
-            # 指定文件地址
-            'filename': '%s/request.log' % LOG_PATH,
-            'formatter': 'default'
-        }
-    },
-    'loggers': {
-        'request': {
-            'handlers': ['request_handlers'],
-            'level': 'INFO'
-        }
-    },
+root_path = Path(__file__).parent.parent
 
-    'filters': {
-        # 过滤器
-    }
-}
+# 定位到log日志文件
+log_path = root_path.joinpath('logs')
+log_path.mkdir(parents=True, exist_ok=True)
+
+log_path_info = log_path.joinpath(f'{time.strftime("%Y-%m-%d")}_info.log')
+log_path_warning = log_path.joinpath(f'{time.strftime("%Y-%m-%d")}_warning.log')
+log_path_error = log_path.joinpath(f'{time.strftime("%Y-%m-%d")}_error.log')
+
+# 日志简单配置 文件区分不同级别的日志
+logger.add(log_path_info,
+           rotation="10 MB",
+           encoding='utf-8',
+           enqueue=True,
+           level='INFO',
+           retention=5,
+           compression='zip')
+
+logger.add(log_path_warning,
+           rotation="10 MB",
+           encoding='utf-8',
+           enqueue=True,
+           level='WARNING',
+           retention=5,
+           compression='zip')
+
+logger.add(log_path_error,
+           rotation="10 MB",
+           encoding='utf-8',
+           enqueue=True,
+           level='ERROR',
+           retention=5,
+           compression='zip')
+
+__all__ = ["logger"]
 ```
 
 在所有需要记录日志的文件中采用如下方式使用
 
 ```python
-import logging
+from utils.logger import logger
 ...
 
-LOG = logging.getLogger('request')
 
 class RegisterView(APIView):
     authentication_classes = []
 
     def post(self, request):
         ...
-        LOG.info('用户: %s 注册成功', username)
+        logger.info('用户: %s 注册成功', username)
         ...
 ```
 

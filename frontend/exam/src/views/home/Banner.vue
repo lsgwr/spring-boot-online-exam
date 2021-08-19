@@ -6,7 +6,7 @@
       </div>
       <h1 class="" style="opacity: 1; transform: translate(0px, 0px);">Online Exam</h1>
       <p style="opacity: 1; transform: translate(0px, 0px);">
-        <span>基于SpringBoot+Vue技术栈开发的在线考试系统</span>
+        <span>基于Django+Vue技术栈开发的在线考试系统</span>
       </p>
       <div class="button-wrapper">
         <a href="https://github.com/19920625lsg">

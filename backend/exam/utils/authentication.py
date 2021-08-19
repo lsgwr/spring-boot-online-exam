@@ -17,26 +17,22 @@ _thread_local = local()
 
 class JwtAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        access_token = request.META.get('HTTP_ACCESS_TOKEN', None)
+        access_token = request.META.get('HTTP_AUTHORIZATION', None)
         if access_token:
-            jwt = JwtUtil()
-            data = jwt.check_jwt_token(access_token)
+            data = JwtUtil.check_jwt_token(access_token.split(' ')[-1])
             if data:
                 username = data.get('username')
-                telephone = data.get('telephone')
                 exp = data.get('exp')
                 if time.time() > exp:
                     raise AuthenticationFailed('authentication time out')
 
                 try:
-                    user = UserInfo.objects.get(Q(username=username) | Q(telephone=telephone))
+                    user = UserInfo.objects.get(username=username)
                     _thread_local.user = user
                 except (UserInfo.DoesNotExist, UserInfo.MultipleObjectsReturned) as e:
                     return (None, None)
                 else:
                     return (user, None)
-
-        raise AuthenticationFailed('authentication failed')
 
 
 def get_current_user():

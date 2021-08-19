@@ -9,7 +9,7 @@
           </a>
         </div>
         <div class="desc">
-          基于SpringBoot+Vue实现的在线考试系统
+          基于Django+Vue实现的在线考试系统
         </div>
       </div>
 

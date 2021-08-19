@@ -5,12 +5,11 @@
 @description: 
 """
 import time
-import logging
 
 from jose import jwt
 from django.conf import settings
 
-logger = logging.getLogger('request')
+from utils.logger import logger
 
 
 class JwtUtil:
@@ -18,7 +17,6 @@ class JwtUtil:
     def gen_jwt_token(user):
         to_encode = {
             'username': user.username,
-            'telephone': user.telephone,
             'exp': time.time() + 24 * 3600,
         }
 
@@ -29,9 +27,8 @@ class JwtUtil:
     def check_jwt_token(value):
         playload = {}
         try:
-            playload = jwt.decode(value, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
-                                  )
+            playload = jwt.decode(value, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         except Exception as e:
-            logger.exception(e)
+            logger.error(e)
 
         return playload

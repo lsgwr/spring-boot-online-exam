@@ -46,7 +46,7 @@ const err = (error) => {
 service.interceptors.request.use(config => {
   const token = Vue.ls.get(ACCESS_TOKEN)
   if (token) { // 如果localStorage中有"Access-Token"属性，就在请求头里加上
-    config.headers['Access-Token'] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
+    config.headers[ACCESS_TOKEN] = 'JWT ' + token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
   return config
 }, err)
