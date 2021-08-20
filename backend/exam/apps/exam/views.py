@@ -21,3 +21,15 @@ class ExamViewset(ModelViewSet):
         self.serializer_class = ExamAllSerializers
         serializer = self.get_serializer(self.queryset, many=True)
         return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = {
+            'checkIds': serializer.data.get('examQuestionIdsCheck').split('-'),
+            'judgeIds': serializer.data.get('examQuestionIdsJudge').split('-'),
+            'radioIds': serializer.data.get('examQuestionIdsRadio').split('-'),
+            'exam': serializer.data
+        }
+
+        return Response({'code': 0, 'msg': 0, 'data': data})

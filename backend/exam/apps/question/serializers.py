@@ -111,3 +111,35 @@ class QuestionSelectionSerializer(serializers.Serializer):
     types = serializers.ListField(
         child=QuestionTypeSerializer()
     )
+
+
+class QuestionDetailSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
+    options = serializers.SerializerMethodField()
+
+    def get_type(self, obj):
+        try:
+            type = TblQuestionType.objects.get(id=obj.type_id)
+            return type.description
+        except TblQuestionType.DoesNotExist as e:
+            return ''
+
+    def get_options(self, obj):
+        try:
+            option_ids = obj.option_ids.split('-')
+            options = TblQuestionOption.objects.filter(id__in=option_ids).all()
+            options_list = []
+            for item in options:
+                options_list.append({
+                    'questionOptionContent': item.content,
+                    'questionOptionDescription': item.description,
+                    'questionOptionId': item.id
+                })
+            return options_list
+        except Exception as e:
+            pass
+        return []
+
+    class Meta:
+        model = TblQuestion
+        fields = ['type', 'id', 'name', 'description', 'options']

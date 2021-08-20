@@ -27,9 +27,9 @@ const api = {
   ExamUpdate: '/exam/update',
   ExamCardList: '/exam/exam/list/',
   // 获取考试详情
-  ExamDetail: '/exam/detail/',
+  ExamDetail: '/exam/exam/',
   // 获取考试详情
-  QuestionDetail: '/exam/question/detail/',
+  QuestionDetail: '/question/question/',
   // 交卷
   FinishExam: '/exam/finish/',
   ExamRecordList: '/exam/record/list',

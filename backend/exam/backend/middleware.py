@@ -11,6 +11,9 @@ class CustomMiddleware(MiddlewareMixin):
 
     def process_response(self,request, response):
         # 为了适应前端格式，在服务的的每个响应消息内加上code和msg
-        if 'json' in response.accepted_media_type and hasattr(response, 'data') and not isinstance(response.data, dict):
+        if hasattr(response, 'accepted_media_type') \
+            and 'json' in response.accepted_media_type \
+            and hasattr(response, 'data') \
+            and not isinstance(response.data, dict):
             return JsonResponse({'code': 0, 'msg': '', 'data': response.data})
         return response

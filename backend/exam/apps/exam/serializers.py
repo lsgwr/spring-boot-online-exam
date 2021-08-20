@@ -66,30 +66,37 @@ class ExamAllSerializers(serializers.ModelSerializer):
             'start_date', 'end_date', 'create_time', 'update_time'
         ]
 
+
 class ExamSerializers(serializers.ModelSerializer):
     examAvatar = serializers.CharField(max_length=2049, source='avatar')
-    examDescription = serializers.CharField(max_length=256, source='description')
-    examCreatorId = serializers.SerializerMethodField()
+    examDescription = serializers.CharField(max_length=256,
+                                            source='description')
+    examEndDate = serializers.DateTimeField(source='end_date')
+    examCreatorId = serializers.CharField(max_length=40, source='creator_id')
+    examId = serializers.CharField(max_length=40, source='id')
+    examName = serializers.CharField(max_length=128, source='name')
+    examQuestionIds = serializers.CharField(max_length=2048,
+                                            source='question_ids')
+    examQuestionIdsCheck = serializers.CharField(max_length=512,
+                                                 source='question_ids_check')
+    examQuestionIdsJudge = serializers.CharField(max_length=512,
+                                                 source='question_ids_judge')
+    examQuestionIdsRadio = serializers.CharField(max_length=512,
+                                                 source='question_ids_radio')
+    examScore = serializers.IntegerField(source='score')
+    examScoreCheck = serializers.IntegerField(source='score_check')
+    examScoreJudge = serializers.IntegerField(source='score_judge')
+    examScoreRadio = serializers.IntegerField(source='score_radio')
+    examStartDate = serializers.DateTimeField(source='start_date')
+    examTimeLimit = serializers.IntegerField(source='time_limit')
+    updateTime = serializers.DateTimeField(source='update_time')
+
     class Meta:
         model = TblExam
-        fields = ['checkIds', 'exam', 'judgeIds', 'radioIds']
-
-
-class ExamDetailSerializers(serializers.ModelSerializer):
-    checkIds = serializers.SerializerMethodField()
-    exam = ExamSerializers()
-    judgeIds = serializers.SerializerMethodField()
-    radioIds = serializers.SerializerMethodField()
-
-    def get_checkIds(self, obj):
-        return obj.question_ids_check.split('-')
-
-    def get_judgeIds(self, obj):
-        return obj.question_ids_judge.split('-')
-
-    def get_radioIds(self, obj):
-        return obj.question_ids_radio.split('-')
-
-    class Meta:
-        model = TblExam
-        fields = ['checkIds', 'exam', 'judgeIds', 'radioIds']
+        fields = [
+            'examAvatar', 'examDescription', 'examEndDate', 'examCreatorId',
+            'examId', 'examName', 'examQuestionIds', 'examQuestionIdsCheck',
+            'examQuestionIdsJudge', 'examQuestionIdsRadio', 'examScore',
+            'examScoreCheck', 'examScoreJudge', 'examScoreRadio', 'examStartDate',
+            'examTimeLimit', 'updateTime'
+        ]
