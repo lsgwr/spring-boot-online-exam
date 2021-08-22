@@ -29,9 +29,9 @@ if not LOG_PATH.exists():
 SECRET_KEY = 'ys&52n6c@#4b%r1s&_otkj%xjz612$2luac4k0x+q(sq4ht)8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -68,7 +68,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('DB_NAME', 'exam1'),
         'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWD', '123456'),
+        'PASSWORD': os.environ.get('DB_PASSWD', 'aA111111'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '3306'),
     }

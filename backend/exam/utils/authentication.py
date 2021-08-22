@@ -34,6 +34,7 @@ class JwtAuthentication(BaseAuthentication):
                 else:
                     return (user, None)
 
+        raise AuthenticationFailed('authentication failed')
 
 def get_current_user():
     return getattr(_thread_local, 'user', None)

@@ -22,7 +22,7 @@ const api = {
   ExamList: '/exam/list',
   ExamAll: '/exam/exam/all/',
   // 获取问题列表，按照单选、多选和判断进行分类
-  ExamQuestionTypeList: '/exam/question/type/list',
+  ExamQuestionTypeList: '/question/type/list',
   ExamCreate: '/exam/create',
   ExamUpdate: '/exam/update',
   ExamCardList: '/exam/exam/list/',
@@ -32,7 +32,7 @@ const api = {
   QuestionDetail: '/question/question/',
   // 交卷
   FinishExam: '/exam/finish/',
-  ExamRecordList: '/exam/record/list',
-  recordDetail: '/exam/record/detail/'
+  ExamRecordList: '/exam/record/',
+  recordDetail: '/exam/record/'
 }
 export default api

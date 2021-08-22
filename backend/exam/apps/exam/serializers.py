@@ -1,9 +1,11 @@
+from django.db.models import fields
 from rest_framework import serializers
 
-from exam.models import TblExam
+from exam.models import TblExam, TblRecord
 from users.models import UserInfo
 from question.models import TblQuestion
 from question.serializers import QuestionSingleSerializer
+from users.serializers import UserInfoSerivalizer
 
 
 class ExamListSerializers(serializers.ModelSerializer):
@@ -100,3 +102,65 @@ class ExamSerializers(serializers.ModelSerializer):
             'examScoreCheck', 'examScoreJudge', 'examScoreRadio', 'examStartDate',
             'examTimeLimit', 'updateTime'
         ]
+
+
+class ExamRecordSerializer(serializers.ModelSerializer):
+    examRecordId = serializers.CharField(max_length=40, source='id')
+    examId = serializers.CharField(max_length=40, source='exam_id')
+    answerOptionIds = serializers.CharField(max_length=4096, source='answer_option_ids')
+    examJoinerId = serializers.CharField(max_length=40, source='joiner_id')
+    examJoinDate = serializers.DateTimeField(source='join_date')
+    examTimeCost = serializers.IntegerField(source='time_cost')
+    examJoinScore = serializers.IntegerField(source='join_score')
+    examResultLevel = serializers.IntegerField(source='result_level')
+
+    class Meta:
+        model = TblRecord
+        fields = [
+            'examRecordId', 'examId', 'answerOptionIds', 'examJoinerId',
+            'examJoinDate', 'examTimeCost', 'examJoinScore', 'examResultLevel'
+        ]
+
+
+class ExamRecordListSerializer(serializers.Serializer):
+    exam = serializers.SerializerMethodField()
+    examRecord = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+
+    def get_exam(self, obj):
+        try:
+            return ExamSerializers(obj.get('exam')).data
+        except Exception as e:
+            pass
+
+    def get_examRecord(self, obj):
+        try:
+            return ExamRecordSerializer(obj.get('record')).data
+        except Exception as e:
+            pass
+
+    def get_user(self, obj):
+        try:
+            return UserInfoSerivalizer(obj.get('user')).data
+        except Exception as e:
+            return ''
+
+
+class CreateExamSerializer(serializers.ModelSerializer):
+    radios = serializers.ListField(
+        child=serializers.CharField(max_length=512)
+    )
+    checks = serializers.ListField(
+        child=serializers.CharField(max_length=512)
+    )
+    judges = serializers.ListField(
+        child=serializers.CharField(max_length=512)
+    )
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
+
+    class Meta:
+        model = TblExam
+        exclude = ['start_date', 'end_date', 'create_time', 'update_time']

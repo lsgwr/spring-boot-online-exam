@@ -30,7 +30,7 @@
             <a-input-number
               :min="1"
               :max="200"
-              v-decorator="['elapse', {initialValue: '90',rules: [{required: true}]}]"
+              v-decorator="['time_limit', {initialValue: '90',rules: [{required: true}]}]"
             />
             分钟
           </a-form-item>
@@ -39,7 +39,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-textarea :rows="2" v-decorator="['desc', {rules: [{required: true}]}]"></a-textarea>
+            <a-textarea :rows="2" v-decorator="['description', {rules: [{required: true}]}]"></a-textarea>
           </a-form-item>
           <a-form-item
             label="考试封面"
@@ -59,7 +59,7 @@
             <a-input-number
               :min="1"
               :max="20"
-              v-decorator="['radioScore', {initialValue: '5',rules: [{required: true}]}]"
+              v-decorator="['score_radio', {initialValue: '5',rules: [{required: true}]}]"
             />
             分
           </a-form-item>
@@ -72,7 +72,7 @@
             <a-input-number
               :min="1"
               :max="20"
-              v-decorator="['checkScore', {initialValue: '5',rules: [{required: true}]}]"
+              v-decorator="['score_check', {initialValue: '5',rules: [{required: true}]}]"
             />
             分
           </a-form-item>
@@ -85,7 +85,7 @@
             <a-input-number
               :min="1"
               :max="20"
-              v-decorator="['judgeScore', {initialValue: '5',rules: [{required: true}]}]"
+              v-decorator="['score_judge', {initialValue: '5',rules: [{required: true}]}]"
             />
             分
           </a-form-item>

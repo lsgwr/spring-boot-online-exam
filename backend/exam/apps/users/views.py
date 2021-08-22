@@ -37,7 +37,7 @@ class LoginView(GenericAPIView):
             user = authenticate(request, username=username, password=password)
             ret['msg'] = '登录成功'
             ret['data'] = user.token
-        except (UserInfo.DoesNotExist, UserInfo.MultipleObjectsReturned) as e:
+        except Exception as e:
             ret['msg'] = '用户名或密码错误'
 
         return Response(ret)

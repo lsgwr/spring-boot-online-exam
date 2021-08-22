@@ -16,7 +16,7 @@
           <div class="list-content">
             <div class="list-content-item">
               <span>Owner</span>
-              <p>{{ item.user.userUsername }}</p>
+              <p>{{ item.user.nickname }}</p>
             </div>
             <div class="list-content-item">
               <span>开始时间</span>
