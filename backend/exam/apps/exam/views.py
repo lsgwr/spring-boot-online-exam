@@ -18,15 +18,22 @@ class ExamViewset(ModelViewSet):
     queryset = TblExam.objects.all().order_by('-create_time')
     serializer_class = ExamSerializers
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            self.serializer_class = CreateExamSerializer
+        elif self.action == 'list':
+            self.serializer_class = ExamListSerializers
+        elif self.action == 'all':
+            self.serializer_class = ExamAllSerializers
+        return super().get_serializer_class()
+
     @action(methods=['GET'], detail=False, url_path='list')
     def get_list(self, request, pk=None, *args, **kwargs):
-        self.serializer_class = ExamListSerializers
         serializer = self.get_serializer(self.queryset, many=True)
         return Response(serializer.data)
 
     @action(methods=['GET'], detail=False, url_path='all')
     def get_all(self, request, pk=None, *args, **kwargs):
-        self.serializer_class = ExamAllSerializers
         serializer = self.get_serializer(self.queryset, many=True)
         return Response(serializer.data)
 
@@ -43,8 +50,31 @@ class ExamViewset(ModelViewSet):
         return Response({'code': 0, 'msg': 0, 'data': data})
 
     def create(self, request, *args, **kwargs):
-        serializer = CreateExamSerializer(data=request.data)
-        serializer.save()
+        radios = request.data.get('radios')
+        checks = request.data.get('checks')
+        judges = request.data.get('judges')
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # 计算总分
+        radio_score = len(radios) * serializer.validated_data.get('score_radio')
+        check_score = len(checks) * serializer.validated_data.get('score_check')
+        judge_score = len(judges) * serializer.validated_data.get('score_judge')
+        score = radio_score + check_score + judge_score
+
+        # 计算总问题数
+        radis_ids = '-'.join([item.get('id') for item in radios])
+        check_ids = '-'.join([item.get('id') for item in checks])
+        judge_ids = '-'.join([item.get('id') for item in judges])
+        ids = '-'.join([radis_ids, check_ids, judge_ids])
+        serializer.save(
+            creator_id=request.user.user_id,
+            score=score,
+            question_ids=ids,
+            question_ids_radio=radis_ids,
+            question_ids_check=check_ids,
+            question_ids_judge=judge_ids
+            )
         return Response({'code': 0, 'msg': '创建考试成功', 'data': None})
 
 

@@ -147,20 +147,7 @@ class ExamRecordListSerializer(serializers.Serializer):
 
 
 class CreateExamSerializer(serializers.ModelSerializer):
-    radios = serializers.ListField(
-        child=serializers.CharField(max_length=512)
-    )
-    checks = serializers.ListField(
-        child=serializers.CharField(max_length=512)
-    )
-    judges = serializers.ListField(
-        child=serializers.CharField(max_length=512)
-    )
-
-    def create(self, validated_data):
-        return super().create(validated_data)
-
 
     class Meta:
         model = TblExam
-        exclude = ['start_date', 'end_date', 'create_time', 'update_time']
+        exclude = ['start_date', 'end_date', 'create_time', 'update_time', 'creator_id', 'id']
