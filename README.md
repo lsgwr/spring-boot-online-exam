@@ -2,8 +2,8 @@
 
 > 在线Demo预览，http://129.211.88.191 ，账户分别是admin、teacher、student，密码是admin123
 
-## 知会
-> 新增Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
+## 好消息！！！
+> 一个小伙伴做了Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
 
 ### 快速体验
 在安装了docker的机器上执行如下命令：
