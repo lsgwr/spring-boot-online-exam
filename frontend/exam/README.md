@@ -1,18 +1,19 @@
 # 在线考试系统前端介绍
 
-### 环境依赖
-> 以下为本地环境，仅供参考
+### 开发环境
+> 以下为我的本地环境，仅供参考
 
-- node
-- webpack
-- eslint
-- @vue/cli ~3
-- [ant-design-vue](https://github.com/vueComponent/ant-design-vue) - Ant Design Of Vue 
-- [vue-cropper](https://github.com/xyxiao001/vue-cropper) - Picture edit
-- [@antv/g2](https://antv.alipay.com/zh-cn/index.html) - AntV G2
-- [Viser-vue](https://viserjs.github.io/docs.html#/viser/guide/installation)  - Antv/G2 of Vue
+- node:10.16.3
+- npm:6.9.0
+- webstorm:2021.2.3
 
-### Project setup
+### 参考材料
+- 基础框架：[ant-design-vue](https://github.com/vueComponent/ant-design-vue)
+- 脚手架参考：[ant-design-vue-pro](https://github.com/vueComponent/ant-design-vue-pro)
+- 表格组件：[vxe-table](https://gitee.com/xuliangzhan_admin/vxe-table/)
+- 富文本组件：[wangEditor](https://github.com/wangeditor-team/wangEditor)
+
+### 项目初始化
 
 - Clone repo
 ```bash
