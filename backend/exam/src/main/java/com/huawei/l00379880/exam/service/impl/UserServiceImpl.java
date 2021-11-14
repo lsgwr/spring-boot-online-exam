@@ -48,12 +48,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ActionRepository actionRepository;
 
-    @Value("${user.default.avatar}")
-    private String defaultAvatar;
-
-    @Value("${user.default.username}")
-    private String defaultUsername;
-
 
     @Override
     public User register(RegisterDTO registerDTO) {
@@ -61,6 +55,7 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user.setUserId(IdUtil.simpleUUID());
             // 好像还缺少个用户名,用"exam_user_手机号"来注册：需要校验唯一性数据字段已经设置unique了，失败会异常地
+            String defaultUsername = "user";
             user.setUserUsername(defaultUsername + "_" + registerDTO.getMobile());
             // 初始化昵称和用户名相同
             user.setUserNickname(user.getUserUsername());
@@ -69,6 +64,7 @@ public class UserServiceImpl implements UserService {
             // 默认设置为学生身份，需要老师和学生身份地话需要管理员修改
             user.setUserRoleId(RoleEnum.STUDENT.getId());
             // 设置头像图片地址, 先默认一个地址，后面用户可以自己再改
+            String defaultAvatar = "http://d.lanrentuku.com/down/png/1904/business_avatar/8_avatar_2754583.png";
             user.setUserAvatar(defaultAvatar);
             // 设置描述信息，随便设置段默认的
             user.setUserDescription("welcome to online exam system");

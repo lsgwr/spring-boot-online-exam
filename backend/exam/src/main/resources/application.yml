@@ -1,10 +1,3 @@
-user:
-  default:
-    # 用户名的默认前缀
-    username: user
-    # 用户的默认头像
-    avatar: http://d.lanrentuku.com/down/png/1904/business_avatar/8_avatar_2754583.png
-
 server:
   port: 9527 # 这个端口要和vue项目里vue.config.js里的devServer里面配置的相同
   servlet:
