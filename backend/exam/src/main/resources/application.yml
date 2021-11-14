@@ -10,10 +10,11 @@ server:
   servlet:
     context-path: /api
 spring:
-  application:
-    name: service-exam
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: aA111111
+    url: jdbc:mysql://localhost:3306/exam?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
   jpa:
     # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
     show-sql: false
@@ -23,8 +24,6 @@ spring:
     multipart:
       max-file-size: 100MB # 最大支持文件大小
       max-request-size: 100MB # 最大支持请求大小
-  profiles:
-    active: dev # 开发时配dev, 生产环境配prod，如果容器化直接运行make_docker.sh即可这里配啥无所谓
 
 # 拦截器相关的配置
 interceptors:
