@@ -47,3 +47,6 @@
     level:
       org.hibernate.type.descriptor.sql.BasicBinder: off
   ``` 
+
+## SpringBoot整合vue工程到static目录中遇到的问题
++ [Spring Boot整合Vue，解决静态资源映射，页面刷新失效，路径配置等问题](https://blog.csdn.net/godelgnis/article/details/89683760)
