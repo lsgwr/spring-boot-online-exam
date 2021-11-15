@@ -1,2 +1,3 @@
 #!/bin/sh
-nohup java -jar app.jar &
+/usr/sbin/init
+nohup java -jar app.jar
