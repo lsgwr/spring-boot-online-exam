@@ -5,7 +5,7 @@
 ## 好消息！！！
 > 一个小伙伴做了Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
 
-### 快速体验
+## 快速体验
 在安装了docker的机器上执行如下命令：
 安装mysql:
 ```shell
@@ -13,6 +13,12 @@ docker run --name exam-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=aA111111 -d mys
 ```
 
 然后用`doc/sql/exam.sql`初始化一个名为exam的数据库(用navicate比较方便)
+
+> 或者直接用我初始化好的mysql容器也行
+
+```shell
+docker run -d -p 3306:3306 --name mysql --privileged=true waterknife/centos-nginx-jdk8-mysql  /usr/sbin/init
+```
 
 然后运行前后端的容器：
 
@@ -23,7 +29,7 @@ docker run -d --network=host --name exam-backend-frontend waterknife/exam
 然后访问 http://localhost 即可访问自己搭建的考试系统
 
 
-### 介绍
+## 介绍
 基于springboot的在线考试系统
 
 ### 功能简介
