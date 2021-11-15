@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Api(tags = "User APIs")
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired

@@ -27,7 +27,7 @@ import java.io.IOException;
  ***********************************************************/
 @RestController
 @Api(tags = "Upload And Download APIs")
-@RequestMapping("/file")
+@RequestMapping("/api/file")
 @Slf4j
 public class UploadDownloadController {
 

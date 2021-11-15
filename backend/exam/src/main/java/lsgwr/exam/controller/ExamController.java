@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @Api(tags = "Exam APIs")
-@RequestMapping("/exam")
+@RequestMapping("/api/exam")
 public class ExamController {
     @Autowired
     private ExamService examService;
