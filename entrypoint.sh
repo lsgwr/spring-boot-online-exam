@@ -1,3 +1,3 @@
 #!/bin/sh
-systemctl start mysqld.service
+sleep 1m
 nohup java -jar app.jar
