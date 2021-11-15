@@ -1,5 +1,6 @@
 .idea/
 *.iml
 src/main/resources/public
+src/main/resources/static
 target/
 dist/
