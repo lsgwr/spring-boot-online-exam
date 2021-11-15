@@ -1,3 +1,2 @@
 #!/bin/sh
-sleep 1m
-nohup java -jar app.jar
+nohup java -jar app.jar &
