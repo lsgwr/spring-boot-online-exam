@@ -19,7 +19,7 @@ spring:
 # 拦截器相关的配置
 interceptors:
   # 不需要进行鉴权的接口地址，用逗号隔开
-  auth-ignore-uris: ${server.servlet.context-path}/user/register,${server.servlet.context-path}/user/login
+  auth-ignore-uris: /user/register,/user/login
 
 # SQL语句打印(能打印参数，设置为trace是打印完整语句，默认我们就关掉吧)
 logging:
