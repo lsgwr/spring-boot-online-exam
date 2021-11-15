@@ -1,6 +1,6 @@
 #!/bin/bash
-rm -rf backend/exam/src/main/resources/static
-rm -rf frontend/exam/dist
-cd frontend/exam/ && npm install && npm run build && mv dist ../../backend/exam/src/main/resources/static
-cd ../../backend/exam/ && mvn clean package
+rm -rf backend/src/main/resources/static
+rm -rf frontend/dist
+cd frontend && npm install && npm run build && mv dist ../../backend/src/main/resources/static
+cd ../../backend && mvn clean package
 cd ../../ && docker build -t waterknife/exam .
