@@ -41,7 +41,10 @@
     "bootstrap-table": "^1.18.0",
     "bootstrap-vue": "^2.15.0",
     "popper.js": "^1.16.1",
-    "tableexport.jquery.plugin": "^1.10.20"
+    "tableexport.jquery.plugin": "^1.10.20",
+    "vxe-table": "^3.4.6",
+    "wangeditor": "^4.7.9",
+    "xe-utils": "^3.4.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.2.5",
