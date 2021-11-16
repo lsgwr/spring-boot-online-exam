@@ -61,7 +61,7 @@ cd spring-boot-online-exam
 + 5.部署完毕，查看效果
   > 打开 http://localhost:8000 或者 http://本机ip:8000 即可查看演示效果
 
-### 功能图示
+## 3.功能图示
 
 + 1.管理题目
   + 1.1 题目列表
@@ -85,14 +85,14 @@ cd spring-boot-online-exam
   + 3.2 考试记录查看
     > ![考试记录查看](doc/images/exam_detail.png)
 
-### 参与贡献
+## 4.参与贡献
 
 1.  Fork 本仓库
 2.  新建 exam_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
 
-### Todo
+## 5.Todo
 + `√`0.修复issue提地bug：题目创建失败
 + `√`1.考试详情编辑
 + 2.支持题目和考试的删除`删除的话比较麻烦，先不做了，最好是弄个visible字段，不实际删除，要不后面有些关联数据找不到就不好了`
