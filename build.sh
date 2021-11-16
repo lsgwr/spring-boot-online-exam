@@ -1,4 +1,6 @@
-#!/bin/bash
-docker rm -f exam
-docker run -d -p 80:9527 -p 3306:3306 --name exam --privileged=true waterknife/exam  /usr/sbin/init
-docker exec exam /lsg/entrypoint.sh
+FROM waterknife/centos-nginx-jdk8-mysql
+WORKDIR /lsg/
+COPY backend/target/*.jar ./app.jar
+COPY entrypoint.sh ./
+RUN chmod 777 entrypoint.sh
+EXPOSE 9527
