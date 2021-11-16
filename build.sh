@@ -1,6 +1,6 @@
-FROM waterknife/centos-nginx-jdk8-mysql
-WORKDIR /lsg/
-COPY backend/target/*.jar ./app.jar
-COPY entrypoint.sh ./
-RUN chmod 777 entrypoint.sh
-EXPOSE 9527
+#!/bin/bash
+rm -rf backend/src/main/resources/static
+rm -rf frontend/dist
+cd frontend && npm install && npm run build && mv dist ../backend/src/main/resources/static
+cd ../backend && mvn clean package
+cd ../ && docker build -t waterknife/exam .
