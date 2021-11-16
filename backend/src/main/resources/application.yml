@@ -1,5 +1,5 @@
 server:
-  port: 80 # 这个端口要和vue项目里vue.config.js里的devServer里面配置的相同
+  port: 9527 # 这个端口要和vue项目里vue.config.js里的devServer里面配置的相同
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
