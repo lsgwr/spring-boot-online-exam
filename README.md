@@ -2,37 +2,34 @@
 
 > 在线Demo预览，http://129.211.88.191 ，账户分别是admin、teacher、student，密码是admin123
 
-## 好消息！！！
-> 一个小伙伴做了Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
+> 好消息！！！一个小伙伴做了Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
 
-## 快速体验
-在安装了docker的机器上执行如下命令：
-安装mysql:
-```shell
-docker run --name exam-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=aA111111 -d mysql:5.7.15
-```
-
-然后用`doc/sql/exam.sql`初始化一个名为exam的数据库(用navicate比较方便)
-
-> 或者直接用我初始化好的mysql容器也行
+## 1.快速体验
+### 1.1 事先准备
+> clone代码并进入代码路径
 
 ```shell
-docker run -d -p 3306:3306 --name mysql --privileged=true waterknife/centos-nginx-jdk8-mysql  /usr/sbin/init
+git clone git@github.com:lsgwr/spring-boot-online-exam.git
+cd spring-boot-online-exam
 ```
 
-然后运行前后端的容器：
+下面按照Linux和windows说明快速搭建的方法
+### 1.2 Linux
+执行代码下的脚本start.sh即可
 
-```shell
-docker run -d --network=host --name exam-backend-frontend waterknife/exam
-```
+然后访问 http://ip:80 即可访问自己搭建的考试系统
 
-然后访问 http://localhost 即可访问自己搭建的考试系统
+### 1.3 windows
++ 1.安装JDK，推荐JDK8
++ 2.从官方仓库下载发布的jar包，建议选择最新版：https://github.com/lsgwr/spring-boot-online-exam/releases
++ 3.安装MySQL，创建数据库exam，并初始化密码为aA111111，导入doc/sql/exam.sql文件来创建数据库
++ 4.启动jar包：`java -jar exam.jar`
++ 5.访问：http://ip:9527 即可访问自己搭建的考试系统
 
-
-## 介绍
+## 2.介绍
 基于springboot的在线考试系统
 
-### 功能简介
+### 2.1 功能简介
 
 + 支持单选题、多选题、判断题
 + 支持学生(student)、教师(teacher)、管理员(admin)三种角色
@@ -40,14 +37,14 @@ docker run -d --network=host --name exam-backend-frontend waterknife/exam
   + 教师：学生的所有权限+创建/编辑题目+创建/编辑考试
   + 管理员：教师的所有权限+管理用户
 
-### 软件架构
+### 2.3 软件架构
 
 > 前后端分离，前段组件化，方便二次开发；后端
 
 + 后端采用SpringBoot+JPA++Swagger2+JWT校验,根据不同用户的权限返回给用户不同的数据
 + 后端采用Vue+AntDesign,组件化拆分，封装了很多年公共组件，方便维护和二次开发
 
-### 使用教程
+### 2.3 使用教程
 
 + 1.下载代码
   ```shell
