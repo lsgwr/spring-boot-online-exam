@@ -1,6 +1,4 @@
 #!/bin/bash
-rm -rf backend/src/main/resources/static
-rm -rf frontend/dist
-cd frontend && npm install && npm run build && mv dist ../backend/src/main/resources/static
-cd ../backend && mvn clean package
-cd ../ && docker build -t waterknife/exam .
+docker rm -f exam
+docker run -d -p 80:9527 -p 3306:3306 --name exam --privileged=true waterknife/exam  /usr/sbin/init
+docker exec exam /lsg/entrypoint.sh
