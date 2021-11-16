@@ -1,2 +1,2 @@
 #!/bin/sh
-nohup java -jar app.jar
+nohup java -jar app.jar &

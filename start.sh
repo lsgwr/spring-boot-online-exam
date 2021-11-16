@@ -1,5 +1,4 @@
 #!/bin/bash
-docker rm -f mysql
-docker rm -f exam-backend-frontend
-docker run -d -p 3306:3306 --name mysql --privileged=true waterknife/centos-nginx-jdk8-mysql  /usr/sbin/init
-docker run -d --network=host --name exam-backend-frontend waterknife/exam
+docker rm -f exam
+docker run -d -p 80:9527 -p 3306:3306 --name exam --privileged=true waterknife/exam  /usr/sbin/init
+docker exec -it exam /bin/sh /lsg/entrypoint.sh
