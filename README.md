@@ -1,6 +1,6 @@
 # spring-boot-online-exam
 
-> 在线Demo预览，http://129.211.88.191 ，账户分别是admin、teacher、student，密码是admin123
+> 在线Demo预览，http://129.211.88.191 ，账户分别是admin、teacher、student，密码是admin123。视频讲解代码：https://www.bilibili.com/video/BV1FP4y1L7xt/
 
 > 好消息！！！一个小伙伴做了Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
 
