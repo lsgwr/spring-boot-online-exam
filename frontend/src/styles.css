@@ -88,6 +88,7 @@ h1, h2, h3, .serif { font-family: Fraunces, "Songti SC", serif; font-weight: 600
 .option {
   display: flex; gap: 10px; align-items: flex-start;
   border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: white; margin-bottom: 8px;
+  font-size: 15px;
 }
 .option.picked { border-color: var(--seal); background: #fff5f2; }
 .option.right { border-color: var(--moss); background: #f3faf7; }
