@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: aA111111
+      MYSQL_DATABASE: exam
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - exam-db:/var/lib/mysql
+      - ./doc/sql/exam.sql:/docker-entrypoint-initdb.d/01-exam.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-paA111111"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  app:
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PASSWORD: aA111111
+    ports:
+      - "9527:9527"
+volumes:
+  exam-db:

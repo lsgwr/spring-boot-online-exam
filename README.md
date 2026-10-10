@@ -4,27 +4,27 @@
 
 > 好消息！！！一个小伙伴做了Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
 
+当前技术栈：Java 21、Spring Boot 4.1、Vue 3、Vite、Element Plus。演示账号仍是 `admin` / `teacher` / `student`，密码 `admin123`。
+
 ## 1.快速体验
-### 1.1 事先准备
-> clone代码并进入代码路径
+### 1.1 容器一键启动
 
 ```shell
-git clone git@github.com:lsgwr/spring-boot-online-exam.git
-cd spring-boot-online-exam
+docker compose up --build
 ```
 
-下面按照Linux和windows说明快速搭建的方法
-### 1.2 Linux
-执行代码下的脚本start.sh即可
+浏览器打开 http://localhost:9527 。MySQL 会用 `doc/sql/exam.sql` 初始化。
 
-然后访问 http://ip:80 即可访问自己搭建的考试系统
+### 1.2 本地开发
 
-### 1.3 windows
-+ 1.安装JDK，推荐JDK8
-+ 2.从官方仓库下载发布的jar包，建议选择最新版：https://github.com/lsgwr/spring-boot-online-exam/releases
-+ 3.安装MySQL，创建数据库exam，并初始化密码为aA111111，导入doc/sql/exam.sql文件来创建数据库
-+ 4.启动jar包：`java -jar exam.jar`
-+ 5.访问：http://ip:9527 即可访问自己搭建的考试系统
+准备 JDK 21、Node 20+ 和 MySQL 8，导入 `doc/sql/exam.sql` 到 `exam` 库，密码与 `backend/src/main/resources/application.yml` 一致。
+
+```shell
+cd backend && mvn spring-boot:run
+cd frontend && npm install && npm run dev
+```
+
+前端开发地址 http://localhost:5173 ，接口代理到 9527。
 
 ## 2.介绍
 基于springboot的在线考试系统
@@ -41,8 +41,8 @@ cd spring-boot-online-exam
 
 > 前后端分离，前段组件化，方便二次开发；后端
 
-+ 后端采用SpringBoot+JPA++Swagger2+JWT校验,根据不同用户的权限返回给用户不同的数据
-+ 后端采用Vue+AntDesign,组件化拆分，封装了很多年公共组件，方便维护和二次开发
++ 后端：Spring Boot 4.1 + Spring Data JPA + springdoc OpenAPI + JWT
++ 前端：Vue 3 + Vite + Pinia + Element Plus + WangEditor，布局按手机宽度自适应
 
 ### 2.3 使用教程
 
@@ -95,14 +95,12 @@ cd spring-boot-online-exam
 ## 5.Todo
 + `√`0.修复issue提地bug：题目创建失败
 + `√`1.考试详情编辑
-+ 2.支持题目和考试的删除`删除的话比较麻烦，先不做了，最好是弄个visible字段，不实际删除，要不后面有些关联数据找不到就不好了`
-  > 如果题目有关联的考试则必须先删除对应的考试，反过来删除考试则不用删除题目
-+ 3.图片改成base64存到数据库中
-+ 4.题干和选项支持富文本
-+ 5.支持批量导入题目
-+ 6.新增用户管理、学科管理功能
-+ 7.老师能考到所有学生的成绩以及考试的统计信息
-+ 8.更多的数据分析功能
-+ 9.支持容器化一键式部署(编好Dockerfile)
-+ 10.支持移动端，最好用uniapp做
-+ ......抓紧做吧，争取每周末做一点......
++ `√`2.题目和考试软删除：`visible=0`。题目仍被未删除考试引用时拒绝删除；删除考试不删除题目
++ `√`3.图片以 Base64 存入数据库（封面、配图、富文本内图片）
++ `√`4.题干和选项支持富文本
++ `√`5.按 CSV / Excel 模板批量导入题目
++ `√`6.用户管理、学科管理
++ `√`7.教师查看全部考生成绩和每场考试统计
++ `√`8.概览页得分率、学科题量和考试统计
++ `√`9.Dockerfile 与 docker compose 一键部署
++ `√`10.移动端：同一套 Vue 3 界面在窄屏使用底部导航，不另维护 uni-app 工程

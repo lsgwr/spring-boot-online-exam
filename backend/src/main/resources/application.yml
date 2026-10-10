@@ -1,27 +1,24 @@
 server:
-  port: 9527 # 这个端口要和vue项目里vue.config.js里的devServer里面配置的相同
+  port: 9527
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: aA111111
-    url: jdbc:mysql://localhost:3306/exam?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:aA111111}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:exam}?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
   jpa:
-    # 调试的时候用，用于打印完成SQL语句(但是不打印参数),联合下面的logging.level一同打印最完整的SQL信息(语句+参数)
-    show-sql: false
+    open-in-view: false
     hibernate:
       ddl-auto: update
   servlet:
     multipart:
-      max-file-size: 100MB # 最大支持文件大小
-      max-request-size: 100MB # 最大支持请求大小
+      max-file-size: 8MB
+      max-request-size: 8MB
 
-# 拦截器相关的配置
-interceptors:
-  # 不需要进行鉴权的接口地址，用逗号隔开
-  auth-ignore-uris: /api/user/register,/api/user/login
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
 
-# SQL语句打印(能打印参数，设置为trace是打印完整语句，默认我们就关掉吧)
-logging:
-  level:
-    org.hibernate.type.descriptor.sql.BasicBinder: off
+app:
+  jwt-secret: ${JWT_SECRET:liangshanguang-exam-secret-key-32b}
