@@ -1,26 +1,13 @@
-// ie polyfill
-import '@babel/polyfill'
-
-import Vue from 'vue'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import 'element-plus/dist/index.css'
+import '@fontsource/fraunces/600.css'
+import '@fontsource/outfit/400.css'
+import '@fontsource/outfit/600.css'
 import App from './App.vue'
 import router from './router'
-import store from './store/'
-import { VueAxios } from './utils/request'
+import './styles.css'
 
-import bootstrap from './core/bootstrap'
-import './core/use'
-import './permission' // permission control
-import './utils/filter' // global filter
-Vue.config.productionTip = false
-
-// mount axios Vue.$http and this.$http
-Vue.use(VueAxios)
-
-new Vue({
-  router,
-  store,
-  created () {
-    bootstrap()
-  },
-  render: h => h(App)
-}).$mount('#app')
+createApp(App).use(createPinia()).use(router).use(ElementPlus, { locale: zhCn }).mount('#app')
