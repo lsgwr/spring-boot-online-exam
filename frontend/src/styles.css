@@ -85,10 +85,13 @@ h1, h2, h3, .serif { font-family: Fraunces, "Songti SC", serif; font-weight: 600
 
 .prose { line-height: 1.7; }
 .prose img { max-width: 100%; border-radius: 8px; }
+.el-radio-group,
+.el-checkbox-group { font-size: 16px; }
 .option {
   display: flex; gap: 10px; align-items: flex-start;
   border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: white; margin-bottom: 8px;
 }
+.option .prose { flex: 1; min-width: 0; }
 .option.picked { border-color: var(--seal); background: #fff5f2; }
 .option.right { border-color: var(--moss); background: #f3faf7; }
 .q-block { margin-bottom: 22px; }

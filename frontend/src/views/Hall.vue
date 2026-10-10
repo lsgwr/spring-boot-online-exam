@@ -6,6 +6,13 @@ const exams = ref([])
 onMounted(async () => {
   exams.value = (await http.get('/exams')).data
 })
+function cover(exam) {
+  const raw = exam.avatar || ''
+  const matched = raw.match(/src="(data:image\/[^"]+|https?:\/\/[^"]+)"/)
+  if (matched) return matched[1]
+  if (raw.startsWith('data:image') || raw.startsWith('http://') || raw.startsWith('https://')) return raw
+  return ''
+}
 </script>
 
 <template>
@@ -18,7 +25,7 @@ onMounted(async () => {
     </div>
     <div class="grid cards">
       <article v-for="exam in exams" :key="exam.id" class="card exam-card">
-        <img v-if="exam.avatar" :src="exam.avatar" alt="" />
+        <img v-if="cover(exam)" :src="cover(exam)" alt="" />
         <div v-else class="cover"></div>
         <h3 class="serif" style="margin:0">{{ exam.name }}</h3>
         <p class="demo" style="margin:0">{{ exam.description || '这场考试没有简介' }}</p>
