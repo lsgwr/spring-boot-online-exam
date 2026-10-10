@@ -37,7 +37,7 @@ docker compose up --build
 
 ## 本地开发
 
-准备 JDK 21、Node.js 20+、Maven 和 MySQL 8。在仓库根目录创建并初始化数据库：
+准备 JDK 21、Node.js 20.19+ 或 22.12+、Maven 和 MySQL 8。在仓库根目录创建并初始化数据库：
 
 ```bash
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS exam CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
