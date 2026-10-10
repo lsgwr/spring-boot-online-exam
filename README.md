@@ -1,106 +1,91 @@
-# spring-boot-online-exam
+# 在线考试系统
 
-> 在线Demo预览，http://129.211.88.191 ，账户分别是admin、teacher、student，密码是admin123。视频讲解代码：https://www.bilibili.com/video/BV1FP4y1L7xt/
+一个前后端分离的在线考试系统，覆盖题库维护、组卷、在线作答、自动判分、成绩分析以及用户和学科管理，并适配桌面端和移动端。
 
-> 好消息！！！一个小伙伴做了Python实现，欢迎大家star：https://github.com/xingxingzaixian/django-drf-online-exam
+- 后端：Java 21、Spring Boot 4.1、Spring Data JPA、JWT、springdoc OpenAPI
+- 前端：Vue 3、Vite、Pinia、Element Plus、WangEditor、ECharts
+- 数据库：MySQL 8
 
-当前技术栈：Java 21、Spring Boot 4.1、Vue 3、Vite、Element Plus。演示账号仍是 `admin` / `teacher` / `student`，密码 `admin123`。
+## 角色与能力
 
-## 1.快速体验
-### 1.1 容器一键启动
+| 角色 | 可用模块与能力 |
+| --- | --- |
+| 学生 | 查看概览，进入考场作答，查看自己的答卷 |
+| 教师 | 包含学生能力；维护题库、批量导题、创建试卷、查看全部考生成绩 |
+| 管理员 | 访问全部模块；包含教师能力，并可管理用户和学科 |
 
-```shell
+详细操作请查看：[学生指南](doc/user-guide.md#student-guide) · [教师指南](doc/user-guide.md#teacher-guide) · [管理员指南](doc/user-guide.md#admin-guide) · [常见问题](doc/user-guide.md#faq)
+
+## 快速开始
+需要已安装 Docker 和 Docker Compose。在仓库根目录运行：
+
+```bash
 docker compose up --build
 ```
 
-浏览器打开 http://localhost:9527 。MySQL 会用 `doc/sql/exam.sql` 初始化。
+服务就绪后访问 <http://localhost:9527>。首次创建数据库卷时，MySQL 会自动执行 `doc/sql/exam.sql`。
 
-### 1.2 本地开发
+### 演示账号
 
-准备 JDK 21、Node 20+ 和 MySQL 8，导入 `doc/sql/exam.sql` 到 `exam` 库，密码与 `backend/src/main/resources/application.yml` 一致。
+| 角色 | 用户名 | 密码 |
+| --- | --- | --- |
+| 管理员 | `admin` | `admin123` |
+| 教师 | `teacher` | `admin123` |
+| 学生 | `student` | `admin123` |
 
-```shell
-cd backend && mvn spring-boot:run
-cd frontend && npm install && npm run dev
+![管理员登录后的学情概览与全部导航菜单](doc/images/guide/admin-dashboard.png)
+
+## 本地开发
+
+准备 JDK 21、Node.js 20.19+ 或 22.12+、Maven 和 MySQL 8。在仓库根目录创建并初始化数据库：
+
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS exam CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p exam < doc/sql/exam.sql
 ```
 
-前端开发地址 http://localhost:5173 ，接口代理到 9527。
+分别启动后端和前端；将示例中的密码替换为本机 MySQL `root` 密码：
 
-## 2.介绍
-基于springboot的在线考试系统
+```bash
+cd backend
+DB_PASSWORD='<MySQL root 密码>' mvn spring-boot:run
+```
 
-### 2.1 功能简介
+```bash
+cd frontend
+npm ci
+npm run dev
+```
 
-+ 支持单选题、多选题、判断题
-+ 支持学生(student)、教师(teacher)、管理员(admin)三种角色
-  + 学生：参加考试和查看我的考试
-  + 教师：学生的所有权限+创建/编辑题目+创建/编辑考试
-  + 管理员：教师的所有权限+管理用户
+前端开发地址为 <http://localhost:5173>，`/api` 请求会代理到运行在 `9527` 端口的后端。后端默认连接本机 `3306` 端口的 `exam` 数据库。
 
-### 2.3 软件架构
+## 项目结构
 
-> 前后端分离，前段组件化，方便二次开发；后端
+```text
+backend/              Spring Boot API、业务逻辑和后端测试
+frontend/             Vue 3 单页应用
+doc/sql/exam.sql      数据库结构与演示数据
+doc/images/guide/     当前界面的用户指南截图
+doc/user-guide.md     按角色划分的操作指南
+docker-compose.yml    应用与 MySQL 的容器编排
+Dockerfile            前后端构建及应用镜像
+```
 
-+ 后端：Spring Boot 4.1 + Spring Data JPA + springdoc OpenAPI + JWT
-+ 前端：Vue 3 + Vite + Pinia + Element Plus + WangEditor，布局按手机宽度自适应
+## 测试与构建
 
-### 2.3 使用教程
+```bash
+cd backend
+mvn test
+```
 
-+ 1.下载代码
-  ```shell
-  git clone https://github.com/19920625lsg/spring-boot-online-exam.git
-  ```
-+ 2.初始化数据库
-  > 安装mysql的步骤这里省略，网上的教程很多。安装好mysql后，新建exam数据库，密码和`spring-boot-online-exam/backend/exam/src/main/resources/application.yml`的`password: xxxxxx`保持一致，然后导入`spring-boot-online-exam/doc/sql/exam.sql`
-+ 3.启动后端
-  > 打开`spring-boot-online-exam/backend/exam`这个Maven项目，可以在IDE里启动或者执行`mvn install`生成jar包启动
-+ 4.启动前端
-  + 进入到前端代码路径 `cd spring-boot-online-exam/frontend/exam/`
-  + 安装依赖 `npm install`
-  + 启动前端 `npm run serve`
-+ 5.部署完毕，查看效果
-  > 打开 http://localhost:8000 或者 http://本机ip:8000 即可查看演示效果
+```bash
+cd frontend
+npm ci
+npm run build
+```
 
-## 3.功能图示
+## 参与贡献
 
-+ 1.管理题目
-  + 1.1 题目列表
-    > ![题目查看](doc/images/question_list.png)
-  + 1.2 题目创建
-    > ![题目创建](doc/images/question_create.png)
-  + 1.3 题目更新
-    > ![题目更新](doc/images/question_update.png)
-+ 2.考试管理
-  + 2.1 考试列表
-    > ![考试查看](doc/images/exam_list.png)
-  + 2.2 考试创建
-    > ![考试创建](doc/images/exam_create.png)
-  + 2.3 考试更新(`还有点小bug，开发中`)
-    > ![考试更新](doc/images/exam_update.png)
-+ 3.我的考试
-  + 3.1 参加考试
-    > 在"考试列表"模块点击自己想参加的考试卡片即可
-    > ![参加考试1](doc/images/exam_join.png)
-    > ![参加考试2](doc/images/exam_join2.png)
-  + 3.2 考试记录查看
-    > ![考试记录查看](doc/images/exam_detail.png)
-
-## 4.参与贡献
-
-1.  Fork 本仓库
-2.  新建 exam_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-## 5.Todo
-+ `√`0.修复issue提地bug：题目创建失败
-+ `√`1.考试详情编辑
-+ `√`2.题目和考试软删除：`visible=0`。题目仍被未删除考试引用时拒绝删除；删除考试不删除题目
-+ `√`3.图片以 Base64 存入数据库（封面、配图、富文本内图片）
-+ `√`4.题干和选项支持富文本
-+ `√`5.按 CSV / Excel 模板批量导入题目
-+ `√`6.用户管理、学科管理
-+ `√`7.教师查看全部考生成绩和每场考试统计
-+ `√`8.概览页得分率、学科题量和考试统计
-+ `√`9.Dockerfile 与 docker compose 一键部署
-+ `√`10.移动端：同一套 Vue 3 界面在窄屏使用底部导航，不另维护 uni-app 工程
+1. Fork 本仓库并从最新代码创建功能分支。
+2. 完成修改后运行相关测试和构建。
+3. 提交清晰、聚焦的变更，并发起 Pull Request。
