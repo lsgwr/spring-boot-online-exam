@@ -41,7 +41,7 @@ onBeforeUnmount(() => {
     </div>
     <div v-if="data" class="grid stats">
       <div class="card stat"><span>考试</span><b>{{ data.overview.exams }}</b></div>
-      <div class="card stat"><span>题目</span><b>{{ data.overview.questions }}</b></div>
+      <div v-if="session.staff" class="card stat"><span>题目</span><b>{{ data.overview.questions }}</b></div>
       <div class="card stat"><span>答卷</span><b>{{ data.overview.attempts }}</b></div>
       <div class="card stat"><span>平均分</span><b>{{ data.overview.average }}</b></div>
     </div>
